@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { CATEGORY_LABELS, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+const posts = await getCollection('blog');
+const counts = Object.fromEntries(Object.keys(CATEGORY_LABELS).map((key) => [key, posts.filter((post) => post.data.category === key).length]));
+---
+<!doctype html>
+<html lang="ko">
+	<head><BaseHead title={`Categories | ${SITE_TITLE}`} description={SITE_DESCRIPTION} /></head>
+	<body><Header /><main><h1>Categories</h1><div class="chips">{Object.entries(CATEGORY_LABELS).map(([slug, label]) => <a href={`/categories/${slug}/`}>{label} ({counts[slug]})</a>)}</div></main><Footer /></body>
+</html>

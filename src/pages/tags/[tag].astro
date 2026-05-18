@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { CATEGORY_LABELS, SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return [...new Set(posts.flatMap((post) => post.data.tags))].map((tag) => ({ params: { tag } }));
+}
+const { tag } = Astro.params;
+const posts = (await getCollection('blog')).filter((post) => post.data.tags.includes(tag!)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<!doctype html>
+<html lang="ko">
+	<head><BaseHead title={`#${tag} | ${SITE_TITLE}`} description={`Posts tagged ${tag}`} /></head>
+	<body><Header /><main><h1>#{tag}</h1><div class="post-list">{posts.map((post) => <article class="post-card"><a href={`/blog/${post.id}/`}><span class="meta">{CATEGORY_LABELS[post.data.category]} · <FormattedDate date={post.data.pubDate} /></span><h2>{post.data.title}</h2><p>{post.data.description}</p></a></article>)}</div></main><Footer /></body>
+</html>

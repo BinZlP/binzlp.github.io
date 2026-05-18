@@ -1,5 +1,12 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
+// Global site metadata.
+export const SITE_TITLE = 'BinZIP tech blog';
+export const SITE_DESCRIPTION = 'Systems, AI, and software engineering notes by BinZIP.';
 
-export const SITE_TITLE = 'Astro Blog';
-export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const CATEGORY_LABELS = {
+	systems: 'Systems',
+	ai: 'AI',
+	'it-news': 'IT News',
+	etc: 'Etc',
+} as const;
+
+export type Category = keyof typeof CATEGORY_LABELS;
