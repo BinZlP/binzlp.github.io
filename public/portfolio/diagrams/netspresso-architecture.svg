@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="650" viewBox="0 0 960 650" role="img" aria-labelledby="title desc">
+  <title id="title">NetsPresso customer deployment architecture</title>
+  <desc id="desc">An AWS EKS deployment uses Istio for ingress and service traffic, API and analyzer services, and KEDA-scaled optimization jobs. Argo CD synchronizes configuration from GitHub, Karpenter provisions nodes, and ExternalDNS manages Route 53 records. Alloy, Loki, Prometheus, Thanos and Grafana provide observability. The AWS data tier includes RDS, Amazon MQ and S3. The analyzer connects through a site-to-site VPN to a device-farm gateway and devices in a corporate data center.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#4b5563"/></marker>
+    <marker id="green-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker>
+    <style>
+      text { font-family: Geist, 'Segoe UI', system-ui, sans-serif; fill: #1f2937; }
+      .heading { font-size: 20px; font-weight: 600; }
+      .label { font-size: 18px; font-weight: 600; }
+      .small { font-size: 16px; }
+      .note { font-size: 16px; fill: #4b5563; }
+      .group { fill: #fafafa; stroke: #b8c1bd; stroke-width: 1.5; }
+      .box { fill: #ffffff; stroke: #b8c1bd; stroke-width: 1.5; }
+      .accent { fill: #ffffff; stroke: #047857; stroke-width: 2; }
+      .flow { fill: none; stroke: #4b5563; stroke-width: 1.7; marker-end: url(#arrow); }
+      .service { fill: none; stroke: #047857; stroke-width: 2; marker-end: url(#green-arrow); }
+      .data { fill: none; stroke: #7a8580; stroke-width: 1.5; stroke-dasharray: 5 4; marker-end: url(#arrow); }
+      .halo { paint-order: stroke; stroke: #fafafa; stroke-width: 5; stroke-linejoin: round; }
+    </style>
+  </defs>
+  <rect width="960" height="650" fill="#ffffff"/>
+  <rect class="group" x="16" y="16" width="684" height="476" rx="8"/>
+  <text class="heading" x="40" y="46">AWS / EKS cluster</text>
+  <rect class="group" x="16" y="512" width="684" height="122" rx="8"/>
+  <text class="heading" x="40" y="541">AWS data tier</text>
+  <rect class="group" x="720" y="218" width="224" height="416" rx="8"/>
+  <text class="heading" x="740" y="248">Corporate data center</text>
+
+  <!-- Control plane and configuration. -->
+  <path class="flow" d="M744 48H708V60H122V74"/>
+  <path class="data" d="M676 98H692V588H676"/>
+  <rect class="box" x="744" y="24" width="180" height="48" rx="6"/>
+  <text class="label" x="834" y="54" text-anchor="middle">GitHub</text>
+  <rect class="box" x="40" y="74" width="166" height="48" rx="6"/>
+  <text class="label" x="123" y="96" text-anchor="middle">Argo CD</text>
+  <text class="small" x="123" y="115" text-anchor="middle">Cluster state sync</text>
+  <rect class="box" x="230" y="74" width="184" height="48" rx="6"/>
+  <text class="label" x="322" y="96" text-anchor="middle">Karpenter</text>
+  <text class="small" x="322" y="115" text-anchor="middle">Node provisioning</text>
+  <rect class="box" x="448" y="74" width="228" height="48" rx="6"/>
+  <text class="label" x="562" y="96" text-anchor="middle">ExternalDNS</text>
+  <text class="small" x="562" y="115" text-anchor="middle">DNS record management</text>
+
+  <!-- Ingress, mesh and application services. -->
+  <path class="service" d="M190 188H230"/>
+  <path class="service" d="M498 188H430"/>
+  <path class="service" d="M330 212V236H290V258"/>
+  <path class="service" d="M330 236H442V258"/>
+  <rect class="box" x="40" y="164" width="150" height="48" rx="6"/>
+  <text class="label" x="115" y="185" text-anchor="middle">Business</text>
+  <text class="small" x="115" y="204" text-anchor="middle">services</text>
+  <rect class="accent" x="230" y="164" width="200" height="48" rx="6"/>
+  <text class="label" x="330" y="185" text-anchor="middle">Istio service mesh</text>
+  <text class="small" x="330" y="204" text-anchor="middle">mTLS</text>
+  <rect class="box" x="498" y="164" width="178" height="48" rx="6"/>
+  <text class="label" x="587" y="194" text-anchor="middle">Istio gateway</text>
+  <rect class="accent" x="230" y="258" width="120" height="48" rx="6"/>
+  <text class="label" x="290" y="288" text-anchor="middle">API</text>
+  <rect class="accent" x="382" y="258" width="120" height="48" rx="6"/>
+  <text class="label" x="442" y="288" text-anchor="middle">Analyzer</text>
+  <rect class="accent" x="534" y="258" width="142" height="48" rx="6"/>
+  <text class="label" x="605" y="279" text-anchor="middle">Optimizer</text>
+  <text class="small" x="605" y="298" text-anchor="middle">Kubernetes jobs</text>
+
+  <!-- Data paths are distinct from the solid request/control paths. -->
+  <path class="data" d="M260 306V342H24V588H40"/>
+  <path class="data" d="M290 306V342H464V500H277V566"/>
+  <path class="data" d="M420 306V318H484V500H443V566"/>
+
+  <!-- Corporate device access. The line crosses the scaling path without joining it. -->
+  <path d="M442 306V328H706V300H730" fill="none" stroke="#ffffff" stroke-width="6"/>
+  <path class="service" d="M442 306V328H706V300H730"/>
+  <rect class="accent" x="730" y="272" width="204" height="56" rx="6"/>
+  <text class="label" x="832" y="296" text-anchor="middle">Site-to-site VPN</text>
+  <text class="small" x="832" y="316" text-anchor="middle">Private connectivity</text>
+  <path class="service" d="M832 328V382"/>
+  <rect class="box" x="752" y="382" width="168" height="64" rx="6"/>
+  <text class="label" x="836" y="409" text-anchor="middle">Device-farm</text>
+  <text class="label" x="836" y="431" text-anchor="middle">gateway</text>
+  <path class="service" d="M836 446V518"/>
+  <rect class="box" x="752" y="518" width="168" height="76" rx="6"/>
+  <text class="label" x="836" y="546" text-anchor="middle">Device fleet</text>
+  <rect x="778" y="560" width="30" height="16" rx="2" fill="#e3e9e6" stroke="#7a8580"/>
+  <rect x="821" y="560" width="30" height="16" rx="2" fill="#e3e9e6" stroke="#7a8580"/>
+  <rect x="864" y="560" width="30" height="16" rx="2" fill="#e3e9e6" stroke="#7a8580"/>
+
+  <!-- Observability pipeline. -->
+  <path class="flow" d="M115 212V338H97V374"/>
+  <text class="note" x="126" y="248">Service logs</text>
+  <rect x="40" y="354" width="404" height="122" rx="6" fill="#f1f5f3" stroke="#cbd5cf"/>
+  <path class="flow" d="M142 392H172"/>
+  <path class="flow" d="M217 410V418H255V426"/>
+  <path class="flow" d="M176 444H206"/>
+  <path class="flow" d="M304 444H330"/>
+  <path class="data" d="M255 462V488H443V566"/>
+  <rect class="box" x="52" y="374" width="90" height="36" rx="4"/>
+  <text class="small" x="97" y="397" text-anchor="middle">Alloy</text>
+  <rect class="box" x="172" y="374" width="90" height="36" rx="4"/>
+  <text class="small" x="217" y="397" text-anchor="middle">Loki</text>
+  <rect class="box" x="52" y="426" width="124" height="36" rx="4"/>
+  <text class="small" x="114" y="449" text-anchor="middle">Prometheus</text>
+  <rect class="box" x="206" y="426" width="98" height="36" rx="4"/>
+  <text class="small" x="255" y="449" text-anchor="middle">Thanos</text>
+  <rect class="box" x="330" y="426" width="102" height="36" rx="4"/>
+  <text class="small" x="381" y="449" text-anchor="middle">Grafana</text>
+  <text class="note" x="285" y="397">Observability</text>
+
+  <!-- Workload-driven job scaling. -->
+  <path d="M605 382V306" fill="none" stroke="#fafafa" stroke-width="6"/>
+  <path class="flow" d="M605 382V306"/>
+  <rect class="box" x="510" y="382" width="166" height="66" rx="6"/>
+  <text class="label" x="593" y="409" text-anchor="middle">KEDA</text>
+  <text class="small" x="593" y="434" text-anchor="middle">Job scaling</text>
+
+  <rect class="box" x="40" y="566" width="132" height="44" rx="6"/>
+  <text class="label" x="106" y="594" text-anchor="middle">RDS</text>
+  <rect class="box" x="200" y="566" width="154" height="44" rx="6"/>
+  <text class="label" x="277" y="594" text-anchor="middle">Amazon MQ</text>
+  <rect class="box" x="382" y="566" width="122" height="44" rx="6"/>
+  <text class="label" x="443" y="594" text-anchor="middle">S3</text>
+  <rect class="box" x="534" y="566" width="142" height="44" rx="6"/>
+  <text class="label" x="605" y="594" text-anchor="middle">Route 53</text>
+</svg>

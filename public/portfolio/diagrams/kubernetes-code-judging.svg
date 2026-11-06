@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" role="img" aria-labelledby="title desc">
+  <title id="title">Kubernetes code-judging architecture</title>
+  <desc id="desc">Users enter an Amazon EKS cluster through ALB for service APIs and NLB for execution traffic. Business, resource allocator, code-storage, and evaluation services form the service layer. Code storage connects to Kafka and tiered Redis, Amazon FSx, and Amazon S3 storage. The allocator uses the Kubernetes API to schedule executor pods in small and large exam node pools. Karpenter scales nodes and KEDA scales services.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker><marker id="scale-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#737373"/></marker></defs>
+  <style>text{font-family:Geist,&quot;Segoe UI&quot;,system-ui,sans-serif;fill:#171717;font-size:18px}.group{fill:#fafafa;stroke:#d4d4d4;stroke-width:1.5}.node{fill:white;stroke:#a3a3a3;stroke-width:1.5}.label{font-weight:600}.small{font-size:16px;fill:#525252}.heading{font-size:18px;font-weight:600;fill:#047857}.flow{fill:none;stroke:#047857;stroke-width:2;marker-end:url(#arrow)}.scale{fill:none;stroke:#737373;stroke-width:1.5;stroke-dasharray:6 5;marker-end:url(#scale-arrow)}.bus{fill:none;stroke:#047857;stroke-width:2}</style>
+  <rect width="960" height="700" fill="white"/>
+  <rect class="group" x="158" y="88" width="778" height="576" rx="8"/>
+  <text class="heading" x="180" y="116">Amazon EKS cluster</text>
+  <rect class="node" x="654" y="16" width="136" height="48" rx="6"/>
+  <text class="label" x="722" y="46" text-anchor="middle">Kafka</text>
+  <rect class="node" x="16" y="166" width="108" height="60" rx="6"/>
+  <text class="label" x="70" y="202" text-anchor="middle">User</text>
+  <path class="flow" d="M124 196H182"/>
+  <path class="flow" d="M136 196V570H182"/>
+  <rect class="node" x="182" y="166" width="126" height="60" rx="6"/>
+  <text class="label" x="245" y="192" text-anchor="middle">ALB</text>
+  <text class="small" x="245" y="215" text-anchor="middle">Ingress</text>
+  <text class="small" x="245" y="254" text-anchor="middle">Service APIs</text>
+  <path class="bus" d="M308 196H324V142H868"/>
+  <path class="flow" d="M404 142V166"/>
+  <path class="flow" d="M563 142V166"/>
+  <path class="flow" d="M722 142V166"/>
+  <path class="flow" d="M868 142V166"/>
+  <rect class="node" x="340" y="166" width="128" height="76" rx="6"/>
+  <text class="label" x="404" y="196" text-anchor="middle">Business</text>
+  <text class="small" x="404" y="222" text-anchor="middle">services</text>
+  <rect class="node" x="497" y="166" width="132" height="76" rx="6"/>
+  <text class="label" x="563" y="196" text-anchor="middle">Resource</text>
+  <text class="small" x="563" y="222" text-anchor="middle">allocator</text>
+  <rect class="node" x="656" y="166" width="132" height="76" rx="6"/>
+  <text class="label" x="722" y="196" text-anchor="middle">Code storage</text>
+  <text class="small" x="722" y="222" text-anchor="middle">service</text>
+  <rect class="node" x="815" y="166" width="104" height="76" rx="6"/>
+  <text class="small label" x="867" y="196" text-anchor="middle">Evaluation</text>
+  <text class="small" x="867" y="222" text-anchor="middle">service</text>
+  <path class="flow" d="M722 166V64"/>
+  <rect class="node" x="815" y="278" width="104" height="58" rx="6"/>
+  <text class="label" x="867" y="313" text-anchor="middle">KEDA</text>
+  <path class="scale" d="M919 307H926V142H868"/>
+  <rect class="node" x="340" y="314" width="128" height="76" rx="6"/>
+  <text class="label" x="404" y="345" text-anchor="middle">Karpenter</text>
+  <text class="small" x="404" y="371" text-anchor="middle">Node scaling</text>
+  <path class="flow" d="M468 352H497"/>
+  <path class="flow" d="M563 242V314"/>
+  <rect class="node" x="497" y="314" width="132" height="76" rx="6"/>
+  <text class="label" x="563" y="345" text-anchor="middle">Kubernetes</text>
+  <text class="small" x="563" y="371" text-anchor="middle">API server</text>
+  <path class="flow" d="M722 242V358"/>
+  <rect class="group" x="654" y="358" width="265" height="138" rx="8"/>
+  <text class="heading" x="674" y="388">Tiered storage system</text>
+  <rect class="node" x="670" y="408" width="70" height="66" rx="6"/>
+  <text class="small label" x="705" y="447" text-anchor="middle">Redis</text>
+  <rect class="node" x="750" y="408" width="70" height="66" rx="6"/>
+  <text class="small" x="785" y="436" text-anchor="middle">Amazon</text>
+  <text class="small label" x="785" y="459" text-anchor="middle">FSx</text>
+  <rect class="node" x="830" y="408" width="70" height="66" rx="6"/>
+  <text class="small" x="865" y="436" text-anchor="middle">Amazon</text>
+  <text class="small label" x="865" y="459" text-anchor="middle">S3</text>
+  <path class="bus" d="M563 390V478H474"/>
+  <path class="flow" d="M474 478V534"/>
+  <path class="flow" d="M563 478H635V510H770V534"/>
+  <path class="scale" d="M404 390V534"/>
+  <path class="scale" d="M404 520H860V534"/>
+  <rect class="group" x="340" y="534" width="250" height="98" rx="8"/>
+  <text class="heading" x="360" y="561">Small exam nodes</text>
+  <rect class="node" x="358" y="580" width="214" height="34" rx="4"/>
+  <text class="small" x="465" y="603" text-anchor="middle">User code executor pods</text>
+  <rect class="group" x="620" y="534" width="299" height="98" rx="8"/>
+  <text class="heading" x="640" y="561">Large exam nodes</text>
+  <rect class="node" x="638" y="580" width="263" height="34" rx="4"/>
+  <text class="small" x="769" y="603" text-anchor="middle">User code executor pods</text>
+  <rect class="node" x="182" y="540" width="126" height="60" rx="6"/>
+  <text class="label" x="245" y="566" text-anchor="middle">NLB</text>
+  <text class="small" x="245" y="589" text-anchor="middle">Ingress</text>
+  <text class="small" x="182" y="627">Execution traffic</text>
+  <path class="bus" d="M308 570H326V654H769"/>
+  <path class="flow" d="M465 654V614"/>
+  <path class="flow" d="M769 654V614"/>
+  <text class="small" x="340" y="690">Solid: requests / data / API calls</text>
+  <text class="small" x="672" y="690">Dashed: scaling control</text>
+</svg>

@@ -1,0 +1,461 @@
+---
+import PortfolioLayout from "../../layouts/PortfolioLayout.astro";
+import ProjectEntry from "../../components/portfolio/ProjectEntry.astro";
+import type { PortfolioProject } from "../../data/portfolio";
+import {
+  profile,
+  projects,
+  experience,
+  earlierProjects,
+  presentations,
+  writings,
+  activities,
+  skills,
+  education,
+  awards,
+} from "../../data/portfolio";
+const sections = [
+  ["profile", "Profile"],
+  ["experience", "Work experience"],
+  ["projects", "Projects"],
+  ["presentations", "Presentations"],
+  ["writings", "Writings"],
+  ["activities", "Other activities"],
+  ["skills", "Skills"],
+  ["awards", "Awards & honors"],
+];
+const imageMap: Record<string, NonNullable<PortfolioProject["image"]>> = {
+  inference: {
+    src: "/portfolio/diagrams/inference-architecture.svg",
+    width: 960,
+    height: 600,
+    alt: "LLM request routing and KV-cache offloading with llm-d, vLLM, and LMCache.",
+    caption:
+      "Request routing and KV-cache offloading; simplified from the implemented single-node test setup.",
+  },
+  "mcp-platform": {
+    src: "/portfolio/diagrams/mcp-platform-architecture.svg",
+    width: 960,
+    height: 600,
+    alt: "MCP application access and permission-checked hybrid document retrieval.",
+    caption:
+      "Application tools, authorization, and document ingestion and retrieval.",
+  },
+  delivery: {
+    src: "/portfolio/diagrams/netspresso-architecture.svg",
+    width: 960,
+    height: 650,
+    alt: "NetsPresso service architecture showing application services, task queues, optimization workers, and observability components.",
+    caption: "NetsPresso service and deployment architecture.",
+  },
+  gpu: {
+    src: "/portfolio/diagrams/gpu-self-service-architecture.svg",
+    width: 960,
+    height: 650,
+    alt: "Next.js and FastAPI manage Proxmox GPU instances across two clusters, with usage data and supporting services.",
+    caption: "GPU resource provisioning and usage management.",
+  },
+  gateway: {
+    src: "/portfolio/diagrams/easyllm-architecture.svg",
+    width: 960,
+    height: 620,
+    alt: "EasyLLM integrates model management, MLflow, inference runtimes, object storage, and the LiteLLM gateway.",
+    caption: "EasyLLM model management, serving, and gateway architecture.",
+  },
+  sunrise: {
+    src: "/portfolio/diagrams/sunrise-architecture.svg",
+    width: 960,
+    height: 700,
+    alt: "Sunrise agent manager connects command processors, credential management, Amazon Bedrock, and infrastructure APIs.",
+    caption: "Sunrise infrastructure agent architecture.",
+  },
+  "multicluster-logging": {
+    src: "/portfolio/diagrams/multicluster-logging.svg",
+    width: 960,
+    height: 560,
+    alt: "Logs pass from Fluent Bit through Kafka and Fluentd to Elasticsearch and S3, with Flux managing configuration.",
+    caption: "Centralized logging across Kubernetes clusters.",
+  },
+  "ci-optimization": {
+    src: "/portfolio/diagrams/ci-build-system.svg",
+    width: 960,
+    height: 640,
+    alt: "Jenkins shared libraries and autoscaling agents build images with EFS caches, push to ECR, and deploy.",
+    caption: "Build pipeline and cache reuse.",
+  },
+  "code-judging": {
+    src: "/portfolio/diagrams/kubernetes-code-judging.svg",
+    width: 960,
+    height: 700,
+    alt: "Kubernetes code execution system with Kafka messaging, KEDA and Karpenter scaling, and tiered storage.",
+    caption: "Code judging system architecture.",
+  },
+};
+---
+
+<PortfolioLayout>
+  <div class="portfolio-shell">
+    <aside class="document-index">
+      <p class="caption-1 index-label">Contents</p>
+      <nav aria-label="Portfolio contents">
+        {sections.map(([id, label]) => (
+          <a class="title-4" href={`#${id}`}>
+            {label}
+            {id === "projects" && (
+              <span class="caption-5">{projects.length}</span>
+            )}
+          </a>
+        ))}
+      </nav>
+      <div class="index-contact caption-2">
+        <a href={profile.github}>GitHub ↗</a>
+        <a href={profile.linkedin}>LinkedIn ↗</a>
+        <a href={`mailto:${profile.email}`}>Email ↗</a>
+      </div>
+    </aside>
+    <main id="main" class="document">
+      <details class="mobile-index">
+        <summary class="title-4">In this portfolio</summary>
+        <nav aria-label="Mobile portfolio contents">
+          {sections.map(([id, label]) => (
+            <a class="body-6" href={`#${id}`}>
+              {label}
+            </a>
+          ))}
+        </nav>
+      </details>
+      <section
+        class="profile-section document-section"
+        id="profile"
+        aria-labelledby="profile-title"
+      >
+        <h1 class="heading-1" id="profile-title">
+          {profile.name}
+        </h1>
+        <p class="title-1 profile-role">{profile.role}</p>
+        <p class="body-3 profile-intro">{profile.intro}</p>
+        <div class="profile-links body-6">
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a href={profile.github}>GitHub</a>
+          <a href={profile.linkedin}>LinkedIn</a>
+        </div>
+        <div class="education-list">
+          {education.map((item) => (
+            <div>
+              <p class="title-4">{item.school}</p>
+              <p class="body-6">{item.degree}</p>
+              <p class="caption-5">{item.period}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section
+        class="document-section"
+        id="experience"
+        aria-labelledby="experience-title"
+      >
+        <h2 class="heading-4 section-title" id="experience-title">
+          Work experience
+        </h2>
+        <div class="experience-list">
+          {experience.map((item) => (
+            <article class="experience-entry">
+              <div class="experience-heading">
+                <h3 class="heading-6">{item.company}</h3>
+                <p class="caption-2">{item.period}</p>
+              </div>
+              <p class="title-4 experience-role">{item.role}</p>
+              <p class="body-3">{item.description}</p>
+              {item.bullets && (
+                <ul class="body-3 experience-bullets">
+                  {item.bullets.map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+      <section
+        class="document-section"
+        id="projects"
+        aria-labelledby="projects-title"
+      >
+        <div class="section-heading-row">
+          <h2 class="heading-4 section-title" id="projects-title">
+            Projects
+          </h2>
+          <button
+            type="button"
+            class="expand-projects button-xsm"
+            data-expand-projects
+            aria-pressed="false"
+            hidden
+          >
+            Expand all
+          </button>
+        </div>
+        <p class="body-6 section-intro">
+          Architecture, implementation, and operations at Nota AI and goorm.
+        </p>
+        <div class="project-list">
+          {projects.map((project, index) => (
+            <ProjectEntry
+              project={{
+                ...project,
+                image: imageMap[project.id] ?? project.image,
+              }}
+              open={index === 0}
+            />
+          ))}
+        </div>
+        <details class="earlier-work">
+          <summary class="title-3">
+            Earlier projects{" "}
+            <span class="caption-5">{earlierProjects.length}</span>
+          </summary>
+          <div class="earlier-list">
+            {earlierProjects.map((item) => (
+              <article>
+                <div class="publication-heading">
+                  <h3 class="title-3">{item.title}</h3>
+                  <span class="caption-5">{item.period}</span>
+                </div>
+                <p class="body-6">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </details>
+      </section>
+      <section
+        class="document-section"
+        id="presentations"
+        aria-labelledby="presentations-title"
+      >
+        <h2 class="heading-4 section-title" id="presentations-title">
+          Presentations
+        </h2>
+        <div class="publication-list">
+          {presentations.map((item) => (
+            <article>
+              <p class="caption-2 publication-meta">{item.meta}</p>
+              <h3 class="heading-6">{item.title}</h3>
+              <p class="body-3">{item.description}</p>
+              {item.links.length > 0 && (
+                <div class="reference-links caption-1">
+                  {item.links.map((link) => (
+                    <a href={link.href}>{link.label} ↗</a>
+                  ))}
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+      <section
+        class="document-section"
+        id="writings"
+        aria-labelledby="writings-title"
+      >
+        <h2 class="heading-4 section-title" id="writings-title">
+          Writings
+        </h2>
+        <div class="publication-list">
+          {writings.map((item) => (
+            <article>
+              <p class="caption-2 publication-meta">{item.meta}</p>
+              <h3 class="heading-6">{item.title}</h3>
+              <p class="body-3">{item.description}</p>
+              {item.links.length > 0 && (
+                <div class="reference-links caption-1">
+                  {item.links.map((link) => (
+                    <a href={link.href}>{link.label} ↗</a>
+                  ))}
+                </div>
+              )}
+              {item.title.startsWith("ScaleOPT") && (
+                <details class="research-diagrams">
+                  <summary class="caption-1">Research diagrams</summary>
+                  <figure class="project-image">
+                    <img
+                      src="/portfolio/diagrams/scaleopt-access-map.png"
+                      alt="AccessMap parallel initialization and page access lookup."
+                      width="886"
+                      height="154"
+                    />
+                    <figcaption class="caption-5">AccessMap</figcaption>
+                  </figure>
+                  <figure class="project-image">
+                    <img
+                      src="/portfolio/diagrams/scaleopt-pipelined-tree.png"
+                      alt="Pipelined-Tree shows cache simulation operations running in a pipeline across cores."
+                      width="2220"
+                      height="326"
+                    />
+                    <figcaption class="caption-5">Pipelined-Tree</figcaption>
+                  </figure>
+                </details>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+      <section
+        class="document-section"
+        id="activities"
+        aria-labelledby="activities-title"
+      >
+        <h2 class="heading-4 section-title" id="activities-title">
+          Other activities
+        </h2>
+        <dl class="reference-list">
+          {activities.map((item) => (
+            <div>
+              <dt class="title-4">{item.title}</dt>
+              <dd class="body-3">{item.description}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      <section
+        class="document-section"
+        id="skills"
+        aria-labelledby="skills-title"
+      >
+        <h2 class="heading-4 section-title" id="skills-title">
+          Skills
+        </h2>
+        <dl class="reference-list skills-list">
+          {skills.map((item) => (
+            <div>
+              <dt class="title-4">{item.title}</dt>
+              <dd class="body-3">{item.items.join(" · ")}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      <section
+        class="document-section"
+        id="awards"
+        aria-labelledby="awards-title"
+      >
+        <h2 class="heading-4 section-title" id="awards-title">
+          Awards &amp; honors
+        </h2>
+        <dl class="award-list">
+          {awards.map((item) => (
+            <div>
+              <dt class="caption-2">{item.year}</dt>
+              <dd class="body-3">{item.title}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    </main>
+  </div>
+</PortfolioLayout>
+<script>
+  const entries = Array.from(
+    document.querySelectorAll<HTMLDetailsElement>(".project-entry"),
+  );
+  const expandButton = document.querySelector<HTMLButtonElement>(
+    "[data-expand-projects]",
+  );
+  const updateExpandButton = () => {
+    if (!expandButton) return;
+    const allOpen = entries.every((entry) => entry.open);
+    expandButton.textContent = allOpen ? "Collapse all" : "Expand all";
+    expandButton.setAttribute("aria-pressed", String(allOpen));
+  };
+  if (expandButton) {
+    expandButton.hidden = false;
+    expandButton.addEventListener("click", () => {
+      const open = !entries.every((entry) => entry.open);
+      entries.forEach((entry) => {
+        entry.open = open;
+      });
+      updateExpandButton();
+    });
+    entries.forEach((entry) =>
+      entry.addEventListener("toggle", updateExpandButton),
+    );
+  }
+  const revealHashTarget = () => {
+    let id: string;
+    try {
+      id = decodeURIComponent(location.hash.slice(1));
+    } catch {
+      return;
+    }
+    const target = document.getElementById(id);
+    if (target instanceof HTMLDetailsElement) target.open = true;
+    if (target)
+      requestAnimationFrame(() =>
+        target.scrollIntoView({ block: "start", behavior: "instant" }),
+      );
+  };
+  revealHashTarget();
+  window.addEventListener("hashchange", revealHashTarget);
+  window.addEventListener("load", revealHashTarget);
+  const navLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(
+      ".document-index nav a, .mobile-index nav a",
+    ),
+  );
+  const sectionElements = Array.from(
+    document.querySelectorAll<HTMLElement>(".document-section"),
+  );
+  const updateCurrentSection = () => {
+    const readingLine = Math.min(window.innerHeight * 0.25, 200);
+    const current =
+      sectionElements.findLast(
+        (section) => section.getBoundingClientRect().top <= readingLine,
+      ) ?? sectionElements[0];
+    if (!current) return;
+    navLinks.forEach((link) => {
+      if (link.hash === `#${current.id}`)
+        link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  };
+  let scrollFrame: number | undefined;
+  const scheduleSectionUpdate = () => {
+    if (scrollFrame !== undefined) return;
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = undefined;
+      updateCurrentSection();
+    });
+  };
+  window.addEventListener("scroll", scheduleSectionUpdate, { passive: true });
+  window.addEventListener("resize", scheduleSectionUpdate);
+  window.addEventListener("load", scheduleSectionUpdate);
+  entries.forEach((entry) =>
+    entry.addEventListener("toggle", scheduleSectionUpdate),
+  );
+  updateCurrentSection();
+  navLinks.forEach((link) =>
+    link.addEventListener("click", () => {
+      const mobileIndex =
+        document.querySelector<HTMLDetailsElement>(".mobile-index");
+      if (mobileIndex) mobileIndex.open = false;
+    }),
+  );
+  let printState: boolean[] = [];
+  const allDetails = Array.from(
+    document.querySelectorAll<HTMLDetailsElement>(
+      ".project-entry, .earlier-work, .research-diagrams",
+    ),
+  );
+  window.addEventListener("beforeprint", () => {
+    printState = allDetails.map((entry) => entry.open);
+    allDetails.forEach((entry) => {
+      entry.open = true;
+    });
+  });
+  window.addEventListener("afterprint", () => {
+    allDetails.forEach((entry, index) => {
+      entry.open = printState[index] ?? entry.open;
+    });
+  });
+</script>

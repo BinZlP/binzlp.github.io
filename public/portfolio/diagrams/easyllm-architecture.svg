@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="620" viewBox="0 0 960 620" role="img" aria-labelledby="title desc">
+  <title id="title">EasyLLM model gateway, serving and evaluation architecture</title>
+  <desc id="desc">Users send management requests to EasyLLM and inference requests to LiteLLM. Inside an on-premises Kubernetes cluster, EasyLLM coordinates MLflow registration, object storage, and vLLM or llama.cpp inference operators. PostgreSQL stores model metadata, evaluation results and inference statistics. LiteLLM routes requests to local inference engines or other model APIs, including commercial providers and local OpenAI-compatible services.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#4b5563"/></marker>
+    <marker id="green-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker>
+    <style>
+      text { font-family: Geist, 'Segoe UI', system-ui, sans-serif; fill: #1f2937; }
+      .heading { font-size: 22px; font-weight: 600; }
+      .label { font-size: 19px; font-weight: 600; }
+      .detail { font-size: 17px; fill: #4b5563; }
+      .note { font-size: 16px; fill: #4b5563; }
+      .box { fill: #ffffff; stroke: #b8c1bd; stroke-width: 1.5; }
+      .accent { fill: #ffffff; stroke: #047857; stroke-width: 2; }
+      .flow { fill: none; stroke: #4b5563; stroke-width: 1.8; marker-end: url(#arrow); }
+      .inference { fill: none; stroke: #047857; stroke-width: 2; marker-end: url(#green-arrow); }
+      .data { fill: none; stroke: #7a8580; stroke-width: 1.6; stroke-dasharray: 5 4; marker-end: url(#arrow); }
+      .halo { paint-order: stroke; stroke: #fafafa; stroke-width: 5; stroke-linejoin: round; }
+    </style>
+  </defs>
+  <rect width="960" height="620" fill="#ffffff"/>
+  <rect x="220" y="20" width="716" height="580" rx="8" fill="#fafafa" stroke="#b8c1bd" stroke-width="1.5"/>
+  <text class="heading" x="244" y="51">On-premises Kubernetes cluster</text>
+
+  <!-- Separate model-management and inference entry points. -->
+  <rect class="box" x="24" y="180" width="150" height="64" rx="7"/>
+  <text class="label" x="99" y="219" text-anchor="middle">User</text>
+  <path class="flow" d="M174 211H236V234H270"/>
+  <text class="note" x="29" y="147">Management requests</text>
+  <path class="inference" d="M99 244V450H360V472"/>
+  <text class="note" x="110" y="430">Inference requests</text>
+
+  <!-- Model registration and weights. -->
+  <rect class="box" x="278" y="84" width="170" height="60" rx="7"/>
+  <text class="label" x="363" y="111" text-anchor="middle">MLflow</text>
+  <text class="detail" x="363" y="135" text-anchor="middle">Model registry</text>
+  <rect class="box" x="570" y="84" width="180" height="60" rx="7"/>
+  <text class="label" x="660" y="111" text-anchor="middle">Object storage</text>
+  <text class="detail" x="660" y="135" text-anchor="middle">Model weights</text>
+  <path class="flow" d="M448 114H570"/>
+  <text class="note" x="462" y="99">Register</text>
+  <path class="flow" d="M355 200V144"/>
+  <text class="note halo" x="371" y="170">Revision / evaluation</text>
+  <path class="data" d="M422 200V184H660V144"/>
+  <text class="note halo" x="538" y="176">Upload weights</text>
+
+  <rect class="accent" x="270" y="200" width="170" height="66" rx="7"/>
+  <text class="label" x="355" y="229" text-anchor="middle">EasyLLM</text>
+  <text class="detail" x="355" y="254" text-anchor="middle">Python / FastAPI</text>
+
+  <!-- Serving lifecycle and engine data. -->
+  <path class="flow" d="M440 233H720"/>
+  <text class="note" x="486" y="221">Create / destroy serving</text>
+  <path class="data" d="M750 114H831V200"/>
+  <text class="note" x="843" y="157">Model</text>
+  <text class="note" x="843" y="178">weights</text>
+  <rect class="box" x="720" y="200" width="190" height="168" rx="7"/>
+  <text class="label" x="815" y="230" text-anchor="middle">Inference engine</text>
+  <text class="detail" x="815" y="255" text-anchor="middle">operators</text>
+  <rect x="740" y="276" width="150" height="34" rx="4" fill="#f1f5f3" stroke="#cbd5cf"/>
+  <text class="label" x="815" y="300" text-anchor="middle">vLLM</text>
+  <rect x="740" y="320" width="150" height="34" rx="4" fill="#f1f5f3" stroke="#cbd5cf"/>
+  <text class="label" x="815" y="344" text-anchor="middle">llama.cpp</text>
+
+  <!-- Registry/evaluation data and request statistics remain distinct flows. -->
+  <path class="data" d="M355 266V369H495"/>
+  <text class="note halo" x="366" y="302">Metadata and</text>
+  <text class="note halo" x="366" y="324">evaluation results</text>
+  <rect class="box" x="495" y="330" width="188" height="78" rx="7"/>
+  <text class="label" x="589" y="364" text-anchor="middle">PostgreSQL</text>
+  <text class="detail" x="589" y="389" text-anchor="middle">Platform database</text>
+
+  <!-- Gateway routing. -->
+  <rect class="accent" x="270" y="472" width="200" height="64" rx="7"/>
+  <text class="label" x="370" y="500" text-anchor="middle">LiteLLM</text>
+  <text class="detail" x="370" y="524" text-anchor="middle">Inference gateway</text>
+  <path class="data" d="M470 490H589V408"/>
+  <text class="note halo" x="601" y="450">Request statistics</text>
+  <path class="inference" d="M470 522H815V368"/>
+  <text class="note" x="604" y="548">Local inference requests</text>
+  <path class="inference" d="M270 506H192"/>
+  <rect class="box" x="24" y="478" width="168" height="108" rx="7"/>
+  <text class="label" x="108" y="506" text-anchor="middle">Other model APIs</text>
+  <text class="note" x="108" y="535" text-anchor="middle">Commercial providers</text>
+  <text class="note" x="108" y="557" text-anchor="middle">Local OpenAI-</text>
+  <text class="note" x="108" y="578" text-anchor="middle">compatible services</text>
+</svg>

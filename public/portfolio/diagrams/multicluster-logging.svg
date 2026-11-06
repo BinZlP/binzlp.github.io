@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">Kubernetes multi-cluster logging architecture</title>
+  <desc id="desc">Fluent Bit collectors in regional EKS clusters send logs through Amazon MSK, a Kafka buffer. Fluentd processors in the management cluster write to Elasticsearch and Amazon S3. Flux manages collector and processor configuration separately from the log data flow.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker><marker id="config-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#737373"/></marker></defs>
+  <style>text{font-family:Geist,&quot;Segoe UI&quot;,system-ui,sans-serif;fill:#171717;font-size:18px}.group{fill:#fafafa;stroke:#d4d4d4;stroke-width:1.5}.node{fill:white;stroke:#a3a3a3;stroke-width:1.5}.label{font-weight:600}.small{font-size:16px;fill:#525252}.heading{font-size:18px;font-weight:600;fill:#047857}.flow{fill:none;stroke:#047857;stroke-width:2;marker-end:url(#arrow)}.config{fill:none;stroke:#737373;stroke-width:1.5;stroke-dasharray:6 5;marker-end:url(#config-arrow)}</style>
+  <rect width="960" height="560" fill="white"/>
+  <rect class="group" x="24" y="42" width="210" height="358" rx="8"/>
+  <text class="heading" x="46" y="77">Regional EKS clusters</text>
+  <text class="small" x="46" y="105">Log collection</text>
+  <rect class="node" x="48" y="130" width="162" height="82" rx="6"/>
+  <text class="label" x="129" y="162" text-anchor="middle">Region 1</text>
+  <text class="small" x="129" y="189" text-anchor="middle">Fluent Bit</text>
+  <text x="129" y="246" text-anchor="middle">⋮</text>
+  <rect class="node" x="48" y="266" width="162" height="82" rx="6"/>
+  <text class="label" x="129" y="298" text-anchor="middle">Region N</text>
+  <text class="small" x="129" y="325" text-anchor="middle">Fluent Bit</text>
+  <path class="flow" d="M210 171H260V239H298"/>
+  <path class="flow" d="M210 307H260V239H298"/>
+  <rect class="node" x="298" y="191" width="174" height="96" rx="6"/>
+  <text class="label" x="385" y="226" text-anchor="middle">Amazon MSK</text>
+  <text class="small" x="385" y="255" text-anchor="middle">Kafka buffer</text>
+  <text class="small" x="385" y="326" text-anchor="middle">Raw log ingestion</text>
+  <rect class="group" x="526" y="92" width="182" height="308" rx="8"/>
+  <text class="heading" x="548" y="127">Management</text>
+  <text class="small" x="548" y="155">EKS cluster</text>
+  <path class="flow" d="M472 239H548"/>
+  <rect class="node" x="548" y="191" width="138" height="96" rx="6"/>
+  <text class="label" x="617" y="226" text-anchor="middle">Fluentd</text>
+  <text class="small" x="617" y="255" text-anchor="middle">Processors</text>
+  <path class="flow" d="M686 239H738V167H768"/>
+  <path class="flow" d="M686 239H738V311H768"/>
+  <rect class="node" x="768" y="123" width="168" height="88" rx="6"/>
+  <text class="label" x="852" y="159" text-anchor="middle">Elasticsearch</text>
+  <text class="small" x="852" y="185" text-anchor="middle">Searchable logs</text>
+  <rect class="node" x="768" y="267" width="168" height="88" rx="6"/>
+  <text class="label" x="852" y="303" text-anchor="middle">Amazon S3</text>
+  <text class="small" x="852" y="329" text-anchor="middle">Object storage</text>
+  <rect class="node" x="326" y="446" width="306" height="78" rx="6"/>
+  <text class="label" x="479" y="477" text-anchor="middle">Flux</text>
+  <text class="small" x="479" y="503" text-anchor="middle">GitOps configuration</text>
+  <path class="config" d="M326 485H129V348"/>
+  <path class="config" d="M129 485H36V171H48"/>
+  <path class="config" d="M617 446V287"/>
+  <text class="small" x="683" y="473">Solid: log flow</text>
+  <text class="small" x="683" y="503">Dashed: configuration</text>
+</svg>

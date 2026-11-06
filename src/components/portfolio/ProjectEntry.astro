@@ -1,0 +1,97 @@
+---
+import type { PortfolioProject } from "../../data/portfolio";
+interface Props {
+  project: PortfolioProject;
+  open?: boolean;
+}
+const { project, open = false } = Astro.props;
+---
+
+<details class="project-entry" id={project.id} open={open}>
+  <summary>
+    <span class="project-summary-copy">
+      <span class="title-1" role="heading" aria-level="3">
+        {project.title}
+      </span>
+      <span class="caption-2 project-meta">
+        {project.company}
+        <span aria-hidden="true"> · </span>
+        {project.period}
+      </span>
+      <span class="body-6 project-description">{project.summary}</span>
+    </span>
+    <span class="disclosure-mark" aria-hidden="true"></span>
+  </summary>
+  <div class="project-content">
+    <dl class="project-facts caption-2">
+      <div>
+        <dt class="caption-1">Role</dt>
+        <dd>{project.role}</dd>
+      </div>
+      <div>
+        <dt class="caption-1">Technologies</dt>
+        <dd>{project.tags.join(" · ")}</dd>
+      </div>
+    </dl>
+    {project.image && (
+      <figure class="project-image">
+        <a
+          href={project.image.src}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${project.title} architecture diagram in a new tab`}
+        >
+          <img
+            src={project.image.src}
+            alt={project.image.alt}
+            width={project.image.width}
+            height={project.image.height}
+          />
+        </a>
+        <figcaption class="caption-5">
+          {project.image.caption}{" "}
+          <a href={project.image.src} target="_blank" rel="noopener noreferrer">
+            View full size ↗
+          </a>
+        </figcaption>
+      </figure>
+    )}
+    <div class="case-section">
+      <h4 class="title-4">Motivation</h4>
+      <ul class="body-3">
+        {project.motivation.map((point) => (
+          <li>{point}</li>
+        ))}
+      </ul>
+    </div>
+    <div class="case-section">
+      <h4 class="title-4">Description</h4>
+      <ul class="body-3">
+        {project.description.map((point) => (
+          <li>{point}</li>
+        ))}
+      </ul>
+    </div>
+    <div class="case-section">
+      <h4 class="title-4">Challenges &amp; achievements</h4>
+      <ul class="achievement-list body-3">
+        {project.achievements.map((point) => (
+          <li>
+            <strong class="body-1">{point.title}</strong>
+            <p>{point.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+    {project.links.length > 0 && (
+      <div class="reference-links caption-1">
+        {project.links.map((link) => (
+          <a href={link.href}>{link.label} ↗</a>
+        ))}
+      </div>
+    )}
+    <a class="project-permalink caption-5" href={`#${project.id}`}>
+      Link to this project
+    </a>
+  </div>
+</details>

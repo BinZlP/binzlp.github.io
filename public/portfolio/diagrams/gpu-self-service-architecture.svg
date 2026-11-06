@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="650" viewBox="0 0 960 650" role="img" aria-labelledby="title desc">
+  <title id="title">GPU self-service provisioning architecture</title>
+  <desc id="desc">A Next.js interface calls a FastAPI service. The service manages virtual machines on Proxmox clusters at headquarters and an IDC, each with Ceph and GPU passthrough to virtual machines. Redis stores asynchronous task state, PostgreSQL stores service data, and a VM usage data store supplies utilization statistics back to the API.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#4b5563"/></marker>
+    <marker id="green-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker>
+    <style>
+      text { font-family: Geist, 'Segoe UI', system-ui, sans-serif; fill: #1f2937; }
+      .heading { font-size: 22px; font-weight: 600; }
+      .label { font-size: 19px; font-weight: 600; }
+      .detail { font-size: 17px; fill: #4b5563; }
+      .note { font-size: 16px; fill: #4b5563; }
+      .box { fill: #ffffff; stroke: #b8c1bd; stroke-width: 1.5; }
+      .accent { fill: #ffffff; stroke: #047857; stroke-width: 2; }
+      .group { fill: #fafafa; stroke: #b8c1bd; stroke-width: 1.5; }
+      .flow { fill: none; stroke: #4b5563; stroke-width: 1.8; marker-end: url(#arrow); }
+      .control { fill: none; stroke: #047857; stroke-width: 2; marker-end: url(#green-arrow); }
+      .telemetry { fill: none; stroke: #7a8580; stroke-width: 1.7; stroke-dasharray: 5 4; marker-end: url(#arrow); }
+      .halo { paint-order: stroke; stroke: #ffffff; stroke-width: 5; stroke-linejoin: round; }
+    </style>
+  </defs>
+  <rect width="960" height="650" fill="#ffffff"/>
+  <text class="heading" x="28" y="42">GPU self-service control plane</text>
+
+  <!-- API and persistence. -->
+  <rect class="box" x="28" y="72" width="264" height="66" rx="7"/>
+  <text class="label" x="160" y="101" text-anchor="middle">Next.js</text>
+  <text class="detail" x="160" y="125" text-anchor="middle">Developer interface</text>
+  <path class="control" d="M160 138V198"/>
+  <text class="note" x="174" y="173">API requests</text>
+  <rect class="accent" x="28" y="198" width="264" height="78" rx="7"/>
+  <text class="label" x="160" y="231" text-anchor="middle">FastAPI</text>
+  <text class="detail" x="160" y="257" text-anchor="middle">Provisioning and management</text>
+  <path class="flow" d="M80 276V382"/>
+  <path class="flow" d="M228 276V382"/>
+  <text class="note" x="92" y="321">Async task state</text>
+  <text class="note" x="92" y="343">and management</text>
+  <rect class="box" x="28" y="382" width="140" height="64" rx="7"/>
+  <text class="label" x="98" y="420" text-anchor="middle">Redis</text>
+  <rect class="box" x="198" y="382" width="162" height="64" rx="7"/>
+  <text class="label" x="279" y="409" text-anchor="middle">PostgreSQL</text>
+  <text class="detail" x="279" y="433" text-anchor="middle">Service data</text>
+
+  <!-- The same management path reaches both physical locations. -->
+  <text class="note halo" x="322" y="202">VM management</text>
+  <text class="note halo" x="322" y="223">commands</text>
+
+  <!-- Headquarters. -->
+  <rect class="group" x="536" y="30" width="396" height="260" rx="8"/>
+  <text class="heading" x="560" y="64">Headquarters</text>
+  <rect class="box" x="566" y="104" width="156" height="66" rx="6"/>
+  <text class="label" x="644" y="133" text-anchor="middle">Proxmox VE</text>
+  <text class="detail" x="644" y="157" text-anchor="middle">Virtualization</text>
+  <path class="control" d="M722 137H758"/>
+  <rect class="accent" x="758" y="104" width="150" height="66" rx="6"/>
+  <text class="label" x="833" y="133" text-anchor="middle">GPU</text>
+  <text class="detail" x="833" y="157" text-anchor="middle">Passthrough</text>
+  <rect class="box" x="566" y="190" width="156" height="44" rx="6"/>
+  <text class="label" x="644" y="218" text-anchor="middle">Ceph storage</text>
+  <path class="control" d="M833 170V188H772V204"/>
+  <path class="control" d="M833 188V204"/>
+  <path class="control" d="M833 188H894V204"/>
+  <rect class="box" x="746" y="204" width="52" height="44" rx="4"/>
+  <rect class="box" x="807" y="204" width="52" height="44" rx="4"/>
+  <rect class="box" x="868" y="204" width="52" height="44" rx="4"/>
+  <text class="detail" x="772" y="232" text-anchor="middle">VM</text>
+  <text class="detail" x="833" y="232" text-anchor="middle">VM</text>
+  <text class="detail" x="894" y="232" text-anchor="middle">VM</text>
+
+  <!-- IDC. -->
+  <rect class="group" x="536" y="320" width="396" height="260" rx="8"/>
+  <text class="heading" x="560" y="354">IDC</text>
+  <rect class="box" x="566" y="394" width="156" height="66" rx="6"/>
+  <text class="label" x="644" y="423" text-anchor="middle">Proxmox VE</text>
+  <text class="detail" x="644" y="447" text-anchor="middle">Virtualization</text>
+  <path class="control" d="M722 427H758"/>
+  <rect class="accent" x="758" y="394" width="150" height="66" rx="6"/>
+  <text class="label" x="833" y="423" text-anchor="middle">GPU</text>
+  <text class="detail" x="833" y="447" text-anchor="middle">Passthrough</text>
+  <rect class="box" x="566" y="480" width="156" height="44" rx="6"/>
+  <text class="label" x="644" y="508" text-anchor="middle">Ceph storage</text>
+  <path class="control" d="M833 460V478H772V494"/>
+  <path class="control" d="M833 478V494"/>
+  <path class="control" d="M833 478H894V494"/>
+  <rect class="box" x="746" y="494" width="52" height="44" rx="4"/>
+  <rect class="box" x="807" y="494" width="52" height="44" rx="4"/>
+  <rect class="box" x="868" y="494" width="52" height="44" rx="4"/>
+  <text class="detail" x="772" y="522" text-anchor="middle">VM</text>
+  <text class="detail" x="833" y="522" text-anchor="middle">VM</text>
+  <text class="detail" x="894" y="522" text-anchor="middle">VM</text>
+  <path class="control" d="M292 237H460V137H566"/>
+  <path class="control" d="M460 237V427H566"/>
+
+  <!-- Usage returns from both locations; utilization is read by the API. -->
+  <path class="telemetry" d="M920 226H946V612H426V552"/>
+  <path class="telemetry" d="M920 516H946V612H426V552"/>
+  <text class="note halo" x="603" y="603">VM usage data from both locations</text>
+  <rect class="box" x="344" y="488" width="164" height="64" rx="7"/>
+  <text class="label" x="426" y="516" text-anchor="middle">VM usage</text>
+  <text class="detail" x="426" y="539" text-anchor="middle">data store</text>
+  <path class="telemetry" d="M426 488V308H268V276"/>
+  <text class="note halo" x="310" y="341">VM utilization</text>
+  <text class="note halo" x="310" y="363">statistics</text>
+</svg>

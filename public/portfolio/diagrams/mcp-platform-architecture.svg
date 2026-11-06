@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+  <title id="title">MCP app access and permission-checked document retrieval</title>
+  <desc id="desc">A coding agent accesses an MCP API, which checks permissions with OpenFGA. App tools discover OpenAPI definitions and invoke applications. Document tools retrieve authorized content from PostgreSQL and pgvector using vector and keyword search fused with RRF, without a reranker. A separate ingestion path extracts document text locally, chunks it by heading, and generates self-hosted bge-m3 embeddings through TEI before storing them in PostgreSQL.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6b7280"/></marker>
+    <style>
+      text { font-family: Geist, 'Segoe UI', system-ui, sans-serif; fill: #1f2937; }
+      .heading { font-size: 26px; font-weight: 600; }
+      .label { font-size: 19px; font-weight: 600; }
+      .detail { font-size: 16px; fill: #4b5563; }
+      .section { font-size: 17px; font-weight: 600; fill: #047857; }
+      .box { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.5; }
+      .accent { fill: #fafafa; stroke: #047857; stroke-width: 2; }
+      .flow { fill: none; stroke: #6b7280; stroke-width: 2; marker-end: url(#arrow); }
+      .exchange { fill: none; stroke: #6b7280; stroke-width: 2; marker-start: url(#arrow); marker-end: url(#arrow); }
+      .permission { fill: none; stroke: #6b7280; stroke-width: 2; stroke-dasharray: 6 5; marker-start: url(#arrow); marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="960" height="600" rx="16" fill="#fafafa"/>
+  <text class="heading" x="32" y="43">Internal app and document platform</text>
+  <text class="detail" x="32" y="72">MCP access, application invocation, and document retrieval</text>
+
+  <rect class="box" x="32" y="104" width="228" height="80" rx="12"/>
+  <text class="label" x="146" y="139" text-anchor="middle">Coding agent</text>
+  <text class="detail" x="146" y="165" text-anchor="middle">Authenticated tool access</text>
+
+  <rect class="accent" x="336" y="104" width="228" height="80" rx="12"/>
+  <text class="label" x="450" y="139" text-anchor="middle">MCP API</text>
+  <text class="detail" x="450" y="165" text-anchor="middle">Apps and documents</text>
+
+  <rect class="box" x="650" y="104" width="278" height="80" rx="12"/>
+  <text class="label" x="789" y="139" text-anchor="middle">OpenFGA</text>
+  <text class="detail" x="789" y="165" text-anchor="middle">Repeated permission checks</text>
+  <path class="flow" d="M260 144 H326"/>
+  <path class="permission" d="M574 144 H640"/>
+
+  <rect class="box" x="32" y="258" width="244" height="94" rx="12"/>
+  <text class="label" x="154" y="295" text-anchor="middle">App tools</text>
+  <text class="detail" x="154" y="323" text-anchor="middle">Discovery and API invocation</text>
+
+  <rect class="box" x="336" y="258" width="254" height="94" rx="12"/>
+  <text class="label" x="463" y="286" text-anchor="middle">Document tools</text>
+  <text class="detail" x="463" y="313" text-anchor="middle">Authorized hybrid retrieval</text>
+  <text class="detail" x="463" y="339" text-anchor="middle">RRF fusion</text>
+
+  <rect class="accent" x="650" y="246" width="278" height="118" rx="12"/>
+  <text class="label" x="789" y="280" text-anchor="middle">PostgreSQL + pgvector</text>
+  <text class="detail" x="789" y="309" text-anchor="middle">Document text + vectors</text>
+  <text class="detail" x="789" y="337" text-anchor="middle">Vector + keyword search</text>
+
+  <path class="flow" d="M450 184 V218 H154 V248"/>
+  <path class="flow" d="M450 218 H463 V248"/>
+  <path class="exchange" d="M600 305 H640"/>
+
+  <rect class="box" x="32" y="438" width="244" height="88" rx="12"/>
+  <text class="label" x="154" y="475" text-anchor="middle">Application runtime</text>
+  <text class="detail" x="154" y="503" text-anchor="middle">OpenAPI-defined APIs</text>
+  <path class="flow" d="M154 352 V428"/>
+
+  <text class="section" x="316" y="409">Document ingestion</text>
+  <rect class="box" x="316" y="438" width="174" height="88" rx="12"/>
+  <text class="label" x="403" y="475" text-anchor="middle">Local extraction</text>
+  <text class="detail" x="403" y="503" text-anchor="middle">PDF and office files</text>
+
+  <rect class="box" x="520" y="438" width="156" height="88" rx="12"/>
+  <text class="label" x="598" y="475" text-anchor="middle">Chunking</text>
+  <text class="detail" x="598" y="503" text-anchor="middle">Heading-based</text>
+
+  <rect class="box" x="706" y="438" width="222" height="88" rx="12"/>
+  <text class="label" x="817" y="475" text-anchor="middle">bge-m3 / TEI</text>
+  <text class="detail" x="817" y="503" text-anchor="middle">Self-hosted embeddings</text>
+  <path class="flow" d="M490 482 H510"/>
+  <path class="flow" d="M676 482 H696"/>
+  <path class="flow" d="M817 438 V374"/>
+  <text class="detail" x="832" y="408">Vectors</text>
+
+  <text class="detail" x="32" y="569">Permission checks apply to app calls and retrieval. Search uses RRF fusion without a reranker.</text>
+</svg>

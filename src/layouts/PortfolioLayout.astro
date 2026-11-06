@@ -1,0 +1,71 @@
+---
+import "../styles/portfolio.css";
+import { profile } from "../data/portfolio";
+const title = `${profile.name} — Engineering portfolio`;
+const description =
+  "Projects, experience, and research in AI infrastructure, distributed systems, and developer platforms.";
+const canonical = new URL("/portfolio/", Astro.site);
+const image = new URL("/portfolio/social.png", Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/portfolio/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="/portfolio/fonts/geist-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content={`${profile.name}, ${profile.role}`}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+  </head>
+  <body>
+    <a class="skip-link button-sm" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header">
+      <a class="site-name title-4" href="#profile">
+        {profile.name}
+        <span class="caption-2"> / Portfolio</span>
+      </a>
+      <a
+        class="resume-link button-sm"
+        href="/portfolio/hyungseok-han-resume.pdf"
+        download
+      >
+        Résumé <span class="caption-5">PDF</span>
+      </a>
+    </header>
+    <slot />
+    <footer class="site-footer caption-5">
+      <span>
+        {profile.name} · Content updated {profile.updated}
+      </span>
+      <a href="#profile">Back to top ↑</a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" role="img" aria-labelledby="title desc">
+  <title id="title">Sunrise infrastructure operations architecture</title>
+  <desc id="desc">A user enters through a Django web UI. The Python backend contains an agent manager, command processors, a database, and a credential and permission manager. Amazon Bedrock provides model access. Command processors call an infrastructure API layer that operates AWS resources.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker></defs>
+  <style>text{font-family:Geist,&quot;Segoe UI&quot;,system-ui,sans-serif;fill:#171717;font-size:18px} .group{fill:#fafafa;stroke:#d4d4d4;stroke-width:1.5} .node{fill:white;stroke:#a3a3a3;stroke-width:1.5} .label{font-weight:600} .small{font-size:16px;fill:#525252} .flow{fill:none;stroke:#047857;stroke-width:2;marker-end:url(#arrow)} .heading{font-size:18px;font-weight:600;fill:#047857}</style>
+  <rect width="960" height="700" fill="white"/>
+  <rect class="group" x="218" y="24" width="718" height="348" rx="8"/>
+  <text class="heading" x="240" y="54">Python backend</text>
+  <rect class="node" x="24" y="66" width="164" height="58" rx="6"/>
+  <text class="label" x="106" y="101" text-anchor="middle">User</text>
+  <path class="flow" d="M106 124V172"/>
+  <rect class="node" x="24" y="172" width="164" height="84" rx="6"/>
+  <text class="label" x="106" y="207" text-anchor="middle">Web UI</text>
+  <text class="small" x="106" y="233" text-anchor="middle">Django</text>
+  <path class="flow" d="M188 214H250"/>
+  <rect class="node" x="250" y="172" width="170" height="84" rx="6"/>
+  <text class="label" x="335" y="207" text-anchor="middle">Agent</text>
+  <text class="label" x="335" y="233" text-anchor="middle">manager</text>
+  <path class="flow" d="M420 214H484"/>
+  <rect class="node" x="496" y="184" width="182" height="84" rx="6"/>
+  <rect class="node" x="490" y="178" width="182" height="84" rx="6"/>
+  <rect class="node" x="484" y="172" width="182" height="84" rx="6"/>
+  <text class="label" x="575" y="207" text-anchor="middle">Agent command</text>
+  <text class="label" x="575" y="233" text-anchor="middle">processors</text>
+  <path class="flow" d="M678 214H730"/>
+  <rect class="node" x="730" y="172" width="182" height="84" rx="6"/>
+  <text class="label" x="821" y="198" text-anchor="middle">Credential &amp;</text>
+  <text class="label" x="821" y="221" text-anchor="middle">permission</text>
+  <text class="label" x="821" y="244" text-anchor="middle">manager</text>
+  <rect class="node" x="484" y="80" width="182" height="58" rx="6"/>
+  <text class="label" x="575" y="115" text-anchor="middle">Database</text>
+  <path class="flow" d="M335 172V109H484"/>
+  <path class="flow" d="M575 172V138"/>
+  <rect class="group" x="24" y="416" width="912" height="260" rx="8"/>
+  <text class="heading" x="712" y="448">Amazon Web Services</text>
+  <path class="flow" d="M335 256V392H136V496"/>
+  <path class="flow" d="M522 268V342H335"/>
+  <path class="flow" d="M575 268V462"/>
+  <rect class="node" x="460" y="462" width="230" height="58" rx="6"/>
+  <text class="label" x="575" y="497" text-anchor="middle">Infrastructure API layer</text>
+  <rect class="node" x="48" y="496" width="176" height="76" rx="6"/>
+  <text class="label" x="136" y="528" text-anchor="middle">Amazon</text>
+  <text class="label" x="136" y="554" text-anchor="middle">Bedrock</text>
+  <path class="flow" d="M224 534H258"/>
+  <rect class="node" x="258" y="478" width="168" height="174" rx="6"/>
+  <text class="label" x="342" y="510" text-anchor="middle">Models</text>
+  <text class="small" x="342" y="548" text-anchor="middle">Claude 4 Sonnet</text>
+  <text class="small" x="342" y="580" text-anchor="middle">Claude 3.5 Haiku</text>
+  <text class="small" x="342" y="618" text-anchor="middle">Other LLMs</text>
+  <text class="small" x="48" y="617">Model access</text>
+  <path class="flow" d="M575 520V546"/>
+  <rect class="node" x="460" y="546" width="452" height="106" rx="6"/>
+  <text class="label" x="480" y="574">Cloud resources</text>
+  <text class="small" x="480" y="607">EC2</text><text class="small" x="603" y="607">S3</text><text class="small" x="726" y="607">EventBridge</text>
+  <text class="small" x="480" y="635">ECR</text><text class="small" x="603" y="635">Route 53</text><text class="small" x="726" y="635">CloudWatch</text>
+</svg>
