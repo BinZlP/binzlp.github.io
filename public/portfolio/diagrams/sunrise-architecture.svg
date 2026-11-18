@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" role="img" aria-labelledby="title desc">
   <title id="title">Sunrise infrastructure operations architecture</title>
   <desc id="desc">A user enters through a Django web UI. The Python backend contains an agent manager, command processors, a database, and a credential and permission manager. Amazon Bedrock provides model access. Command processors call an infrastructure API layer that operates AWS resources.</desc>
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker></defs>
-  <style>text{font-family:Geist,&quot;Segoe UI&quot;,system-ui,sans-serif;fill:#171717;font-size:18px} .group{fill:#fafafa;stroke:#d4d4d4;stroke-width:1.5} .node{fill:white;stroke:#a3a3a3;stroke-width:1.5} .label{font-weight:600} .small{font-size:16px;fill:#525252} .flow{fill:none;stroke:#047857;stroke-width:2;marker-end:url(#arrow)} .heading{font-size:18px;font-weight:600;fill:#047857}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#1d4ed8"/></marker></defs>
+  <style>text{font-family:Geist,&quot;Segoe UI&quot;,system-ui,sans-serif;fill:#171717;font-size:18px} .group{fill:#fafafa;stroke:#d4d4d4;stroke-width:1.5} .node{fill:white;stroke:#a3a3a3;stroke-width:1.5} .label{font-weight:600} .small{font-size:16px;fill:#525252} .flow{fill:none;stroke:#1d4ed8;stroke-width:2;marker-end:url(#arrow)} .heading{font-size:18px;font-weight:600;fill:#1d4ed8}</style>
   <rect width="960" height="700" fill="white"/>
   <rect class="group" x="218" y="24" width="718" height="348" rx="8"/>
   <text class="heading" x="240" y="54">Python backend</text>

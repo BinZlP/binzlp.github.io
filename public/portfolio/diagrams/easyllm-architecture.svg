@@ -3,23 +3,23 @@
   <desc id="desc">Users send management requests to EasyLLM and inference requests to LiteLLM. Inside an on-premises Kubernetes cluster, EasyLLM coordinates MLflow registration, object storage, and vLLM or llama.cpp inference operators. PostgreSQL stores model metadata, evaluation results and inference statistics. LiteLLM routes requests to local inference engines or other model APIs, including commercial providers and local OpenAI-compatible services.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#4b5563"/></marker>
-    <marker id="green-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker>
+    <marker id="accent-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#1d4ed8"/></marker>
     <style>
       text { font-family: Geist, 'Segoe UI', system-ui, sans-serif; fill: #1f2937; }
       .heading { font-size: 22px; font-weight: 600; }
       .label { font-size: 19px; font-weight: 600; }
       .detail { font-size: 17px; fill: #4b5563; }
       .note { font-size: 16px; fill: #4b5563; }
-      .box { fill: #ffffff; stroke: #b8c1bd; stroke-width: 1.5; }
-      .accent { fill: #ffffff; stroke: #047857; stroke-width: 2; }
+      .box { fill: #ffffff; stroke: #b8c1cd; stroke-width: 1.5; }
+      .accent { fill: #ffffff; stroke: #1d4ed8; stroke-width: 2; }
       .flow { fill: none; stroke: #4b5563; stroke-width: 1.8; marker-end: url(#arrow); }
-      .inference { fill: none; stroke: #047857; stroke-width: 2; marker-end: url(#green-arrow); }
-      .data { fill: none; stroke: #7a8580; stroke-width: 1.6; stroke-dasharray: 5 4; marker-end: url(#arrow); }
+      .inference { fill: none; stroke: #1d4ed8; stroke-width: 2; marker-end: url(#accent-arrow); }
+      .data { fill: none; stroke: #7a8494; stroke-width: 1.6; stroke-dasharray: 5 4; marker-end: url(#arrow); }
       .halo { paint-order: stroke; stroke: #fafafa; stroke-width: 5; stroke-linejoin: round; }
     </style>
   </defs>
   <rect width="960" height="620" fill="#ffffff"/>
-  <rect x="220" y="20" width="716" height="580" rx="8" fill="#fafafa" stroke="#b8c1bd" stroke-width="1.5"/>
+  <rect x="220" y="20" width="716" height="580" rx="8" fill="#fafafa" stroke="#b8c1cd" stroke-width="1.5"/>
   <text class="heading" x="244" y="51">On-premises Kubernetes cluster</text>
 
   <!-- Separate model-management and inference entry points. -->
@@ -57,9 +57,9 @@
   <rect class="box" x="720" y="200" width="190" height="168" rx="7"/>
   <text class="label" x="815" y="230" text-anchor="middle">Inference engine</text>
   <text class="detail" x="815" y="255" text-anchor="middle">operators</text>
-  <rect x="740" y="276" width="150" height="34" rx="4" fill="#f1f5f3" stroke="#cbd5cf"/>
+  <rect x="740" y="276" width="150" height="34" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
   <text class="label" x="815" y="300" text-anchor="middle">vLLM</text>
-  <rect x="740" y="320" width="150" height="34" rx="4" fill="#f1f5f3" stroke="#cbd5cf"/>
+  <rect x="740" y="320" width="150" height="34" rx="4" fill="#f1f5f9" stroke="#cbd5e1"/>
   <text class="label" x="815" y="344" text-anchor="middle">llama.cpp</text>
 
   <!-- Registry/evaluation data and request statistics remain distinct flows. -->

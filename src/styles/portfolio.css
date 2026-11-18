@@ -9,7 +9,7 @@
 :root {
   --ink: #0d0d0d;
   --muted: #4d4d4d;
-  --accent: #047857;
+  --accent: #1d4ed8;
   --line: #eaeaea;
   --surface: #fafafa;
   --space-25: 2px;
@@ -92,7 +92,7 @@ button:active,
   transform: translateY(1px);
 }
 ::selection {
-  background: #ddfbef;
+  background: #dbeafe;
 }
 strong {
   font-weight: 600;

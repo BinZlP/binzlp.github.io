@@ -3,19 +3,19 @@
   <desc id="desc">An AWS EKS deployment uses Istio for ingress and service traffic, API and analyzer services, and KEDA-scaled optimization jobs. Argo CD synchronizes configuration from GitHub, Karpenter provisions nodes, and ExternalDNS manages Route 53 records. Alloy, Loki, Prometheus, Thanos and Grafana provide observability. The AWS data tier includes RDS, Amazon MQ and S3. The analyzer connects through a site-to-site VPN to a device-farm gateway and devices in a corporate data center.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#4b5563"/></marker>
-    <marker id="green-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker>
+    <marker id="accent-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#1d4ed8"/></marker>
     <style>
       text { font-family: Geist, 'Segoe UI', system-ui, sans-serif; fill: #1f2937; }
       .heading { font-size: 20px; font-weight: 600; }
       .label { font-size: 18px; font-weight: 600; }
       .small { font-size: 16px; }
       .note { font-size: 16px; fill: #4b5563; }
-      .group { fill: #fafafa; stroke: #b8c1bd; stroke-width: 1.5; }
-      .box { fill: #ffffff; stroke: #b8c1bd; stroke-width: 1.5; }
-      .accent { fill: #ffffff; stroke: #047857; stroke-width: 2; }
+      .group { fill: #fafafa; stroke: #b8c1cd; stroke-width: 1.5; }
+      .box { fill: #ffffff; stroke: #b8c1cd; stroke-width: 1.5; }
+      .accent { fill: #ffffff; stroke: #1d4ed8; stroke-width: 2; }
       .flow { fill: none; stroke: #4b5563; stroke-width: 1.7; marker-end: url(#arrow); }
-      .service { fill: none; stroke: #047857; stroke-width: 2; marker-end: url(#green-arrow); }
-      .data { fill: none; stroke: #7a8580; stroke-width: 1.5; stroke-dasharray: 5 4; marker-end: url(#arrow); }
+      .service { fill: none; stroke: #1d4ed8; stroke-width: 2; marker-end: url(#accent-arrow); }
+      .data { fill: none; stroke: #7a8494; stroke-width: 1.5; stroke-dasharray: 5 4; marker-end: url(#arrow); }
       .halo { paint-order: stroke; stroke: #fafafa; stroke-width: 5; stroke-linejoin: round; }
     </style>
   </defs>
@@ -81,14 +81,14 @@
   <path class="service" d="M836 446V518"/>
   <rect class="box" x="752" y="518" width="168" height="76" rx="6"/>
   <text class="label" x="836" y="546" text-anchor="middle">Device fleet</text>
-  <rect x="778" y="560" width="30" height="16" rx="2" fill="#e3e9e6" stroke="#7a8580"/>
-  <rect x="821" y="560" width="30" height="16" rx="2" fill="#e3e9e6" stroke="#7a8580"/>
-  <rect x="864" y="560" width="30" height="16" rx="2" fill="#e3e9e6" stroke="#7a8580"/>
+  <rect x="778" y="560" width="30" height="16" rx="2" fill="#e2e8f0" stroke="#7a8494"/>
+  <rect x="821" y="560" width="30" height="16" rx="2" fill="#e2e8f0" stroke="#7a8494"/>
+  <rect x="864" y="560" width="30" height="16" rx="2" fill="#e2e8f0" stroke="#7a8494"/>
 
   <!-- Observability pipeline. -->
   <path class="flow" d="M115 212V338H97V374"/>
   <text class="note" x="126" y="248">Service logs</text>
-  <rect x="40" y="354" width="404" height="122" rx="6" fill="#f1f5f3" stroke="#cbd5cf"/>
+  <rect x="40" y="354" width="404" height="122" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
   <path class="flow" d="M142 392H172"/>
   <path class="flow" d="M217 410V418H255V426"/>
   <path class="flow" d="M176 444H206"/>

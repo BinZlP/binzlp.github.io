@@ -3,19 +3,19 @@
   <desc id="desc">A Next.js interface calls a FastAPI service. The service manages virtual machines on Proxmox clusters at headquarters and an IDC, each with Ceph and GPU passthrough to virtual machines. Redis stores asynchronous task state, PostgreSQL stores service data, and a VM usage data store supplies utilization statistics back to the API.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#4b5563"/></marker>
-    <marker id="green-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker>
+    <marker id="accent-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#1d4ed8"/></marker>
     <style>
       text { font-family: Geist, 'Segoe UI', system-ui, sans-serif; fill: #1f2937; }
       .heading { font-size: 22px; font-weight: 600; }
       .label { font-size: 19px; font-weight: 600; }
       .detail { font-size: 17px; fill: #4b5563; }
       .note { font-size: 16px; fill: #4b5563; }
-      .box { fill: #ffffff; stroke: #b8c1bd; stroke-width: 1.5; }
-      .accent { fill: #ffffff; stroke: #047857; stroke-width: 2; }
-      .group { fill: #fafafa; stroke: #b8c1bd; stroke-width: 1.5; }
+      .box { fill: #ffffff; stroke: #b8c1cd; stroke-width: 1.5; }
+      .accent { fill: #ffffff; stroke: #1d4ed8; stroke-width: 2; }
+      .group { fill: #fafafa; stroke: #b8c1cd; stroke-width: 1.5; }
       .flow { fill: none; stroke: #4b5563; stroke-width: 1.8; marker-end: url(#arrow); }
-      .control { fill: none; stroke: #047857; stroke-width: 2; marker-end: url(#green-arrow); }
-      .telemetry { fill: none; stroke: #7a8580; stroke-width: 1.7; stroke-dasharray: 5 4; marker-end: url(#arrow); }
+      .control { fill: none; stroke: #1d4ed8; stroke-width: 2; marker-end: url(#accent-arrow); }
+      .telemetry { fill: none; stroke: #7a8494; stroke-width: 1.7; stroke-dasharray: 5 4; marker-end: url(#arrow); }
       .halo { paint-order: stroke; stroke: #ffffff; stroke-width: 5; stroke-linejoin: round; }
     </style>
   </defs>

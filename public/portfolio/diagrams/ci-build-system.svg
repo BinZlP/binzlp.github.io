@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
   <title id="title">CI build and deployment architecture</title>
   <desc id="desc">A developer triggers Jenkins, which uses Groovy Shared Libraries and EC2 autoscaling build agents. The build phase uses Webpack, Babel, Turborepo, and Docker. Amazon EFS provides cache storage and images are stored in Amazon ECR. Deployment tooling includes Ansible, Argo, and Flux.</desc>
-  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#047857"/></marker></defs>
-  <style>text{font-family:Geist,&quot;Segoe UI&quot;,system-ui,sans-serif;fill:#171717;font-size:18px}.group{fill:#fafafa;stroke:#d4d4d4;stroke-width:1.5}.node{fill:white;stroke:#a3a3a3;stroke-width:1.5}.label{font-weight:600}.small{font-size:16px;fill:#525252}.heading{font-size:18px;font-weight:600;fill:#047857}.flow{fill:none;stroke:#047857;stroke-width:2;marker-end:url(#arrow)}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#1d4ed8"/></marker></defs>
+  <style>text{font-family:Geist,&quot;Segoe UI&quot;,system-ui,sans-serif;fill:#171717;font-size:18px}.group{fill:#fafafa;stroke:#d4d4d4;stroke-width:1.5}.node{fill:white;stroke:#a3a3a3;stroke-width:1.5}.label{font-weight:600}.small{font-size:16px;fill:#525252}.heading{font-size:18px;font-weight:600;fill:#1d4ed8}.flow{fill:none;stroke:#1d4ed8;stroke-width:2;marker-end:url(#arrow)}</style>
   <rect width="960" height="640" fill="white"/>
   <rect class="node" x="24" y="44" width="150" height="76" rx="6"/>
   <text class="label" x="99" y="89" text-anchor="middle">Developer</text>

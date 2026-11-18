@@ -17,7 +17,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
     <text x="80" y="80" font-size="20" fill="#4d4d4d">Engineering portfolio</text>
     <text x="80" y="258" font-size="72" font-weight="600" letter-spacing="-2">${escape(profile.name)}</text>
     <text x="80" y="324" font-size="30" fill="#4d4d4d">${escape(profile.role)}</text>
-    <text x="80" y="424" font-size="20" fill="#047857">Projects · Experience · Research</text>
+    <text x="80" y="424" font-size="20" fill="#1d4ed8">Projects · Experience · Research</text>
     <text x="80" y="568" font-size="18" fill="#4d4d4d">binzlp.github.io/portfolio</text>
   </g>
 </svg>`;

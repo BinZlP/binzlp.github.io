@@ -1,9 +1,9 @@
 /* BinZIP Tech Blog — Mintlify clarity + Vercel precision */
 :root {
-	--accent: #047857;
-	--accent-bright: #10b981;
-	--accent-soft: #ddfbef;
-	--accent-wash: rgba(16, 185, 129, 0.12);
+	--accent: #1d4ed8;
+	--accent-bright: #3b82f6;
+	--accent-soft: #eff6ff;
+	--accent-wash: rgba(59, 130, 246, 0.12);
 	--black: 13, 13, 13;
 	--white: 255, 255, 255;
 	--gray: 77, 77, 77;
@@ -31,7 +31,7 @@ body {
 	padding: 0;
 	text-align: left;
 	background:
-		radial-gradient(circle at 50% -10%, rgba(16, 185, 129, 0.14), rgba(255, 255, 255, 0) 34rem),
+		radial-gradient(circle at 50% -10%, rgba(59, 130, 246, 0.14), rgba(255, 255, 255, 0) 34rem),
 		linear-gradient(180deg, #ffffff 0%, #ffffff 62%, #fbfbfb 100%);
 	word-wrap: break-word;
 	overflow-wrap: break-word;
@@ -72,13 +72,13 @@ strong, b { font-weight: 650; }
 
 a {
 	color: rgb(var(--black));
-	text-decoration-color: rgba(4, 120, 87, 0.35);
+	text-decoration-color: rgba(29, 78, 216, 0.35);
 	text-underline-offset: 0.18em;
 	transition: color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease, border-color 160ms ease;
 }
 a:hover { color: var(--accent); }
 a:focus-visible {
-	outline: 2px solid rgba(16, 185, 129, 0.6);
+	outline: 2px solid var(--accent);
 	outline-offset: 4px;
 	border-radius: 8px;
 }
@@ -96,7 +96,7 @@ p { margin: 0 0 1.15rem; }
 	padding: clamp(3.5rem, 9vw, 6rem) clamp(1.25rem, 4vw, 3rem);
 	border-radius: 28px;
 	background:
-		radial-gradient(circle at 18% 5%, rgba(16, 185, 129, 0.14), transparent 24rem),
+		radial-gradient(circle at 18% 5%, rgba(59, 130, 246, 0.14), transparent 24rem),
 		linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(250, 250, 250, 0.76));
 	box-shadow: var(--shadow-border);
 	overflow: hidden;
@@ -108,7 +108,7 @@ p { margin: 0 0 1.15rem; }
 	top: -8rem;
 	width: 20rem;
 	height: 20rem;
-	background: radial-gradient(circle, rgba(16, 185, 129, 0.14), transparent 68%);
+	background: radial-gradient(circle, rgba(59, 130, 246, 0.14), transparent 68%);
 	pointer-events: none;
 }
 .eyebrow, .meta {
@@ -189,9 +189,9 @@ p { margin: 0 0 1.15rem; }
 	font-size: 0.88rem;
 	font-weight: 550;
 	text-decoration: none;
-	box-shadow: 0 0 0 1px rgba(4, 120, 87, 0.12);
+	box-shadow: 0 0 0 1px rgba(29, 78, 216, 0.12);
 }
-.chips a:hover { background: #c8f7e6; color: #065f46; }
+.chips a:hover { background: #dbeafe; color: #1e40af; }
 
 table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
 th, td { padding: 0.75rem; border-bottom: 1px solid rgb(var(--border)); }
@@ -208,7 +208,7 @@ code {
 	font-family: var(--font-mono);
 	font-size: 0.88em;
 	padding: 0.16rem 0.38rem;
-	background: #f3f5f4;
+	background: #f3f5f8;
 	border-radius: 6px;
 	color: #0d0d0d;
 }
@@ -233,7 +233,7 @@ blockquote {
 	margin: 1.5rem 0;
 	color: rgb(var(--gray));
 	font-size: 1.05rem;
-	background: linear-gradient(90deg, rgba(16, 185, 129, 0.06), transparent);
+	background: linear-gradient(90deg, rgba(59, 130, 246, 0.06), transparent);
 }
 hr {
 	border: none;
@@ -251,7 +251,7 @@ hr {
 	margin-bottom: 2.5rem;
 	border-radius: 26px;
 	background:
-		radial-gradient(circle at 25% 0%, rgba(16, 185, 129, 0.13), transparent 24rem),
+		radial-gradient(circle at 25% 0%, rgba(59, 130, 246, 0.13), transparent 24rem),
 		#fff;
 	box-shadow: var(--shadow-border);
 }

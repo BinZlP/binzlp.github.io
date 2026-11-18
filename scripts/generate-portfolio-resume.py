@@ -41,21 +41,21 @@ GITHUB = "https://github.com/BinZlP"
 LINKEDIN = "https://www.linkedin.com/in/hyungseok-han-aba694196/"
 
 INK = colors.HexColor("#161b22")
-MUTED = colors.HexColor("#52615c")
-GREEN = colors.HexColor("#047857")
-BORDER = colors.HexColor("#dce7e1")
+MUTED = colors.HexColor("#526174")
+ACCENT = colors.HexColor("#1d4ed8")
+BORDER = colors.HexColor("#dce4ef")
 
 STYLES = {
     "name": ParagraphStyle("name", fontName="Helvetica-Bold", fontSize=30,
                            leading=34, textColor=INK, spaceAfter=5),
     "role": ParagraphStyle("role", fontName="Helvetica-Bold", fontSize=12.4,
-                           leading=17, textColor=GREEN, spaceAfter=9),
+                           leading=17, textColor=ACCENT, spaceAfter=9),
     "contact": ParagraphStyle("contact", fontName="Helvetica", fontSize=9.1,
                               leading=13.3, textColor=MUTED, spaceAfter=8),
     "summary": ParagraphStyle("summary", fontName="Helvetica", fontSize=10.4,
                               leading=15.0, textColor=INK, spaceAfter=13),
     "section": ParagraphStyle("section", fontName="Helvetica-Bold", fontSize=9.8,
-                              leading=13, textColor=GREEN, spaceBefore=10,
+                              leading=13, textColor=ACCENT, spaceBefore=10,
                               spaceAfter=7),
     "employer": ParagraphStyle("employer", fontName="Helvetica-Bold", fontSize=12.4,
                                leading=16, textColor=INK),
@@ -82,7 +82,7 @@ def para(text, style="body"):
 
 
 def link(url, label):
-    return f'<link href="{escape(url, {chr(34): "&quot;"})}" color="#047857">{escape(label)}</link>'
+    return f'<link href="{escape(url, {chr(34): "&quot;"})}" color="#1d4ed8">{escape(label)}</link>'
 
 
 def bullet(text):

@@ -5,7 +5,7 @@ description: Documentation-grade technical blog combining Mintlify clarity with 
 colors:
   primary: "#0D0D0D"
   secondary: "#4D4D4D"
-  tertiary: "#047857"
+  tertiary: "#1D4ED8"
   neutral: "#FFFFFF"
   surface: "#FAFAFA"
   border: "#EAEAEA"
@@ -58,7 +58,7 @@ components:
     rounded: "{rounded.pill}"
     padding: 12px
   badge-accent:
-    backgroundColor: "#DDFBEF"
+    backgroundColor: "#EFF6FF"
     textColor: "{colors.tertiary}"
     rounded: "{rounded.pill}"
     padding: 8px
@@ -86,7 +86,7 @@ components:
 
 ## Overview
 
-BinZIP Tech Blog should feel like a calm technical documentation product rather than a generic personal blog. The base mood comes from Mintlify: bright white canvas, generous reading space, subtle green accent, pill-shaped tags, and documentation-grade clarity. Vercel contributes the precision layer: compressed Inter/Geist-like headings, shadow-as-border cards, monochrome restraint, and code-forward details.
+BinZIP Tech Blog should feel like a calm technical documentation product rather than a generic personal blog. The base mood comes from Mintlify: bright white canvas, generous reading space, subtle blue accent, pill-shaped tags, and documentation-grade clarity. Vercel contributes the precision layer: compressed Inter/Geist-like headings, shadow-as-border cards, monochrome restraint, and code-forward details.
 
 The result is a Korean-friendly engineering blog for systems, AI, and software notes. The interface must stay quiet so long-form posts remain readable, but cards, navigation, and code surfaces should feel deliberate and modern.
 
@@ -94,7 +94,7 @@ The result is a Korean-friendly engineering blog for systems, AI, and software n
 
 - **Primary (#0D0D0D):** Near-black for headings, primary text, and high-emphasis buttons.
 - **Secondary (#4D4D4D):** Body descriptions, metadata, and secondary navigation text.
-- **Tertiary (#10B981):** Calm emerald accent inspired by Mintlify green. Use for tags, focus rings, active states, and small highlights only.
+- **Tertiary (#1D4ED8):** Deep blue accent shared by the blog and portfolio. Use for tags, focus rings, active states, and small highlights only.
 - **Neutral (#FFFFFF):** Main page and card background.
 - **Surface (#FAFAFA):** Soft section panels, inline code, and low-emphasis surfaces.
 - **Border (#EAEAEA):** Thin separators and Vercel-style shadow borders.
@@ -116,7 +116,7 @@ Use Inter for all reading and UI text, with Geist Mono for code, metadata, and t
 
 The blog uses a centered content model with two widths: 1040px for index/list pages and 760px for post reading. Home sections have 64–88px vertical rhythm. Lists use single-column cards so post titles and descriptions are scannable. Avoid dense multi-column layouts unless there are many posts.
 
-Hero sections should have a soft radial emerald wash near the top, but the page remains mostly white. The header is sticky, translucent, and light; it should not dominate reading.
+Hero sections should have a soft radial blue wash near the top, but the page remains mostly white. The header is sticky, translucent, and light; it should not dominate reading.
 
 ## Elevation & Depth
 
@@ -135,15 +135,15 @@ Hover may increase border contrast and lift slightly. Heavy shadows are not allo
 
 ## Components
 
-- **Header:** white/translucent sticky bar, 1px subtle border, compact nav links, active state as emerald-tinted pill or underline.
-- **Hero:** small emerald pill eyebrow, compressed headline, muted subtitle, two pill CTAs.
+- **Header:** white/translucent sticky bar, 1px subtle border, compact nav links, active state as blue-tinted pill or underline.
+- **Hero:** small blue pill eyebrow, compressed headline, muted subtitle, two pill CTAs.
 - **Post card:** white background, shadow-border, 18px radius, large clickable area, mono metadata, title, muted description, hover lift.
-- **Chips:** emerald-tinted pill for categories/tags, neutral pill for secondary filters.
+- **Chips:** blue-tinted pill for categories/tags, neutral pill for secondary filters.
 - **Article:** narrow reading column, large title, muted description, metadata row, generous paragraph spacing, styled code blocks and blockquotes.
 - **Footer:** quiet centered text with subtle top border.
 
 ## Do's and Don'ts
 
-Do keep the interface mostly white, spacious, and text-first. Do use emerald accent sparingly for orientation. Do use shadow-as-border for cards. Do preserve strong code readability. Do optimize for Korean technical prose with relaxed line-height.
+Do keep the interface mostly white, spacious, and text-first. Do use blue accent sparingly for orientation. Do use shadow-as-border for cards. Do preserve strong code readability. Do optimize for Korean technical prose with relaxed line-height.
 
-Don't turn the blog into a colorful marketing landing page. Don't use heavy gradients or heavy shadows. Don't overuse green fills. Don't make cards too dense. Don't use pure black for large reading blocks when near-black is sufficient.
+Don't turn the blog into a colorful marketing landing page. Don't use heavy gradients or heavy shadows. Don't overuse blue fills. Don't make cards too dense. Don't use pure black for large reading blocks when near-black is sufficient.

@@ -8,9 +8,9 @@
       .heading { font-size: 26px; font-weight: 600; }
       .label { font-size: 19px; font-weight: 600; }
       .detail { font-size: 16px; fill: #4b5563; }
-      .section { font-size: 17px; font-weight: 600; fill: #047857; }
+      .section { font-size: 17px; font-weight: 600; fill: #1d4ed8; }
       .box { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.5; }
-      .accent { fill: #fafafa; stroke: #047857; stroke-width: 2; }
+      .accent { fill: #fafafa; stroke: #1d4ed8; stroke-width: 2; }
       .flow { fill: none; stroke: #6b7280; stroke-width: 2; marker-end: url(#arrow); }
       .exchange { fill: none; stroke: #6b7280; stroke-width: 2; marker-start: url(#arrow); marker-end: url(#arrow); }
       .permission { fill: none; stroke: #6b7280; stroke-width: 2; stroke-dasharray: 6 5; marker-start: url(#arrow); marker-end: url(#arrow); }
