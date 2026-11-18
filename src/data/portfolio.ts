@@ -55,7 +55,7 @@ export const profile: PortfolioProfile = {
   email: "dfafqfdaes159@gmail.com",
   github: "https://github.com/BinZlP",
   linkedin: "https://www.linkedin.com/in/hyungseok-han-aba694196/",
-  updated: "2026-11-18",
+  updated: "2026-11-19",
 };
 
 export const experience: PortfolioExperience[] = [
@@ -544,7 +544,7 @@ export const earlierProjects: {
       "Built a Raspberry Pi gate and Firebase backend, connecting beacon proximity, payment, and GPIO-driven gate control. Received an encouragement award at the university project exhibition.",
   },
   {
-    title: "Real-time home yoga assistant",
+    title: "Real-time home yoga assistant service",
     period: "May 2019 - Nov 2019",
     description:
       "Led a SW Maestro team, designed the architecture and backend, prepared training data, and trained a triplet-loss model for posture guidance. Managed project schedules, costs, and documentation.",
@@ -627,11 +627,11 @@ export const writings: PortfolioPublication[] = [
   },
 ];
 
-export const activities: { title: string; description: string }[] = [
+export const activities: { title: string; description: string | string[] }[] = [
   {
     title: "SW Maestro",
     description:
-      "10th cohort, May-Dec 2019. Led the home yoga assistant project, including service architecture, backend development, infrastructure, and project coordination.",
+      "10th cohort, May–Dec 2019. Led the home yoga assistant service project, designed its architecture, and developed the backend and infrastructure.",
   },
   {
     title: "Teaching and mentoring",
@@ -644,9 +644,12 @@ export const activities: { title: string; description: string }[] = [
       "Organized KSCON and inter-university SW Championship events, contributing direction, technical operations, and programming problems. Presented Sunrise in goorm's internal STRIDE seminar series.",
   },
   {
-    title: "Student leadership",
-    description:
-      "Chair of Kwangwoon University's student emergency committee in the first half of 2020; College of Software and Convergence student president in 2019; Software Department student vice-president in 2018.",
+    title: "Student leadership at Kwangwoon University",
+    description: [
+      "Chair of the Emergency Steering Committee of the 47th General Student Council (first half of 2020)",
+      "President of the 3rd Student Council of the College of Software and Convergence (2019)",
+      "Vice President of the 2nd Student Council of the School of Software (2018)",
+    ],
   },
 ];
 
@@ -682,12 +685,9 @@ export const skills: { title: string; items: string[] }[] = [
   {
     title: "AI platforms & agents",
     items: [
-      "MLflow, LiteLLM, AWS Bedrock, Hugging Face",
-      "vLLM, llama.cpp, llm-d, LMCache",
-      "KV-aware routing, offloading, inference load testing",
-      "MCP, OpenFGA, BAAI/bge-m3, TEI, pgvector, RRF",
-      "Claude Code, Codex; BM25 and dense retrieval",
-      "Evaluation experience with NVIDIA Dynamo and Mooncake",
+      "LLM serving and load testing (vLLM)",
+      "Model management and gateways (MLflow, LiteLLM)",
+      "Agent development (Amazon Bedrock, MCP)",
     ],
   },
   {

@@ -573,6 +573,13 @@ li::marker {
 .reference-list dd {
   max-width: 65ch;
 }
+.activity-roles {
+  margin: 0;
+  padding-inline-start: 1.25em;
+}
+.activity-roles li + li {
+  margin-top: var(--space-100);
+}
 .award-list {
   display: grid;
   gap: var(--space-200);

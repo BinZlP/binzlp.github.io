@@ -203,7 +203,7 @@ const imageMap: Record<string, NonNullable<PortfolioProject["image"]>> = {
           </button>
         </div>
         <p class="body-6 section-intro">
-          Architecture, implementation, and operations at Nota AI and goorm.
+          Architecture, implementation, and operations.
         </p>
         <div class="project-list">
           {projects.map((project, index) => (
@@ -319,7 +319,13 @@ const imageMap: Record<string, NonNullable<PortfolioProject["image"]>> = {
           {activities.map((item) => (
             <div>
               <dt class="title-4">{item.title}</dt>
-              <dd class="body-3">{item.description}</dd>
+              <dd class="body-3">
+                {Array.isArray(item.description) ? (
+                  <ul class="activity-roles">
+                    {item.description.map((role) => <li>{role}</li>)}
+                  </ul>
+                ) : item.description}
+              </dd>
             </div>
           ))}
         </dl>
