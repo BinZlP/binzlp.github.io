@@ -53,13 +53,22 @@ const image = new URL("/portfolio/social.png", Astro.site);
         {profile.name}
         <span class="caption-2"> / Portfolio</span>
       </a>
-      <a
-        class="resume-link button-sm"
-        href={portfolioAssetUrl("hyungseok-han-resume.pdf")}
-        download
-      >
-        Résumé <span class="caption-5">PDF</span>
-      </a>
+      <nav class="document-downloads" aria-label="PDF downloads">
+        <a
+          class="download-link button-sm"
+          href={portfolioAssetUrl("hyungseok-han-portfolio.pdf")}
+          download
+        >
+          Portfolio <span class="caption-5">PDF</span>
+        </a>
+        <a
+          class="download-link button-sm"
+          href={portfolioAssetUrl("hyungseok-han-resume.pdf")}
+          download
+        >
+          Résumé <span class="caption-5">PDF</span>
+        </a>
+      </nav>
     </header>
     <slot />
     <footer class="site-footer caption-5">

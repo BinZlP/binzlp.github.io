@@ -44,8 +44,8 @@ tags: ['tag']
 - 내용: `src/data/portfolio.ts`
 - 페이지 및 프로젝트 상세: `src/pages/portfolio/index.astro`, `src/components/portfolio/ProjectEntry.astro`
 - 레이아웃 및 스타일: `src/layouts/PortfolioLayout.astro`, `src/styles/portfolio.css`
-- 직접 작성한 프로젝트 아키텍처 SVG: `public/portfolio/diagrams/`
-- 다운로드용 이력서: `public/portfolio/hyungseok-han-resume.pdf`
+- 프로젝트 및 연구 도식: `src/data/portfolio-diagrams.ts`, `public/portfolio/diagrams/`
+- 다운로드용 PDF: `public/portfolio/hyungseok-han-portfolio.pdf`와 `public/portfolio/hyungseok-han-resume.pdf`
 
 프로젝트는 원본 포트폴리오의 Motivation / Description / Challenges & achievements 구성을 따릅니다. SVG를 수정하면 페이지의 이미지 크기와 설명도 함께 확인합니다. 공개할 수 있는 내용만 저장하며, 내용 변경 시 `profile.updated`를 갱신합니다.
 
@@ -55,9 +55,16 @@ tags: ['tag']
 node scripts/generate-portfolio-social.mjs
 ```
 
-이력서 문구는 `scripts/generate-portfolio-resume.py`에서 별도로 관리합니다. ReportLab이 설치된 Python 환경에서 재생성한 뒤 두 페이지의 레이아웃과 링크를 확인합니다.
+포트폴리오 PDF는 웹과 같은 공개 데이터와 도식을 사용합니다. 내용이나 도식을 수정하면 Node.js 22.12 이상과 Chrome 또는 Chromium이 설치된 환경에서 아래 명령으로 PDF를 갱신하고 함께 커밋합니다. 브라우저를 자동으로 찾지 못하면 `CHROME_PATH`를 실행 파일 경로로 지정합니다.
 
 ```bash
+node --experimental-strip-types scripts/generate-portfolio-pdf.mjs
+```
+
+이력서 문구는 `scripts/generate-portfolio-resume.py`에서 별도로 관리합니다. 아래 명령으로 재생성한 뒤 두 페이지의 레이아웃과 링크를 확인합니다.
+
+```bash
+python -m pip install reportlab "fonttools[woff]"
 python scripts/generate-portfolio-resume.py
 ```
 

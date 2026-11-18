@@ -88,7 +88,7 @@ button {
   cursor: pointer;
 }
 button:active,
-.resume-link:active {
+.download-link:active {
   transform: translateY(1px);
 }
 ::selection {
@@ -184,6 +184,8 @@ strong {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-100) var(--space-200);
   padding-block: var(--space-300);
   border-bottom: 1px solid var(--line);
 }
@@ -194,7 +196,12 @@ strong {
   color: var(--muted);
   margin-left: var(--space-50);
 }
-.resume-link {
+.document-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-75);
+}
+.download-link {
   display: inline-flex;
   align-items: center;
   gap: var(--space-75);
@@ -203,10 +210,10 @@ strong {
   border-radius: 4px;
   text-decoration: none;
 }
-.resume-link:hover {
+.download-link:hover {
   background: var(--surface);
 }
-.resume-link span {
+.download-link span {
   color: var(--muted);
 }
 .portfolio-shell {

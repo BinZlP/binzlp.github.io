@@ -1,0 +1,89 @@
+@page {
+  size: A4;
+  margin: 17mm 17mm 16mm;
+  @top-left {
+    content: "Engineering portfolio";
+    font: 8pt Geist, sans-serif;
+    color: #525f73;
+  }
+  @bottom-right {
+    content: counter(page) " / " counter(pages);
+    font: 8pt Geist, sans-serif;
+    color: #525f73;
+  }
+}
+* { box-sizing: border-box; }
+html { print-color-adjust: exact; }
+body {
+  margin: 0;
+  font: 9.6pt/1.41 Geist, Arial, sans-serif;
+  color: #192533;
+}
+h1, h2, h3, p, ul, dl, dd, figure, ol { margin: 0; }
+h1, h2, h3 { break-after: avoid; }
+h1 { font-size: 36pt; line-height: 1.12; letter-spacing: -.055em; font-weight: 650; }
+h2 { font-size: 23pt; line-height: 1.1; letter-spacing: -.045em; font-weight: 620; }
+h3 { font-size: 12.5pt; line-height: 1.22; letter-spacing: -.02em; font-weight: 600; }
+strong, dt { font-weight: 610; }
+a { color: #224aaa; text-underline-offset: 2pt; }
+ul { padding-left: 12pt; }
+li { padding-left: 1pt; }
+li + li { margin-top: 2.5pt; }
+.new-page { break-before: page; }
+.intro { margin: 10pt 0; font-size: 11.2pt; line-height: 1.43; max-width: 155mm; }
+.role { font-size: 15.5pt; font-weight: 500; color: #254eae; margin-top: 3pt; }
+.links, .more-links { display: flex; flex-wrap: wrap; gap: 4pt 13pt; font-size: 9pt; }
+.section-name { font-size: 19pt; margin: 17pt 0 8pt; }
+.education { display: grid; grid-template-columns: 1fr 1fr; gap: 14pt; }
+.education, .job { border-top: .65pt solid #d1d9e3; padding-top: 8pt; }
+.education h3 { font-size: 11.5pt; margin-bottom: 1pt; }
+.heading-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12pt; }
+.heading-line h3 { flex: 1; }
+.date { color: #4b586b; font-size: 8.7pt; }
+.job + .job { margin-top: 10pt; }
+.job-role { color: #284c92; font-weight: 520; margin: 1pt 0 3pt; }
+.job ul { margin-top: 4pt; }
+.contents ol { list-style: none; padding: 0; margin: 14pt 0 11pt; }
+.contents li { display: flex; align-items: baseline; gap: 12pt; justify-content: space-between;
+  border-top: .65pt solid #d1d9e3; padding: 7.5pt 0; margin: 0; }
+.contents li a { text-decoration: none; font-weight: 540; font-size: 10.3pt; }
+.contents li span { font-size: 8.8pt; color: #596579; white-space: nowrap; }
+.more-links { padding-top: 8pt; border-top: .65pt solid #d1d9e3; }
+.project { break-inside: avoid; }
+.project.illustrated, .illustrated + .text-case { break-before: page; }
+.project + .project { margin-top: 14pt; padding-top: 11pt; border-top: .65pt solid #d1d9e3; }
+.meta { color: #254eae; font-size: 8.8pt; font-weight: 570; margin-bottom: 3pt; }
+.project h2 { font-size: 19pt; line-height: 1.13; }
+.project .summary { font-size: 10.5pt; line-height: 1.32; margin-top: 4pt; }
+.facts { margin-top: 7pt; font-size: 8.8pt; color: #445368; line-height: 1.3; }
+.facts > div { display: flex; gap: 6pt; margin-top: 2pt; }
+.facts dt { color: #26354a; }
+.project figure { text-align: center; margin: 9pt 0; }
+figure img { display: block; width: 100%; object-fit: contain; }
+.project figure img { height: 96mm; }
+figcaption { color: #546275; margin-top: 2.5pt; font-size: 8pt; }
+.case-row { margin-top: 6pt; padding-top: 5pt; border-top: .55pt solid #d6dce5; }
+.case-row h3 { font-size: 9.3pt; line-height: 1.24; font-weight: 650; margin-bottom: 2pt; }
+.case-row p + p { margin-top: 2pt; }
+.case-row li, .case-row p { orphans: 2; widows: 2; }
+.project .links, .publication .links { margin-top: 5pt; }
+.text-case .case-row { display: grid; grid-template-columns: 74pt 1fr; column-gap: 10pt; margin-top: 5pt; padding-top: 4pt; }
+.text-case .case-row h3 { margin: 0; }
+.text-case h2 { font-size: 17pt; }
+/* A standalone text case can use its full page as a two-column narrative. */
+.illustrated + .text-case:has(+ .illustrated) { font-size: 11pt; line-height: 1.5; }
+.illustrated + .text-case:has(+ .illustrated) h2 { font-size: 24pt; }
+.illustrated + .text-case:has(+ .illustrated) .summary { font-size: 12pt; margin: 8pt 0 10pt; }
+.illustrated + .text-case:has(+ .illustrated) .case-row { margin-top: 13pt; padding-top: 10pt; }
+.illustrated + .text-case:has(+ .illustrated) .case-row h3 { font-size: 10.5pt; }
+.earlier, .publication { margin-top: 13pt; break-inside: avoid; }
+.earlier h3, .publication h3 { margin-bottom: 3pt; }
+.earlier .heading-line { align-items: baseline; }
+.earlier .date { white-space: nowrap; }
+.research-figures { margin-top: 7pt; }
+.research-figures figure { margin: 5pt 0; text-align: center; break-inside: avoid; }
+.research-figures img { height: 20mm; }
+.rows { margin-top: 11pt; }
+.rows > div { display: grid; grid-template-columns: 122pt 1fr; gap: 13pt;
+  border-top: .65pt solid #d1d9e3; padding: 6.5pt 0; break-inside: avoid; }
+.rows dt { color: #21334a; }

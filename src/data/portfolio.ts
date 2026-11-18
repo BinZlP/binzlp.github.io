@@ -655,63 +655,73 @@ export const activities: { title: string; description: string | string[] }[] = [
 
 export const skills: { title: string; items: string[] }[] = [
   {
-    title: "Systems & infrastructure",
+    title: "Virtualization & storage",
+    items: ["Linux, KVM, Proxmox VE", "Ceph and cluster networking"],
+  },
+  {
+    title: "Containers & orchestration",
+    items: ["Kubernetes, Docker, containerd", "Helm, Kustomize"],
+  },
+  {
+    title: "Cloud & provisioning",
     items: [
-      "Linux; Kubernetes, Docker, containerd",
-      "KVM, Proxmox VE, Ceph, cluster networking",
       "AWS, GCP, Naver Cloud Platform",
-      "Terraform, Terragrunt, Helm, Kustomize",
+      "Terraform, Terragrunt, Ansible, AWX",
     ],
   },
   {
-    title: "Databases & messaging",
+    title: "CI/CD & GitOps",
+    items: ["Jenkins, GitHub Actions", "Argo CD, Flux"],
+  },
+  {
+    title: "LLM serving",
+    items: ["Inference and load testing (vLLM)", "Model gateways (LiteLLM)"],
+  },
+  {
+    title: "Agent development",
+    items: ["MCP tools", "Document embeddings and retrieval"],
+  },
+  {
+    title: "Databases & caching",
+    items: ["MySQL, MariaDB, PostgreSQL, MongoDB", "Redis, memcached"],
+  },
+  {
+    title: "Messaging",
+    items: ["Kafka, RabbitMQ"],
+  },
+  {
+    title: "Log pipelines",
     items: [
-      "MySQL / MariaDB, PostgreSQL, MongoDB",
-      "Redis, memcached, Kafka, RabbitMQ",
+      "Fluentd, Fluent Bit, Vector, Alloy",
+      "Elasticsearch, OpenSearch, Logstash, Kibana, Loki",
     ],
   },
   {
-    title: "CI/CD",
-    items: ["Jenkins, GitHub Actions", "Ansible, AWX, ArgoCD, FluxCD"],
+    title: "Monitoring",
+    items: ["Zabbix, Prometheus, Grafana"],
   },
   {
-    title: "Application development",
+    title: "Web frameworks",
+    items: ["FastAPI, Django, Flask", "NestJS, Next.js, Express"],
+  },
+  {
+    title: "Programming languages",
     items: [
-      "FastAPI, Django, Flask",
-      "Nest.js, Next.js, Express.js",
-      "Parallel programming and performance profiling",
+      "Python, TypeScript, JavaScript, C, C++, Go, Java, Kotlin",
+      "Shell scripting",
     ],
   },
   {
-    title: "AI platforms & agents",
-    items: [
-      "LLM serving and load testing (vLLM)",
-      "Model gateways and agent tools (LiteLLM, MCP)",
-      "Document embeddings and retrieval",
-    ],
+    title: "Performance & data analysis",
+    items: ["Parallel programming and performance profiling", "Jupyter Notebook, RStudio"],
   },
   {
-    title: "Observability",
-    items: [
-      "Elasticsearch / OpenSearch, Logstash, Kibana",
-      "Fluentd, Fluent Bit, Vector, Loki, Alloy",
-      "Zabbix, Prometheus, Grafana",
-    ],
+    title: "Collaboration tools",
+    items: ["Git, Jira, Confluence, Notion, ClickUp, Slack"],
   },
   {
-    title: "Languages & data tools",
-    items: [
-      "Python, TypeScript / JavaScript, C / C++, Go",
-      "Java / Kotlin, shell scripting",
-      "Jupyter Notebook, RStudio",
-    ],
-  },
-  {
-    title: "Collaboration",
-    items: [
-      "Git, Jira / Confluence, Notion, ClickUp, Slack",
-      "Korean (native), English (business-level fluency)",
-    ],
+    title: "Spoken languages",
+    items: ["Korean (native), English (business-level fluency)"],
   },
 ];
 
