@@ -76,10 +76,9 @@ figcaption { color: #546275; margin-top: 2.5pt; font-size: 8pt; }
 .illustrated + .text-case:has(+ .illustrated) .summary { font-size: 12pt; margin: 8pt 0 10pt; }
 .illustrated + .text-case:has(+ .illustrated) .case-row { margin-top: 13pt; padding-top: 10pt; }
 .illustrated + .text-case:has(+ .illustrated) .case-row h3 { font-size: 10.5pt; }
-.earlier, .publication { margin-top: 13pt; break-inside: avoid; }
-.earlier h3, .publication h3 { margin-bottom: 3pt; }
-.earlier .heading-line { align-items: baseline; }
-.earlier .date { white-space: nowrap; }
+#writings { margin-top: 17pt; }
+.publication { margin-top: 13pt; break-inside: avoid; }
+.publication h3 { margin-bottom: 3pt; }
 .research-figures { margin-top: 7pt; }
 .research-figures figure { margin: 5pt 0; text-align: center; break-inside: avoid; }
 .research-figures img { height: 20mm; }

@@ -10,7 +10,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
-  activities, awards, earlierProjects, education, experience, presentations,
+  activities, awards, education, experience, presentations,
   profile, projects, skills, writings,
 } from '../src/data/portfolio.ts';
 import { projectDiagrams, researchDiagrams } from '../src/data/portfolio-diagrams.ts';
@@ -100,18 +100,13 @@ function portfolio() {
     <nav aria-label="Contents" class="new-page contents"><h2>Projects</h2>
       <ol>${index}</ol>
       <p class="more-links">${[
-        ['Earlier projects', 'earlier-projects'], ['Presentations', 'presentations'], ['Writings', 'writings'],
+        ['Presentations', 'presentations'], ['Writings', 'writings'],
         ['Other activities', 'activities'], ['Skills', 'skills'], ['Awards & honors', 'awards'],
       ].map(([title, id]) => link(title, '#' + id)).join('')}</p>
     </nav>
     <section class="new-page cases">${projects.map(projectEntry).join('')}</section>
-    <section class="new-page" id="earlier-projects"><h2>Earlier projects</h2>
-      ${earlierProjects.map(item => `<article class="earlier">
-        <div class="heading-line"><h3>${escape(item.title)}</h3><span class="date">${escape(item.period)}</span></div>
-        <p>${escape(item.description)}</p></article>`).join('')}
-      <h2 class="section-name" id="presentations">Presentations</h2>${presentations.map(publication).join('')}
-    </section>
-    <section class="new-page" id="writings"><h2>Writings</h2>${writings.map(publication).join('')}</section>
+    <section class="new-page" id="presentations"><h2>Presentations</h2>${presentations.map(publication).join('')}</section>
+    <section id="writings"><h2>Writings</h2>${writings.map(publication).join('')}</section>
     <section class="new-page" id="activities"><h2>Other activities</h2>
       ${rows(activities, item => item.title, item => Array.isArray(item.description) ? list(item.description) : escape(item.description))}
       <h2 id="awards" class="section-name">Awards &amp; honors</h2>
