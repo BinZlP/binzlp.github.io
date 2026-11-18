@@ -178,10 +178,10 @@ def build(output):
             "The migrated service subsequently passed the AWS Foundational Technical Review (FTR).",
         ]),
         project("GPU resource self-service platform", [
-            "Built a FastAPI/Next.js control plane for Proxmox GPU instance lifecycle, team quotas, "
-            "and resource visibility; took a five-day PoC to internal production in approximately one month.",
-            "Automated routine infrastructure support, recording three consecutive weeks without "
-            "system-level support requests, excluding physical hardware failures.",
+            "Built a FastAPI platform for self-service GPU provisioning on Proxmox. As of November "
+            "2026, 10+ teams use it, with about 50 provisioning operations in the preceding month.",
+            "Time spent handling host infrastructure support requests from Jira and Slack fell from "
+            "40 engineer-hours in the week before rollout to 8 in the latest week measured.",
         ]),
         project("LLM inference platform", [
             "Owned platform engineering work for LLM inference, comparing design alternatives "

@@ -248,24 +248,27 @@ export const projects: PortfolioProject[] = [
     period: "Feb 2026 - Present",
     role: "Service Architect / Infrastructure Architect / Developer",
     summary:
-      "A FastAPI and Next.js control plane for GPU instance lifecycle, resource administration, and capacity planning.",
+      "As of November 2026, 10+ teams use the GPU self-service platform. The on-premises fleet spans three clusters with 150+ instances and 150+ accelerators across 10+ GPU and NPU models.",
     motivation: [
-      "Reduce routine provisioning and resource-management requests handled by the infrastructure team.",
-      "Make team allocation, actual usage, and future capacity needs visible to developers and leadership.",
+      "Let developers provision GPU instances themselves and give teams a consistent way to allocate scarce capacity.",
     ],
     description: [
-      "Built self-service controls over Proxmox, team quotas, usage-based cost reporting, and routine infrastructure administration.",
-      "Worked with leadership on monthly and quarterly planning requirements and implemented demand, capacity, and configurable risk views.",
-      "Investigated VM degradation and node instability, tracing the cause to Ceph traffic saturation. Reconfigured data and management traffic paths to stabilize the cluster.",
+      "Built a FastAPI and Next.js control plane for Proxmox instances, team quotas, and usage-based cost reporting. Dashboards show allocations and utilization by team and project. A pilot uses utilization thresholds to reclaim idle capacity.",
+      "Defined how to rank competing requests by their stated purpose and allocate capacity to the highest-priority tier (0 is highest, 3 lowest). Established a review forum for escalations. As of November 2026, no request had reached it.",
+      "Worked with leadership on monthly and quarterly capacity planning. Dashboards for demand, capacity, and risk informed expansion decisions.",
     ],
     achievements: [
       {
-        title: "Internal production",
-        text: "Built a five-day PoC and moved to internal production within about a month, using coding agents with design documents and validation throughout implementation.",
+        title: "Adoption",
+        text: "Took a five-day prototype to internal production in about a month. The platform handled about 50 self-service provisioning operations in the most recent month measured.",
       },
       {
-        title: "Operational change",
-        text: "Recorded three consecutive weeks without system-level support requests, excluding hardware failures. Planning data informed capacity expansion decisions.",
+        title: "Host support",
+        text: "Handling host support requests from Jira and Slack took 40 engineer-hours in the week before rollout and 8 in the latest week measured. The team also recorded three consecutive weeks with no system-level support requests, excluding hardware failures.",
+      },
+      {
+        title: "Cluster reliability",
+        text: "Traced VM slowdowns and node instability to saturated Ceph traffic. Separating data and management traffic stabilized the cluster.",
       },
     ],
     tags: ["FastAPI", "Next.js", "Proxmox", "Ceph", "Capacity planning"],

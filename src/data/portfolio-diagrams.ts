@@ -28,8 +28,8 @@ export const projectDiagrams: Record<string, Diagram> = {
     src: "/portfolio/diagrams/gpu-self-service-architecture.svg",
     width: 960,
     height: 650,
-    alt: "Next.js and FastAPI manage Proxmox GPU instances across two clusters, with usage data and supporting services.",
-    caption: "GPU resource provisioning and usage management.",
+    alt: "Next.js and FastAPI manage GPU instances on Proxmox. The diagram shows how usage data flows back from headquarters and the data center.",
+    caption: "GPU provisioning and usage reporting at headquarters and the data center (example deployment).",
   },
   gateway: {
     src: "/portfolio/diagrams/easyllm-architecture.svg",
