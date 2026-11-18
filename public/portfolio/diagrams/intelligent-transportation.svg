@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 720" role="img" aria-labelledby="diagram-title diagram-description">
 <title id="diagram-title">Edge service deployment and operations</title>
-<desc id="diagram-description">An operations team prepares releases and automates initial setup and deployment of services on edge devices. Service state, metrics, and logs return through telemetry processing to an operational view.</desc>
+<desc id="diagram-description">An operations team uses CI/CD workflows to automate initial setup and deployment of Linux edge services. Health checks and Vector log collection report service state. Loki and Prometheus support central logs and metrics, with Grafana dashboards presenting the operational view.</desc>
 <defs>
 <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
 <path d="M0 0 10 5 0 10Z" fill="#2563eb"/>
@@ -20,33 +20,33 @@
 <rect x="298" y="126" width="236" height="96" rx="8" class="accent-node"/>
 <text x="416" y="156" class="label" text-anchor="middle">Delivery</text>
 <text x="416" y="180" class="label" text-anchor="middle">automation</text>
-<text x="416" y="202" class="small" text-anchor="middle">Prepare service updates</text>
+<text x="416" y="202" class="small" text-anchor="middle">CI/CD service updates</text>
 <path d="M238 174H298" class="flow" marker-end="url(#arrow)"/>
 <rect x="610" y="96" width="478" height="340" rx="12" class="group"/>
 <text x="634" y="128" class="group-label" text-anchor="start">Edge service responsibilities</text>
 <rect x="634" y="158" width="200" height="96" rx="8" class="node"/>
 <text x="734" y="188" class="label" text-anchor="middle">Setup and</text>
 <text x="734" y="212" class="label" text-anchor="middle">deployment</text>
-<text x="734" y="234" class="small" text-anchor="middle">Initialize and update</text>
+<text x="734" y="234" class="small" text-anchor="middle">Automated initial setup</text>
 <rect x="858" y="158" width="206" height="96" rx="8" class="node"/>
 <text x="961" y="188" class="label" text-anchor="middle">Service</text>
 <text x="961" y="212" class="label" text-anchor="middle">runtime</text>
-<text x="961" y="234" class="small" text-anchor="middle">Run deployed services</text>
+<text x="961" y="234" class="small" text-anchor="middle">Linux edge services</text>
 <path d="M534 174H586V206H634" class="flow" marker-end="url(#arrow)"/>
 <path d="M834 206H858" class="flow" marker-end="url(#arrow)"/>
 <rect x="634" y="318" width="430" height="86" rx="8" class="node"/>
 <text x="849" y="348" class="label" text-anchor="middle">Health reporting</text>
-<text x="849" y="384" class="small" text-anchor="middle">Service state, metrics and logs</text>
+<text x="849" y="384" class="small" text-anchor="middle">Vector log collection · health checks</text>
 <path d="M962 254V318" class="flow" marker-end="url(#arrow)"/>
 <path d="M734 254V284H416V222" class="flow" marker-end="url(#arrow)"/>
 <rect x="298" y="492" width="790" height="162" rx="12" class="group"/>
 <text x="322" y="524" class="group-label" text-anchor="start">Remote monitoring</text>
 <rect x="322" y="548" width="314" height="82" rx="8" class="node"/>
 <text x="479" y="578" class="label" text-anchor="middle">Operational view</text>
-<text x="479" y="610" class="small" text-anchor="middle">Inspect health and release results</text>
+<text x="479" y="610" class="small" text-anchor="middle">Grafana dashboards</text>
 <rect x="714" y="548" width="350" height="82" rx="8" class="node"/>
 <text x="889" y="578" class="label" text-anchor="middle">Telemetry processing</text>
-<text x="889" y="610" class="small" text-anchor="middle">Collect and organize metrics and logs</text>
+<text x="889" y="610" class="small" text-anchor="middle">Loki: logs · Prometheus: metrics</text>
 <path d="M850 404V466H889V548" class="flow" marker-end="url(#arrow)"/>
 <path d="M714 589H636" class="flow" marker-end="url(#arrow)"/>
 <path d="M322 589H135V222" class="flow" marker-end="url(#arrow)"/>

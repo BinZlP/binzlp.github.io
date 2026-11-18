@@ -18,6 +18,7 @@ export type PortfolioProject = {
   motivation: string[];
   description: string[];
   achievements: { title: string; text: string }[];
+  tags?: string[];
   links: PortfolioLink[];
   image?: {
     src: string;
@@ -65,10 +66,10 @@ export const experience: PortfolioExperience[] = [
     description:
       "Hybrid GPU infrastructure, AI platforms, and customer deployment engineering.",
     bullets: [
-      "Design and operate GPU and cloud infrastructure, and support capacity planning for AI workloads.",
+      "Design and operate on-premises GPU clusters and cloud infrastructure, including resource allocation and capacity planning.",
       "Build inference platforms and jointly investigate and improve system performance.",
-      "Develop self-service and agent-enabled platforms, and adapt service deployments to customer requirements.",
-      "Improve observability, operational automation, and readiness for technical and security reviews.",
+      "Develop internal self-service and MCP platforms, and reusable deployment architectures for cloud, on-premises, and restricted customer environments.",
+      "Implement observability, operational automation, and infrastructure controls supporting security and service reviews.",
     ],
   },
   {
@@ -78,10 +79,10 @@ export const experience: PortfolioExperience[] = [
     description:
       "Production infrastructure for web IDE and code-judging services supporting thousands of concurrent code-execution workloads.",
     bullets: [
-      "Designed and operated production service infrastructure and improved reliability and scalability.",
-      "Automated provisioning and standardized customer delivery.",
-      "Built centralized logging and observability for distributed production environments.",
-      "Supported service security requirements and developed build, release, and operations tooling.",
+      "Designed and operated multi-region, multi-cloud service infrastructure and improved reliability and scalability.",
+      "Standardized provisioning and customer delivery with Terraform, Ansible, and Python.",
+      "Built centralized logging and observability across 10+ Kubernetes clusters in four regions.",
+      "Implemented infrastructure designs reflecting CSAP and ISMS requirements, alongside CI/CD and operations tooling.",
     ],
   },
 ];
@@ -116,25 +117,32 @@ export const projects: PortfolioProject[] = [
   },
   {
     id: "app-document-sharing",
-    title: "Internal application and document sharing platform",
+    title: "Internal app and document sharing platform with MCP",
     company: "Nota AI",
     period: "Oct 2026 - Present",
     role: "Service Architect / Full-Stack Developer",
     summary:
-      "Built a shared catalog where coding agents can find a colleague’s app, use it, or look up an answer in team documents.",
+      "A shared access layer for coding agents to discover internal applications and retrieve authorized documents.",
     motivation: [
-      "Useful apps and documents often stayed in their creators’ workspaces. Colleagues needed a way to find and reuse them.",
+      "Make AI-assisted applications and documents reusable across the organization instead of leaving them in individual environments.",
+      "Apply user permissions consistently to app invocation and document retrieval while keeping extraction and embeddings on internal infrastructure.",
     ],
     description: [
-      "Created the publishing flow for app authors and a way for agents to discover what each app does and invoke it.",
-      "Connected document upload, indexing, and search so agents can retrieve relevant passages from shared material.",
+      "Implemented application publishing and execution, document sharing, and authenticated MCP tools for discovery, OpenAPI inspection, API calls, and retrieval.",
+      "Extracted text locally from office documents, split it using document headings, and generated self-hosted BAAI/bge-m3 embeddings through TEI.",
+      "Combined pgvector similarity and PostgreSQL keyword search with RRF. Integrated OpenFGA authorization, repeated permission checks, and application deployment lifecycle controls.",
     ],
     achievements: [
       {
         title: "Independent delivery",
         text: "Designed, implemented, and deployed the platform independently in two days in October 2026.",
       },
+      {
+        title: "Internal launch",
+        text: "The platform is available internally, with wider adoption being prepared. Usage growth and productivity outcomes have not yet been established.",
+      },
     ],
+    tags: ["FastAPI", "MCP", "OpenFGA", "pgvector", "BAAI/bge-m3", "RRF"],
     links: [],
   },
   {
@@ -145,26 +153,27 @@ export const projects: PortfolioProject[] = [
     period: "Jun 2026 - Present",
     role: "Service Architect / DevOps Engineer",
     summary:
-      "Designed the service and deployment architecture and coordinated customer delivery through early-access production operations.",
+      "Designed the Kubernetes service and deployment architecture and coordinated customer delivery through early-access production operations.",
     motivation: [
-      "Adapt a common product to different customer deployment requirements.",
+      "Support different cloud and on-premises requirements through a common product architecture.",
       "Establish repeatable validation, packaging, and delivery processes across customer environments.",
     ],
     description: [
-      "Designed the service deployment architecture and standardized preparation across customer environments.",
-      "Coordinated requirements, acceptance criteria, and schedules directly with overseas customers and the development team.",
-      "Improved operational visibility, supported customer evaluations and technical reviews, and continued service stabilization after launch.",
+      "Designed the Kubernetes service structure and separated shared infrastructure from environment-specific configuration with Terraform, Helm, and Kustomize.",
+      "Agreed validation and code-freeze checkpoints with developers, and coordinated requirements, acceptance criteria, and schedules directly with overseas customers.",
+      "Proposed trace-ID logging, adopted by the development team, and built operational dashboards. Supported customer PoCs and technical reviews, then adapted observability and workload-specific instance types after launch.",
     ],
     achievements: [
       {
         title: "Customer delivery",
-        text: "Delivered parallel customer projects on schedule and reduced final validation and packaging to a process that could be completed within two days.",
+        text: "Delivered parallel AWS and on-premises projects on schedule. After code freeze, final validation and packaging could be completed within two days.",
       },
       {
         title: "Production operations",
-        text: "The delivered system entered production early access as Arm AI Model Optimizer on October 19, 2026. Continued with security review and operational stabilization.",
+        text: "The Arm deployment entered production early access as Arm AI Model Optimizer on October 19, 2026. Continued with security review and operational stabilization; this is distinct from the hosted-service AWS migration below.",
       },
     ],
+    tags: ["Kubernetes", "Terraform", "Helm", "Kustomize", "Observability"],
     links: [
       {
         label: "Arm product announcement",
@@ -174,31 +183,32 @@ export const projects: PortfolioProject[] = [
   },
   {
     id: "service-migration",
-    title: "NetsPresso: production infrastructure migration",
+    title: "NetsPresso infrastructure migration and AWS Foundational Technical Review (FTR)",
     company: "Nota AI",
     period: "Jan 2026 - Feb 2026",
     role: "Infrastructure Architect / DevOps Engineer",
     summary:
-      "Redesigned and migrated the existing hosted production service in a separate project from customer delivery.",
+      "Redesigned and migrated the infrastructure for the hosted NetsPresso service. The service passed AWS FTR after the migration.",
     motivation: [
-      "Improve production infrastructure readiness for a cloud-provider technical review.",
-      "Plan and validate the transition of an operating service to a redesigned environment.",
+      "Improve the production infrastructure and operating policies against AWS Foundational Technical Review requirements.",
+      "Plan a controlled transition to a reproducible environment with clear recovery and validation procedures.",
     ],
     description: [
-      "Redesigned the service infrastructure and automated its setup.",
-      "Tested the migration and verified data consistency and application behavior before the production change.",
-      "Coordinated the transition with developers and shared the redesigned environment through documentation and a technical session.",
+      "Rebuilt development, staging, and production network separation, database clustering and snapshots, and AMI-based Auto Scaling using Terraform and Ansible.",
+      "Used AWS DMS for test migrations and checked data consistency and application behavior before the production change.",
+      "Planned the Route 53 cutover around source-database replication constraints and coordinated execution with developers. Shared the infrastructure code and an introductory technical session with the team.",
     ],
     achievements: [
       {
-        title: "Production migration",
-        text: "Completed the production migration work within an approximately two-hour change window.",
+        title: "AWS FTR",
+        text: "The migrated NetsPresso service passed the AWS Foundational Technical Review.",
       },
       {
-        title: "Technical review",
-        text: "The migrated service subsequently passed the cloud provider's technical review.",
+        title: "Production migration",
+        text: "Completed the production migration in an approximately two-hour change window.",
       },
     ],
+    tags: ["AWS", "Terraform", "Ansible", "DMS", "Auto Scaling"],
     links: [],
   },
   {
@@ -208,26 +218,27 @@ export const projects: PortfolioProject[] = [
     period: "May 2026 - Jul 2026",
     role: "Service Architect / Developer",
     summary:
-      "An internal platform for model access, serving, and evaluation.",
+      "An internal platform for model access, serving, benchmarking, and user-level budget management.",
     motivation: [
-      "Give developers a consistent way to access and compare models.",
-      "Reduce repeated model setup work and support a wider range of development workflows.",
+      "Provide a common interface to internal GPU resources, commercial APIs, and open-weight models.",
+      "Support model comparison and restricted project environments without separate workflows for each runtime.",
     ],
     description: [
-      "Designed and implemented the platform's backend and model access workflows.",
-      "Automated model preparation, deployment, and evaluation tasks.",
-      "Connected model access with coding-agent workflows and developed features for managing platform use.",
+      "Designed a Python/FastAPI backend with Kubernetes, MLflow, and LiteLLM to standardize model access and serving.",
+      "Automated Hugging Face model mirroring and deployment onto available GPU resources, supporting vLLM and llama.cpp.",
+      "Automated serving and quality benchmarks. Connected coding agents and model APIs through one gateway, with user-level budgets and isolated serving paths where required.",
     ],
     achievements: [
       {
         title: "Adoption",
-        text: "At least 70 colleagues used the platform to access and compare models.",
+        text: "Used by 70+ internal users, with 20+ open-weight models served and eight in active operation at the reported snapshot.",
       },
       {
         title: "Developer workflows",
-        text: "Supported AI-assisted development across internal projects. Developers also built debugging automation using the available models.",
+        text: "Enabled AI-assisted development in projects with data and network restrictions. Developers also built debugging automation using the internal models.",
       },
     ],
+    tags: ["FastAPI", "LiteLLM", "MLflow", "vLLM", "llama.cpp"],
     links: [],
   },
   {
@@ -237,15 +248,15 @@ export const projects: PortfolioProject[] = [
     period: "Feb 2026 - Present",
     role: "Service Architect / Infrastructure Architect / Developer",
     summary:
-      "A self-service platform for GPU resources, routine administration, and capacity planning.",
+      "A FastAPI and Next.js control plane for GPU instance lifecycle, resource administration, and capacity planning.",
     motivation: [
       "Reduce routine provisioning and resource-management requests handled by the infrastructure team.",
       "Make team allocation, actual usage, and future capacity needs visible to developers and leadership.",
     ],
     description: [
-      "Designed and implemented resource management and routine administration features for developers.",
-      "Worked with leadership to translate capacity-planning requirements into resource visibility and reporting features.",
-      "Diagnosed performance issues affecting developers’ workspaces and improved service stability.",
+      "Built self-service controls over Proxmox, team quotas, usage-based cost reporting, and routine infrastructure administration.",
+      "Worked with leadership on monthly and quarterly planning requirements and implemented demand, capacity, and configurable risk views.",
+      "Investigated VM degradation and node instability, tracing the cause to Ceph traffic saturation. Reconfigured data and management traffic paths to stabilize the cluster.",
     ],
     achievements: [
       {
@@ -257,6 +268,7 @@ export const projects: PortfolioProject[] = [
         text: "Recorded three consecutive weeks without system-level support requests, excluding hardware failures. Planning data informed capacity expansion decisions.",
       },
     ],
+    tags: ["FastAPI", "Next.js", "Proxmox", "Ceph", "Capacity planning"],
     links: [],
   },
   {
@@ -268,11 +280,11 @@ export const projects: PortfolioProject[] = [
     summary:
       "Deployment automation and observability for services running on edge devices at overseas industrial sites.",
     motivation: [
-      "Support remote deployment and health visibility while reducing repeated on-site setup and inspection work.",
+      "Provide remote deployment and health visibility across dozens of edge devices, reducing repeated on-site setup and inspection work.",
     ],
     description: [
-      "Designed the operating environment and tools for service health monitoring.",
-      "Developed deployment workflows suited to the delivery environment.",
+      "Designed the operating environment and centralized metrics and log collection.",
+      "Implemented deployment connectivity for constrained site networks and connected it with CI/CD workflows.",
       "Automated initial setup, service deployment, and system checks, and standardized delivery procedures.",
     ],
     achievements: [
@@ -282,9 +294,10 @@ export const projects: PortfolioProject[] = [
       },
       {
         title: "Remote operations",
-        text: "Enabled remote deployment and operational checks, reducing dependence on dispatching engineers to the site.",
+        text: "Established deployment and observability paths that reduced dependence on dispatching engineers to the site.",
       },
     ],
+    tags: ["Linux", "Vector", "Loki", "Prometheus", "Grafana", "CI/CD"],
     links: [],
   },
   {
@@ -294,25 +307,26 @@ export const projects: PortfolioProject[] = [
     period: "May 2025 - Aug 2025",
     role: "Service Architect / Developer",
     summary:
-      "An agent for natural-language infrastructure inspection and operational tasks.",
+      "An AWS Bedrock and Python agent for natural-language infrastructure inspection and operational tasks.",
     motivation: [
       "Provide a reusable tool for resource maintenance and internal support, with an explicit process for diagnosing and executing operational requests.",
     ],
     description: [
-      "Designed and implemented workflows for interpreting operational requests, inspecting service state, and performing routine tasks.",
-      "Made the tool extensible to additional infrastructure operations.",
-      "Built the user interface and integrated error handling and access checks into the operational workflow.",
+      "Modeled request classification, inspection, command generation and execution, and error analysis as a state machine.",
+      "Separated AWS, Kubernetes, and Ansible domain agents so additional operational capabilities could be introduced independently.",
+      "Built a Django interface and an error-feedback loop that analyzes command results and attempts corrected execution within the user's existing credentials.",
     ],
     achievements: [
       {
         title: "Operational use",
-        text: "Operators could ask about service latency and diagnose configuration problems through the same interface.",
+        text: "Supported natural-language inspection across thousands of cloud resources, including Kubernetes latency checks and configuration diagnostics.",
       },
       {
         title: "Team adoption",
-        text: "Adopted as an internal operations support tool.",
+        text: "Adopted as an internal operations support tool, with execution constrained to permissions granted by the existing access-control system.",
       },
     ],
+    tags: ["AWS Bedrock", "Python", "Django", "State machines"],
     links: [],
   },
   {
@@ -322,25 +336,26 @@ export const projects: PortfolioProject[] = [
     period: "Jan 2025 - Apr 2025",
     role: "DevOps",
     summary:
-      "Centralized log collection and analysis for a multi-cluster production environment.",
+      "Centralized log collection and analysis across 10+ EKS clusters in four AWS regions.",
     motivation: [
-      "Make logs accessible across clusters and improve collection reliability during operational failures.",
+      "Adapt log collection to Kubernetes scheduling and preserve incoming data when downstream processing or storage is unavailable.",
     ],
     description: [
-      "Designed and implemented a centralized logging pipeline for distributed service operations.",
-      "Improved how the system handles changes in log volume and interruptions in processing.",
-      "Standardized log collection and processing across clusters.",
+      "Designed a Fluent Bit → Kafka → Fluentd → Elasticsearch/S3 pipeline, separating ingestion, processing, and storage.",
+      "Used Kafka to buffer raw logs before processing and absorb differences in throughput between stages.",
+      "Managed collection and processing configuration consistently across clusters with FluxCD.",
     ],
     achievements: [
       {
         title: "Failure tolerance",
-        text: "Improved log retention and continuity when processing or storage components were unavailable.",
+        text: "Buffered raw logs through processor failures and maintained a storage path through S3 when Elasticsearch was unavailable.",
       },
       {
         title: "Scalability",
-        text: "Designed the logging system to accommodate changes in workload volume.",
+        text: "Designed Fluentd processing to scale with Kafka message volume, independently of collection.",
       },
     ],
+    tags: ["EKS", "Kafka", "Fluent Bit", "Fluentd", "Elasticsearch", "S3"],
     links: [],
   },
   {
@@ -350,14 +365,14 @@ export const projects: PortfolioProject[] = [
     period: "Jun 2024 - Oct 2024",
     role: "DevOps Engineer",
     summary:
-      "Container-image and build-pipeline improvements for a growing application codebase.",
+      "Container-image and build-pipeline improvements for growing Node.js monorepos.",
     motivation: [
       "Reduce build delays, image transfer overhead, and duplicated pipeline logic as the application codebase grew.",
     ],
     description: [
-      "Analyzed image size and build performance, then reduced unnecessary work and deployment overhead.",
-      "Improved build reuse and evaluated performance against operating cost.",
-      "Standardized reusable build workflows and separately improved deployment operations.",
+      "Reworked container layers and dependencies, retaining only the data needed by the running service.",
+      "Implemented remote reuse of Webpack, Babel, and Turbo caches and compared build-agent configurations for cost and throughput.",
+      "Moved reusable Node.js image-build logic into Jenkins Shared Libraries and separately improved the deployment pipeline.",
     ],
     achievements: [
       {
@@ -366,9 +381,10 @@ export const projects: PortfolioProject[] = [
       },
       {
         title: "Release operations",
-        text: "Standardized build workflows. The separate deployment improvement shortened rollback response from about 30 minutes to five minutes.",
+        text: "Shared Libraries standardized builds. The separate deployment improvement shortened rollback response from about 30 minutes to five minutes.",
       },
     ],
+    tags: ["Jenkins", "Docker", "EFS", "Node.js", "Build caching"],
     links: [],
   },
   {
@@ -378,53 +394,55 @@ export const projects: PortfolioProject[] = [
     period: "Mar 2024 - Jun 2024",
     role: "Developer",
     summary:
-      "A CLI combining large-scale provisioning, configuration, and readiness validation.",
+      "A Python CLI combining large-scale provisioning, configuration, and readiness validation.",
     motivation: [
-      "Accelerate resource preparation and verify operational readiness before high-concurrency events.",
+      "Accelerate resource preparation on Naver Cloud and verify the actual infrastructure and application configuration before high-concurrency events.",
     ],
     description: [
-      "Automated resource preparation and repeated setup tasks.",
-      "Combined provisioning, configuration, and state checks into a consistent operator workflow.",
-      "Added readiness checks that compare the running environment with the requirements of each event.",
+      "Implemented parallel scale-out using the cloud API, complementing the existing Terraform workflow.",
+      "Combined operations on hundreds of resources with host configuration, command execution, and state checks.",
+      "Compared backend registrations and running application settings against each event's expected configuration, beyond basic functional tests.",
     ],
     achievements: [
       {
         title: "Preparation time",
-        text: "Shortened the operational preparation period by one week through automation.",
+        text: "Shortened the operational preparation period by one week through automated scale-out and repeated configuration.",
       },
       {
         title: "Readiness validation",
-        text: "Established repeatable operational readiness checks before live events.",
+        text: "Established repeatable checks for infrastructure topology and host-level application settings before live events.",
       },
     ],
+    tags: ["Python", "Ansible", "Naver Cloud", "Validation"],
     links: [],
   },
   {
     id: "code-judging",
-    title: "Highly available code-judging system",
+    title: "Kubernetes-based highly available code-judging system",
     company: "goorm",
     period: "Jan 2024 - May 2024",
     role: "Service Architect / DevOps Engineer / Backend Developer",
     summary:
-      "An architecture and prototype for reliable, resource-controlled code execution.",
+      "A Kubernetes architecture and prototype for reliable, resource-controlled code execution.",
     motivation: [
       "Evaluate execution isolation, storage availability, workload spikes, and operating costs together when redesigning the judging platform.",
     ],
     description: [
-      "Compared architecture options against reliability, scalability, code reuse, and operational requirements.",
-      "Designed a prototype addressing execution isolation, failure handling, and operational visibility.",
-      "Presented the proposed architecture to leadership and implemented the prototype's resource allocation and code-judging workflows.",
+      "Compared retaining the VM execution path with introducing Kubernetes, considering code reuse, storage operations, resource limits, and team adoption.",
+      "Designed a tiered-storage gateway with backend failover and health checks, and replaced direct socket coordination with Kafka events for replay and execution tracking.",
+      "Implemented a Nest.js allocation and judging API and designed dynamic scaling using CPU, pending pods, and consumer lag. Presented the architecture to leadership and built the prototype.",
     ],
     achievements: [
       {
         title: "Architecture",
-        text: "Addressed execution reliability and capacity requirements in a combined design.",
+        text: "Addressed execution resource control, storage recovery, and workload-driven scaling in a combined design.",
       },
       {
         title: "Subsequent product use",
-        text: "The team later incorporated the architecture I prototyped into the product.",
+        text: "The architecture prototyped during my tenure was later incorporated into the product; the initial contribution was design and prototype implementation.",
       },
     ],
+    tags: ["Kubernetes", "Kafka", "Nest.js", "Redis", "Tiered storage"],
     links: [],
   },
   {
@@ -434,21 +452,22 @@ export const projects: PortfolioProject[] = [
     period: "Oct 2023 - Nov 2023",
     role: "Infrastructure Engineer / Developer",
     summary:
-      "Improved isolation for user-code execution while preserving application compatibility.",
+      "Reduced runtime privilege boundaries for user-code execution and updated the supporting application paths.",
     motivation: [
       "Limit the host privileges available to untrusted code while preserving the required execution and networking behavior.",
     ],
     description: [
-      "Reviewed execution isolation requirements and implemented runtime improvements.",
-      "Updated the surrounding application to support the runtime changes.",
-      "Validated execution behavior and compatibility through the transition.",
+      "Configured and validated containers running under a user-level daemon.",
+      "Updated application networking to communicate with virtual interfaces inside the runtime namespace.",
+      "Migrated the container filesystem from AUFS to Overlay2 and adapted execution logic to the changed behavior.",
     ],
     achievements: [
       {
         title: "Runtime integration",
-        text: "Integrated and validated runtime security improvements with the surrounding application.",
+        text: "Validated the privilege-reduced execution path and filesystem transition with the surrounding application logic.",
       },
     ],
+    tags: ["Docker", "Node.js", "Namespaces", "Overlay2"],
     links: [],
   },
   {
@@ -458,12 +477,12 @@ export const projects: PortfolioProject[] = [
     period: "May 2023 - Dec 2023",
     role: "Infrastructure Engineer",
     summary:
-      "Repeatable service infrastructure through infrastructure as code.",
+      "Terraform and Terragrunt adoption for repeatable service infrastructure.",
     motivation: [
       "Reduce repeated setup work for customer installations and periodic environment rebuilds.",
     ],
     description: [
-      "Implemented reusable infrastructure definitions for service setup and customer installations.",
+      "Implemented service infrastructure as code across AWS and Naver Cloud Platform environments.",
     ],
     achievements: [
       {
@@ -471,6 +490,7 @@ export const projects: PortfolioProject[] = [
         text: "Reduced the required setup period from approximately one month to one week for the documented installation and rebuilding workflows.",
       },
     ],
+    tags: ["Terraform", "Terragrunt", "AWS", "Naver Cloud"],
     links: [],
   },
   {
@@ -485,16 +505,17 @@ export const projects: PortfolioProject[] = [
       "Move service operations toward repeatable container-based builds and deployment.",
     ],
     description: [
-      "Created repeatable container build and deployment workflows for running services.",
-      "Developed tooling to support container operations and service capacity.",
+      "Created image-build scripts and Compose definitions for running services.",
+      "Developed a container scale-out tool with CPU affinity configured for server capacity.",
       "Updated CI/CD workflows for container-based operations and rollback handling.",
     ],
     achievements: [
       {
         title: "Operational integration",
-        text: "Teams could build, deploy, and scale their services through a repeatable workflow.",
+        text: "Applied container build and scaling tools to service operations. Related rollback work is described with the CI and deployment improvements above.",
       },
     ],
+    tags: ["Docker", "Compose", "CI/CD", "CPU affinity"],
     links: [],
   },
 ];
@@ -553,7 +574,7 @@ export const presentations: PortfolioPublication[] = [
     title: "Build with AI Seoul 2026 with Google DeepMind",
     meta: "Invited speaker · May 2026",
     description:
-      "Presented the on-premises GPU self-service platform from a five-day PoC to internal production. Discussed AI-assisted development, design documentation, testing, and validation of generated work.",
+      "Presented the on-premises GPU self-service platform from a five-day PoC to internal production. Discussed using Claude Code and Codex with design documents, test-driven development, and continuous validation of agent output.",
     links: [],
   },
 ];
@@ -661,11 +682,12 @@ export const skills: { title: string; items: string[] }[] = [
   {
     title: "AI platforms & agents",
     items: [
-      "LLM serving and benchmarking",
-      "Request routing, cache management, and performance analysis",
-      "Agent integration, tool interfaces, and access control",
-      "Sparse and dense retrieval, context management",
-      "AI-assisted development and evaluation",
+      "MLflow, LiteLLM, AWS Bedrock, Hugging Face",
+      "vLLM, llama.cpp, llm-d, LMCache",
+      "KV-aware routing, offloading, inference load testing",
+      "MCP, OpenFGA, BAAI/bge-m3, TEI, pgvector, RRF",
+      "Claude Code, Codex; BM25 and dense retrieval",
+      "Evaluation experience with NVIDIA Dynamo and Mooncake",
     ],
   },
   {

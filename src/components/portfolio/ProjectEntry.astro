@@ -28,6 +28,12 @@ const { project, open = false } = Astro.props;
         <dt class="caption-1">Role</dt>
         <dd>{project.role}</dd>
       </div>
+      {project.tags && project.tags.length > 0 && (
+        <div>
+          <dt class="caption-1">Technologies</dt>
+          <dd>{project.tags.join(" · ")}</dd>
+        </div>
+      )}
     </dl>
     {project.image && (
       <figure class="project-image">
