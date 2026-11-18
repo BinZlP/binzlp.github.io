@@ -686,8 +686,8 @@ export const skills: { title: string; items: string[] }[] = [
     title: "AI platforms & agents",
     items: [
       "LLM serving and load testing (vLLM)",
-      "Model management and gateways (MLflow, LiteLLM)",
-      "Agent development (Amazon Bedrock, MCP)",
+      "Model gateways and agent tools (LiteLLM, MCP)",
+      "Document embeddings and retrieval",
     ],
   },
   {
