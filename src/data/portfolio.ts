@@ -582,7 +582,7 @@ export const presentations: PortfolioPublication[] = [
 export const writings: PortfolioPublication[] = [
   {
     title: "Persistent Context Management & Retrieval for LLM Agents",
-    meta: "Independent research · Manuscript under review · 2026",
+    meta: "Independent research · Unpublished manuscript · 2026",
     description:
       "Designed an ARC-inspired context manager and Python MCP server to maintain a document-level evidence set within a token budget. Compared managed context with BM25 and dense-retrieval baselines, focusing on reproducible token, cache, and cost accounting. Conclusions are limited to the observed workloads.",
     links: [],
