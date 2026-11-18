@@ -1,6 +1,7 @@
 ---
 import "../styles/portfolio.css";
 import { profile } from "../data/portfolio";
+import { portfolioAssetUrl } from "../lib/portfolio-asset-url";
 const title = `${profile.name} — Engineering portfolio`;
 const description =
   "Projects, experience, and research in AI infrastructure, distributed systems, and developer platforms.";
@@ -54,7 +55,7 @@ const image = new URL("/portfolio/social.png", Astro.site);
       </a>
       <a
         class="resume-link button-sm"
-        href="/portfolio/hyungseok-han-resume.pdf"
+        href={portfolioAssetUrl("hyungseok-han-resume.pdf")}
         download
       >
         Résumé <span class="caption-5">PDF</span>

@@ -1,54 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
-  <title id="title">LLM inference routing and KV-cache offloading</title>
-  <desc id="desc">Incoming requests pass through llm-d using approx-affinity routing to vLLM workers. The workers exchange KV-cache data with LMCache, which uses memory and storage cache tiers. The evaluated configuration was load-tested on one DGX-B300 node.</desc>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6b7280"/></marker>
-    <style>
-      text { font-family: Geist, 'Segoe UI', system-ui, sans-serif; fill: #1f2937; }
-      .heading { font-size: 26px; font-weight: 600; }
-      .label { font-size: 19px; font-weight: 600; }
-      .detail { font-size: 17px; fill: #4b5563; }
-      .note { font-size: 16px; fill: #4b5563; }
-      .box { fill: #ffffff; stroke: #d1d5db; stroke-width: 1.5; }
-      .accent { fill: #fafafa; stroke: #1d4ed8; stroke-width: 2; }
-      .flow { fill: none; stroke: #6b7280; stroke-width: 2; marker-end: url(#arrow); }
-      .exchange { fill: none; stroke: #6b7280; stroke-width: 2; marker-start: url(#arrow); marker-end: url(#arrow); }
-    </style>
-  </defs>
-  <rect width="960" height="600" rx="16" fill="#fafafa"/>
-  <text class="heading" x="32" y="45">LLM inference platform</text>
-  <text class="detail" x="32" y="75">Evaluated routing configuration and cache offloading</text>
-
-  <rect class="box" x="32" y="128" width="224" height="100" rx="12"/>
-  <text class="label" x="144" y="169" text-anchor="middle">Incoming requests</text>
-  <text class="detail" x="144" y="199" text-anchor="middle">Model inference</text>
-
-  <rect class="accent" x="332" y="128" width="242" height="100" rx="12"/>
-  <text class="label" x="453" y="169" text-anchor="middle">llm-d router</text>
-  <text class="detail" x="453" y="199" text-anchor="middle">approx-affinity</text>
-
-  <rect class="box" x="650" y="128" width="278" height="100" rx="12"/>
-  <text class="label" x="789" y="169" text-anchor="middle">vLLM workers</text>
-  <text class="detail" x="789" y="199" text-anchor="middle">Model execution</text>
-
-  <path class="flow" d="M256 178 H322"/>
-  <path class="flow" d="M574 178 H640"/>
-
-  <rect class="accent" x="454" y="306" width="278" height="88" rx="12"/>
-  <text class="label" x="593" y="342" text-anchor="middle">LMCache</text>
-  <text class="detail" x="593" y="371" text-anchor="middle">KV-cache offloading</text>
-  <path class="exchange" d="M789 238 V270 H593 V296"/>
-  <text class="note" x="625" y="258">KV-cache transfer</text>
-
-  <rect class="box" x="326" y="464" width="240" height="78" rx="12"/>
-  <text class="label" x="446" y="496" text-anchor="middle">Memory cache</text>
-  <text class="detail" x="446" y="523" text-anchor="middle">L1 tier</text>
-
-  <rect class="box" x="620" y="464" width="240" height="78" rx="12"/>
-  <text class="label" x="740" y="496" text-anchor="middle">Storage cache</text>
-  <text class="detail" x="740" y="523" text-anchor="middle">L2 tier</text>
-
-  <path class="flow" d="M593 394 V428 H446 V454"/>
-  <path class="flow" d="M593 428 H740 V454"/>
-  <text class="note" x="32" y="576">Load testing used one DGX-B300 node. This view shows logical components, not a multi-node deployment.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 760" role="img" aria-labelledby="diagram-title diagram-description">
+<title id="diagram-title">Model inference platform</title>
+<desc id="diagram-description">Application requests pass through request intake and work assignment to model execution. Generated output returns through response delivery. Reusable context supports execution, while model lifecycle, runtime observation, and load evaluation support platform engineering.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M0 0 10 5 0 10Z" fill="#2563eb"/>
+</marker>
+<marker id="control-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+<path d="M0 0 10 5 0 10Z" fill="#64748b"/>
+</marker>
+</defs>
+<style>text{font-family:Geist,'Segoe UI',system-ui,sans-serif;fill:#172033}.title{font-size:24px;font-weight:600}.group-label{font-size:18px;font-weight:600;fill:#1d4ed8}.label{font-size:18px;font-weight:600}.body{font-size:18px}.small{font-size:16px;fill:#475569}.group{fill:#f8fafc;stroke:#dbe3ee;stroke-width:1.5}.node{fill:white;stroke:#aebdce;stroke-width:1.5}.accent-node{fill:#eff6ff;stroke:#93b4ec;stroke-width:1.5}.flow{fill:none;stroke:#2563eb;stroke-width:2;stroke-linejoin:round}.control{fill:none;stroke:#64748b;stroke-width:1.7;stroke-dasharray:7 5;stroke-linejoin:round}</style>
+<rect width="1120" height="760" fill="white"/>
+<text x="32" y="36" class="title" text-anchor="start">Model inference platform</text>
+<text x="32" y="66" class="small" text-anchor="start">Request handling, reusable context, and runtime evaluation</text>
+<rect x="244" y="102" width="844" height="324" rx="12" class="group"/>
+<text x="268" y="134" class="group-label" text-anchor="start">Inference request and response</text>
+<rect x="32" y="166" width="170" height="96" rx="8" class="node"/>
+<text x="117" y="196" class="label" text-anchor="middle">Application</text>
+<text x="117" y="220" class="label" text-anchor="middle">clients</text>
+<text x="117" y="242" class="small" text-anchor="middle">Send a request</text>
+<rect x="268" y="166" width="190" height="96" rx="8" class="node"/>
+<text x="363" y="196" class="label" text-anchor="middle">Request</text>
+<text x="363" y="220" class="label" text-anchor="middle">interface</text>
+<text x="363" y="242" class="small" text-anchor="middle">Accept and dispatch</text>
+<rect x="512" y="166" width="214" height="96" rx="8" class="node"/>
+<text x="619" y="196" class="label" text-anchor="middle">Work</text>
+<text x="619" y="220" class="label" text-anchor="middle">assignment</text>
+<text x="619" y="242" class="small" text-anchor="middle">Route each request</text>
+<rect x="780" y="166" width="284" height="96" rx="8" class="accent-node"/>
+<text x="922" y="196" class="label" text-anchor="middle">Model execution</text>
+<text x="922" y="242" class="small" text-anchor="middle">Generate output</text>
+<path d="M202 214H268" class="flow" marker-end="url(#arrow)"/>
+<path d="M458 214H512" class="flow" marker-end="url(#arrow)"/>
+<path d="M726 214H780" class="flow" marker-end="url(#arrow)"/>
+<rect x="512" y="314" width="214" height="84" rx="8" class="node"/>
+<text x="619" y="344" class="label" text-anchor="middle">Response delivery</text>
+<text x="619" y="378" class="small" text-anchor="middle">Return generated output</text>
+<path d="M884 262V356H726" class="flow" marker-end="url(#arrow)"/>
+<path d="M512 356H117V262" class="flow" marker-end="url(#arrow)"/>
+<rect x="780" y="470" width="308" height="164" rx="12" class="group"/>
+<text x="804" y="502" class="group-label" text-anchor="start">Reusable context</text>
+<rect x="804" y="528" width="260" height="82" rx="8" class="node"/>
+<text x="934" y="558" class="label" text-anchor="middle">Context reuse</text>
+<text x="934" y="590" class="small" text-anchor="middle">Retain and retrieve context</text>
+<path d="M998 262V528" class="flow" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+<rect x="32" y="470" width="694" height="208" rx="12" class="group"/>
+<text x="56" y="502" class="group-label" text-anchor="start">Platform lifecycle</text>
+<rect x="56" y="528" width="188" height="96" rx="8" class="node"/>
+<text x="150" y="558" class="label" text-anchor="middle">Model</text>
+<text x="150" y="582" class="label" text-anchor="middle">lifecycle</text>
+<text x="150" y="604" class="small" text-anchor="middle">Prepare and activate</text>
+<rect x="270" y="528" width="194" height="96" rx="8" class="node"/>
+<text x="367" y="558" class="label" text-anchor="middle">Runtime</text>
+<text x="367" y="582" class="label" text-anchor="middle">observation</text>
+<text x="367" y="604" class="small" text-anchor="middle">Health and performance</text>
+<rect x="490" y="528" width="212" height="96" rx="8" class="node"/>
+<text x="596" y="558" class="label" text-anchor="middle">Load</text>
+<text x="596" y="582" class="label" text-anchor="middle">evaluation</text>
+<text x="596" y="604" class="small" text-anchor="middle">Compare measured runs</text>
+<path d="M56 576H16V452H480V286H620V262" class="control" marker-end="url(#control-arrow)"/>
+<path d="M922 262V440H367V528" class="control" marker-end="url(#control-arrow)"/>
+<path d="M596 528V464H748V146H840V166" class="control" marker-end="url(#control-arrow)"/>
+<text x="32" y="738" class="small" text-anchor="start">Blue: requests, content and results</text>
+<text x="574" y="738" class="small" text-anchor="start">Dashed: lifecycle management and observation</text>
 </svg>

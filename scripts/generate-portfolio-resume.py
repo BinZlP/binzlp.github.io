@@ -145,59 +145,57 @@ def build(output):
              "development, LLM inference, customer delivery, and production operations.", "summary"),
         *section("Experience"),
         *employer("Nota AI", "DevOps Engineer", "Oct 2025 - Present"),
-        para("Design and operate hybrid GPU infrastructure, reusable customer deployment "
-             "architectures, and internal platforms for AI workloads.", "body"),
+        para("Build and operate platforms for AI workloads, lead customer delivery, "
+             "and improve internal developer workflows.", "body"),
         project("NetsPresso / Arm AI Model Optimizer", [
-            "Designed and built Kubernetes service and deployment architecture for AWS and "
-            "on-premises customers, standardizing Terraform and Helm/Kustomize configurations.",
-            "Coordinated requirements, acceptance criteria, and two parallel customer deliveries; "
-            "enabled final validation and packaging within two days after code freeze. The "
+            "Designed service and deployment architecture for customers with different operating "
+            "requirements, and standardized the delivery approach.",
+            "Coordinated requirements, acceptance criteria, and two parallel customer deliveries. The "
             "delivered system entered production as an early-access service in October 2026.",
-            "Built customer observability and proposed trace-ID logging adopted by developers; "
-            "support post-launch security response and operational stabilization.",
+            "Improved release preparation and customer-facing operational visibility; "
+            "support post-launch reliability and service stabilization.",
         ]),
         project("GPU resource self-service platform", [
-            "Built a FastAPI/Next.js control plane for Proxmox GPU instance lifecycle, team quotas, "
-            "and resource visibility; took a five-day PoC to internal production in approximately one month.",
+            "Designed and built an internal platform that lets developers manage GPU resources "
+            "directly; took a five-day PoC to internal production in approximately one month.",
             "Automated routine infrastructure support, recording three consecutive weeks without "
             "system-level support requests, excluding physical hardware failures.",
         ]),
-        project("LLM inference platform and KV-cache optimization", [
-            "Built inference platform foundations and evaluated KV-aware routing policies against "
-            "model support and measured behavior; selected llm-d with approx-affinity routing.",
-            "Contributed to LMCache offloading bottleneck analysis, performance patches, and "
-            "request-cancellation crash investigation alongside other engineers.",
+        project("LLM inference platform", [
+            "Owned platform engineering work for LLM inference, comparing design alternatives "
+            "and validating behavior through performance and reliability testing.",
+            "Worked with peer engineers to investigate bottlenecks and resolve runtime failures, "
+            "contributing to shared performance and stability improvements.",
         ]),
-        project("EasyLLM - internal LLM gateway and serving platform", [
-            "Built a Python/FastAPI platform with Kubernetes, MLflow, and LiteLLM used by 70+ "
-            "internal users; automated model mirroring, vLLM/llama.cpp serving, and benchmarks.",
-            "Unified commercial and open-weight model access with per-user budgets and "
-            "isolated serving paths for restricted workloads.",
+        project("EasyLLM - internal AI platform", [
+            "Designed and delivered an internal AI platform used by 70+ colleagues, making "
+            "model access and comparison more consistent.",
+            "Connected user requirements with implementation and automated repetitive "
+            "model evaluation and service-management work.",
         ]),
         PageBreak(),
         *section("Experience continued"),
-        project("MCP-based internal app and document platform | Nota AI", [
-            "Independently built and deployed a platform in October 2026 for permission-aware "
-            "app discovery and document search by coding agents, using FastAPI, MCP, OpenFGA, "
-            "and self-hosted hybrid retrieval.",
+        project("Internal app and document sharing platform | Nota AI", [
+            "Independently designed, built, and deployed an internal platform in October 2026 "
+            "to help coding agents discover and reuse shared apps and documents.",
         ]),
         Spacer(1, 7),
         *employer("goorm", "Infrastructure Engineer", "Feb 2023 - Oct 2025"),
-        para("Designed and operated multi-region production infrastructure for web IDE and "
-             "code-judging platforms supporting thousands of concurrent code executions.", "body"),
+        para("Designed and operated production platforms for web IDE and "
+             "code-judging services supporting thousands of concurrent code executions.", "body"),
         project("Reliability and developer productivity", [
-            "Built centralized logging across 10+ Kubernetes clusters in four regions, using "
-            "Kafka to decouple collection, processing, and Elasticsearch/S3 storage.",
-            "Redesigned container build and remote-cache workflows in Jenkins, reducing "
+            "Built centralized logging for a multi-cluster Kubernetes environment, "
+            "improving operational visibility.",
+            "Improved application build workflows, reducing "
             "application build time by approximately 60% on average.",
-            "Prototyped a Kubernetes code-judging architecture with Kafka-based execution/replay "
-            "and storage failover; the architecture was later incorporated into the product.",
+            "Prototyped a code-judging redesign focused on reliability and scalability; "
+            "the architecture was later incorporated into the product.",
         ]),
         project("Sunrise - LLM-based infrastructure operations agent", [
-            "Built a Python/AWS Bedrock agent with a Django interface for natural-language "
-            "operations across thousands of cloud resources; adopted as a team support tool.",
-            "Modeled inspection, execution, and error recovery as a state machine with AWS, "
-            "Kubernetes, and Ansible domain agents; constrained execution to user credentials.",
+            "Designed and built an LLM-based assistant for natural-language infrastructure "
+            "operations and diagnostics; adopted as a team support tool.",
+            "Translated repeated operational tasks into a tool that helped the team "
+            "investigate issues and handle routine work.",
         ]),
         *section("Research and speaking"),
         para("<b>ScaleOPT: A Scalable Optimal Page Replacement Policy Simulator</b>", "body"),
@@ -213,10 +211,10 @@ def build(output):
         para("Distributed Computing Systems Lab; cache and distributed systems research.", "small"),
         para("<b>Kwangwoon University</b> | B.S., Software | 2017 - 2021", "body"),
         *section("Selected skills"),
-        para("<b>AI systems:</b> vLLM, llm-d, LMCache, LiteLLM, MLflow, MCP, retrieval systems", "body"),
-        para("<b>Platforms:</b> Kubernetes, AWS, Proxmox/KVM, Terraform, Helm/Kustomize, Ansible", "body"),
+        para("<b>AI systems:</b> LLM serving, model evaluation, agent systems, MCP, retrieval", "body"),
+        para("<b>Platforms:</b> Linux, Kubernetes, AWS, Docker, Terraform, infrastructure automation", "body"),
         para("<b>Development:</b> Python, TypeScript/JavaScript, C/C++, FastAPI, Django, Next.js", "body"),
-        para("<b>Operations:</b> Prometheus, Grafana, Loki, Elasticsearch, Kafka, Jenkins, GitOps", "body"),
+        para("<b>Operations:</b> Observability, CI/CD, Prometheus, Grafana, Kafka, GitOps", "body"),
     ]
     doc.build(story, onFirstPage=footer, onLaterPages=footer,
               canvasmaker=partial(canvas.Canvas, invariant=1))
