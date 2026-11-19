@@ -165,13 +165,15 @@ def build(output):
         para("Design and operate hybrid GPU infrastructure, reusable customer deployment "
              "architectures, and internal platforms for AI workloads.", "body"),
         project("NetsPresso / Arm AI Model Optimizer", [
-            "Designed and built Kubernetes service and deployment architecture for AWS and "
-            "on-premises customers, standardizing Terraform and Helm/Kustomize configurations.",
-            "Coordinated requirements, acceptance criteria, and two parallel customer deliveries; "
-            "enabled final validation and packaging within two days after code freeze. The "
-            "delivered system entered production as an early-access service in October 2026.",
-            "Built customer observability and proposed trace-ID logging adopted by developers; "
-            "support post-launch security response and operational stabilization.",
+            "Designed the Kubernetes architecture for AWS and on-premises deployments. Split the "
+            "model optimization pipeline into CPU and GPU jobs that scale independently to address "
+            "a customer’s GPU cost concerns.",
+            "Implemented cross-account delivery of container images and model assets for an AWS "
+            "customer. Coordinated two on-time customer deliveries, including the Arm deployment "
+            "that entered early access in October 2026.",
+            "Automated SBOM and SCA reporting in CI/CD so reviewers could identify dependencies "
+            "to replace before each release. Standardized final validation and packaging to fit "
+            "within two days of code freeze.",
         ]),
         project("NetsPresso - hosted AWS migration and FTR", [
             "Re-architected and migrated the existing hosted service to a new AWS environment. "

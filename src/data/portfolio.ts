@@ -55,7 +55,7 @@ export const profile: PortfolioProfile = {
   email: "dfafqfdaes159@gmail.com",
   github: "https://github.com/BinZlP",
   linkedin: "https://www.linkedin.com/in/hyungseok-han-aba694196/",
-  updated: "2026-11-19",
+  updated: "2026-11-20",
 };
 
 export const experience: PortfolioExperience[] = [
@@ -153,24 +153,27 @@ export const projects: PortfolioProject[] = [
     period: "Jun 2026 - Present",
     role: "Service Architect / DevOps Engineer",
     summary:
-      "Designed the Kubernetes service and deployment architecture and coordinated customer delivery through early-access production operations.",
+      "Designed Kubernetes deployments for AWS and on-premises customers and split CPU and GPU jobs so each could scale independently.",
     motivation: [
-      "Support different cloud and on-premises requirements through a common product architecture.",
-      "Establish repeatable validation, packaging, and delivery processes across customer environments.",
+      "Scale a single-host product and make releases repeatable across customer environments.",
     ],
     description: [
-      "Designed the Kubernetes service structure and separated shared infrastructure from environment-specific configuration with Terraform, Helm, and Kustomize.",
-      "Agreed validation and code-freeze checkpoints with developers, and coordinated requirements, acceptance criteria, and schedules directly with overseas customers.",
-      "Proposed trace-ID logging, adopted by the development team, and built operational dashboards. Supported customer PoCs and technical reviews, then adapted observability and workload-specific instance types after launch.",
+      "Standardized shared and customer-specific configurations with Terraform, Helm, and Kustomize. Built operational dashboards and proposed trace-ID logging that developers adopted for debugging.",
+      "Supported pre-sales PoCs for two prospects. Proposed a cross-account workflow for an AWS customer and implemented it with their approval. It granted access to ECR images and S3 model assets within the customer's IAM permissions boundary. Supplied a validation PoC and SCA reports.",
+      "Compiled a permitted-license list from customer and counsel-reviewed internal policies. Automated SBOM and SCA reporting in CI/CD so reviewers could flag dependencies to replace before each release.",
     ],
     achievements: [
       {
         title: "Customer delivery",
-        text: "Delivered parallel AWS and on-premises projects on schedule. After code freeze, final validation and packaging could be completed within two days.",
+        text: "Agreed on acceptance criteria and delivered the parallel AWS and on-premises projects on schedule. After code freeze, final validation and packaging could be completed within two days.",
+      },
+      {
+        title: "Independent scaling",
+        text: "To address GPU cost concerns, agreed on a design with the customer and delivered an optimization pipeline that scales CPU and GPU jobs independently.",
       },
       {
         title: "Production operations",
-        text: "The Arm deployment entered production early access as Arm AI Model Optimizer on October 19, 2026. Continued with security review and operational stabilization; this is distinct from the hosted-service AWS migration below.",
+        text: "Arm AI Model Optimizer entered production early access on October 19, 2026. Supported security reviews and production stabilization after launch.",
       },
     ],
     tags: ["Kubernetes", "Terraform", "Helm", "Kustomize", "Observability"],
