@@ -55,7 +55,7 @@ export const profile: PortfolioProfile = {
   email: "dfafqfdaes159@gmail.com",
   github: "https://github.com/BinZlP",
   linkedin: "https://www.linkedin.com/in/hyungseok-han-aba694196/",
-  updated: "2026-11-20",
+  updated: "2026-11-24",
 };
 
 export const experience: PortfolioExperience[] = [
@@ -101,12 +101,16 @@ export const projects: PortfolioProject[] = [
     ],
     description: [
       "Designed the serving platform and its request-routing layer. Compared how candidate designs performed on the workloads they needed to support.",
-      "Worked with teammates to trace a throughput bottleneck and load-tested the changes against the original behavior.",
+      "Traced a bottleneck with the inference team and co-developed a patch that removed repeated work from the serving path.",
     ],
     achievements: [
       {
-        title: "Throughput",
-        text: "Helped identify and remove repeated work from the serving path, improving throughput in load tests.",
+        title: "Patch benchmark",
+        text: "In before-and-after load tests, throughput rose from 93.3 million to 127.5 million tokens per minute (+36.7%). The peak session count increased from 1,326 to 1,880 (+41.8%).",
+      },
+      {
+        title: "Team benchmark",
+        text: "In a separate single-node test, the team's combined optimizations reached about 1.89× the throughput of the baseline inference engine, which already included the model provider's patches.",
       },
       {
         title: "Reliability",
