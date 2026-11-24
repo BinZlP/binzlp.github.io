@@ -262,7 +262,7 @@ const illustratedProjects = projects.map((project) => {
           {skills.map((item) => (
             <div>
               <dt class="title-4">{item.title}</dt>
-              <dd class="body-3">{item.items.join(" · ")}</dd>
+              <dd class="body-3">{item.items.join(` ${t.separator} `)}</dd>
             </div>
           ))}
         </dl>

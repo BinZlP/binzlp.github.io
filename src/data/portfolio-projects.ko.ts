@@ -28,7 +28,7 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     summary:
       `여러 언어 모델을 서비스하는 추론 플랫폼과 요청 라우팅 계층을 설계했습니다. 추론팀과 공동 개발한 패치를 적용한 뒤 부하 테스트에서 분당 토큰 처리량이 ${tokenFactory.tokensPerMinute.percent}% 늘었습니다.`,
     motivation: [
-      "모델마다 자원 사용 특성이 달라, 서빙 구조에 따라 실제 처리 성능과 비용이 어떻게 달라지는지 확인해야 했습니다.",
+      "여러 언어 모델의 추론 서비스를 제공하려면 GPU 인프라와 서빙 플랫폼을 먼저 구축해야 했습니다. 고가의 GPU를 사용하는 만큼, 모델의 구조와 크기에 맞춰 GPU당 처리량을 높이고 토큰당 추론 비용을 낮춰 서비스 마진을 극대화하는 것이 목표였습니다.",
     ],
     description: [
       "서빙 플랫폼과 요청 라우팅 계층을 설계하고, 후보 구조를 대상 워크로드에서 비교했습니다.",
@@ -50,16 +50,17 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     ],
   },
   "app-document-sharing": {
-    title: "MCP 기반 사내 앱·문서 공유 플랫폼",
+    title: "MCP 기반 사내 앱 및 문서 공유 플랫폼",
     role: "서비스 아키텍트 / 풀스택 개발자",
     summary:
       "코딩 에이전트가 사내 앱을 찾아 실행하고, 사용자에게 열람 권한이 있는 문서를 검색할 수 있는 플랫폼을 개발했습니다.",
     motivation: [
       "개인이 AI를 활용해 만든 앱과 문서를 다른 구성원도 업무에 활용할 수 있도록 공유할 공간이 필요했습니다.",
-      "앱 호출과 문서 검색에 같은 사용자 권한을 적용하고, 문서 추출과 임베딩은 사내 인프라에서 처리해야 했습니다.",
+      "에이전트가 사용자를 대신해 앱을 호출하고 문서를 검색하므로, 호출할 수 있는 앱과 열람할 수 있는 문서의 범위는 사용자 권한에 따라 제한해야 했습니다.",
+      "문서에는 사내 민감 정보가 담길 수 있어, 텍스트 추출부터 임베딩 생성까지 사내망에서 처리해야 했습니다.",
     ],
     description: [
-      "앱 게시·실행과 문서 공유 기능을 구현했습니다. 에이전트가 인증된 MCP 도구로 앱을 찾고, OpenAPI 명세를 조회하고, API를 호출하거나 문서를 검색할 수 있도록 했습니다.",
+      "앱 게시, 앱 실행, 문서 공유 기능을 구현했습니다. 에이전트가 인증된 MCP 도구로 앱을 찾고, OpenAPI 명세를 조회하고, API를 호출하거나 문서를 검색할 수 있도록 했습니다.",
       "오피스 문서에서 텍스트를 추출해 제목 단위로 나누고, 사내에서 TEI로 구동한 BAAI/bge-m3 모델로 임베딩을 생성했습니다.",
       "pgvector 벡터 검색과 PostgreSQL 키워드 검색 결과를 RRF로 결합했습니다. 앱 호출과 검색 과정에서 OpenFGA로 권한을 재확인하고, 앱 배포 상태도 관리할 수 있도록 했습니다.",
     ],
@@ -75,7 +76,7 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     ],
   },
   delivery: {
-    title: "NetsPresso / Arm AI Model Optimizer 아키텍처 설계·납품·운영",
+    title: "NetsPresso / Arm AI Model Optimizer 아키텍처 설계, 납품 및 운영",
     role: "서비스 아키텍트 / DevOps 엔지니어",
     summary:
       "AWS와 온프레미스 고객 환경에 NetsPresso를 배포할 Kubernetes 아키텍처를 설계했습니다. 모델 최적화 과정의 CPU 작업과 GPU 작업을 분리해 필요한 자원만 늘릴 수 있도록 했습니다.",
@@ -90,10 +91,10 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     achievements: [
       {
         title: "고객 납품",
-        text: `고객과 검수 기준을 합의하고 일정이 겹친 AWS·온프레미스 프로젝트 ${arm.parallelDeliveries}건을 기한 내 납품했습니다. 코드 동결 이후 최종 검증과 패키징을 ${arm.packagingDays}일 안에 마칠 수 있게 했습니다.`,
+        text: `고객과 검수 기준을 합의하고 일정이 겹친 AWS 및 온프레미스 프로젝트 ${arm.parallelDeliveries}건을 기한 내 납품했습니다. 코드 동결 이후 최종 검증과 패키징을 ${arm.packagingDays}일 안에 마칠 수 있게 했습니다.`,
       },
       {
-        title: "CPU·GPU 독립 확장",
+        title: "CPU와 GPU의 독립 확장",
         text: "GPU 비용을 우려한 고객과 설계안을 조율하고, CPU 작업과 GPU 작업을 각각 확장하는 최적화 파이프라인을 납품했습니다.",
       },
       {
@@ -110,10 +111,10 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
       "NetsPresso 호스팅 서비스의 인프라를 재설계해 새 AWS 환경으로 이전했습니다. 이전을 마친 서비스는 AWS FTR을 통과했습니다.",
     motivation: [
       "AWS FTR 기준에 맞게 운영 인프라와 운영 정책을 개선해야 했습니다.",
-      "새 환경을 재현할 수 있도록 구성하고, 전환 전에 검증·복구 절차를 마련할 필요가 있었습니다.",
+      "새 환경을 재현할 수 있도록 구성하고, 전환 전에 검증 및 복구 절차를 마련할 필요가 있었습니다.",
     ],
     description: [
-      "Terraform과 Ansible로 개발·스테이징·운영 네트워크를 분리하고, 데이터베이스 클러스터와 스냅샷, AMI 기반 Auto Scaling을 재구성했습니다.",
+      "Terraform과 Ansible로 개발, 스테이징, 운영 네트워크를 분리하고, 데이터베이스 클러스터와 스냅샷, AMI 기반 Auto Scaling을 재구성했습니다.",
       "AWS DMS로 시험 이전을 진행해 데이터 정합성과 애플리케이션 동작을 검증했습니다.",
       "원본 데이터베이스의 복제 제약을 고려해 Route 53 전환 계획을 세우고 개발팀과 실행 일정을 조율했습니다. 팀에 인프라 코드를 공유하고 기술 세션을 진행했습니다.",
     ],
@@ -129,10 +130,10 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     ],
   },
   gateway: {
-    title: "EasyLLM 사내 AI 게이트웨이·모델 서빙 플랫폼",
+    title: "EasyLLM 사내 AI 게이트웨이 및 모델 서빙 플랫폼",
     role: "서비스 아키텍트 / 개발자",
     summary:
-      "사내 GPU에서 구동하는 모델과 상용 모델 API를 한곳에서 쓰는 플랫폼을 개발했습니다. 모델 배포·벤치마크를 자동화하고 사용자별 예산을 관리할 수 있도록 했습니다.",
+      "사내 GPU에서 구동하는 모델과 상용 모델 API를 한곳에서 쓰는 플랫폼을 개발했습니다. 모델 배포와 벤치마크를 자동화하고 사용자별 예산을 관리할 수 있도록 했습니다.",
     motivation: [
       "사내 GPU 자원과 상용 API, 가중치 공개 모델에 공통 인터페이스로 접근할 수 있어야 했습니다.",
       "런타임별로 작업 절차를 따로 만들지 않고도 모델을 비교하고, 데이터나 네트워크 제약이 있는 프로젝트를 지원해야 했습니다.",
@@ -149,22 +150,22 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
       },
       {
         title: "개발 현장 활용",
-        text: "데이터·네트워크 제약이 있는 프로젝트에서도 AI를 활용한 개발이 가능해졌습니다. 개발자들은 사내 모델을 활용해 디버깅 작업도 자동화했습니다.",
+        text: "데이터와 네트워크에 제약이 있는 프로젝트에서도 AI를 활용한 개발이 가능해졌습니다. 개발자들은 사내 모델을 활용해 디버깅 작업도 자동화했습니다.",
       },
     ],
   },
   gpu: {
     title: "온프레미스 GPU 자원 셀프서비스 플랫폼",
-    role: "서비스·인프라 아키텍트 / 개발자",
+    role: "서비스 및 인프라 아키텍트 / 개발자",
     summary:
-      `개발자가 온프레미스 GPU 인스턴스를 직접 할당받는 플랫폼을 만들었습니다. 2026년 11월 기준 ${gpu.minTeams}개 이상 팀이 사용하며, 클러스터 ${gpu.clusters}개에서 GPU·NPU ${gpu.minModels}종 이상, 가속기 ${gpu.minAccelerators}개 이상과 인스턴스 ${gpu.minInstances}개 이상을 운영합니다.`,
+      `개발자가 온프레미스 GPU 인스턴스를 직접 할당받는 플랫폼을 만들었습니다. 2026년 11월 기준 ${gpu.minTeams}개 이상 팀이 사용하며, 클러스터 ${gpu.clusters}개에서 GPU와 NPU ${gpu.minModels}종 이상, 가속기 ${gpu.minAccelerators}개 이상과 인스턴스 ${gpu.minInstances}개 이상을 운영합니다.`,
     motivation: [
       "인스턴스를 만들 때마다 인프라팀에 요청하는 절차를 줄이고, 한정된 GPU 자원을 여러 팀에 일관된 기준으로 배분해야 했습니다.",
     ],
     description: [
-      "FastAPI와 Next.js로 Proxmox 인스턴스, 팀별 할당량, 사용량 기반 비용을 관리하는 기능을 개발했습니다. 대시보드에서 팀·프로젝트별 할당량과 실제 사용률을 확인하고, 사용률 기준에 따른 유휴 자원 회수를 시범 운영했습니다.",
+      "FastAPI와 Next.js로 Proxmox 인스턴스, 팀별 할당량, 사용량 기반 비용을 관리하는 기능을 개발했습니다. 대시보드에서 팀별, 프로젝트별 할당량과 실제 사용률을 확인하고, 사용률 기준에 따른 유휴 자원 회수를 시범 운영했습니다.",
       "여러 요청이 겹치면 사용 목적에 따라 0~3등급을 부여하고 0등급부터 자원을 배분하도록 했습니다. 이견을 심의할 협의체도 마련했으며, 2026년 11월 기준 정식 심의에 상정된 건은 없습니다.",
-      "경영진과 월별·분기별 자원 계획을 수립했습니다. 수요와 가용 용량, 용량 부족 위험을 대시보드에 표시해 증설 판단에 활용했습니다.",
+      "경영진과 월별 및 분기별 자원 계획을 수립했습니다. 수요와 가용 용량, 용량 부족 위험을 대시보드에 표시해 증설 판단에 활용했습니다.",
     ],
     achievements: [
       {
@@ -196,7 +197,7 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     ],
     achievements: [
       {
-        title: "설치·배포 시간 단축",
+        title: "설치 및 배포 시간 단축",
         text: `납품 과정에서 측정한 초기 설정 및 배포 시간을 ${transportation.deploymentTimeReduction}% 줄였습니다.`,
       },
       {
@@ -214,7 +215,7 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
       "반복되는 자원 관리와 사내 지원 업무를 한 도구에서 처리하고, 운영 요청을 진단하고 실행하는 절차를 명확히 할 필요가 있었습니다.",
     ],
     description: [
-      "요청 분류, 상태 점검, 명령 생성·실행, 오류 분석 과정을 상태 머신으로 설계했습니다.",
+      "요청 분류, 상태 점검, 명령 생성과 실행, 오류 분석 과정을 상태 머신으로 설계했습니다.",
       "AWS, Kubernetes, Ansible 에이전트를 분리해 각 영역의 운영 기능을 독립적으로 추가할 수 있게 했습니다.",
       "Django로 인터페이스를 만들고, 실행 결과에서 오류를 분석해 명령을 수정한 뒤 사용자의 기존 권한 안에서 재시도하도록 했습니다.",
     ],
@@ -230,7 +231,7 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     ],
   },
   "multicluster-logging": {
-    title: "Kubernetes 멀티클러스터 로그 수집·분석 파이프라인",
+    title: "Kubernetes 멀티클러스터 로그 수집 및 분석 파이프라인",
     role: "DevOps",
     summary:
       `AWS 리전 ${logging.regions}곳에 분산된 EKS 클러스터 ${logging.minClusters}개 이상의 로그를 한곳에서 수집하고 분석할 수 있게 했습니다.`,
@@ -238,9 +239,9 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
       "Kubernetes 스케줄링에 맞춰 로그를 수집하고, 후속 처리기나 저장소가 중단돼도 들어온 로그를 보존해야 했습니다.",
     ],
     description: [
-      "Fluent Bit에서 수집한 로그를 Kafka에 쌓고, Fluentd가 처리해 Elasticsearch와 S3에 저장하도록 수집·처리·저장 단계를 분리했습니다.",
+      "Fluent Bit에서 수집한 로그를 Kafka에 쌓고, Fluentd가 처리해 Elasticsearch와 S3에 저장하도록 수집, 처리, 저장 단계를 분리했습니다.",
       "Kafka에 원본 로그를 버퍼링해 단계별 처리량 차이를 흡수했습니다.",
-      "FluxCD로 여러 클러스터의 수집·처리 설정을 일관되게 관리했습니다.",
+      "FluxCD로 여러 클러스터의 수집 및 처리 설정을 일관되게 관리했습니다.",
     ],
     achievements: [
       {
@@ -278,7 +279,7 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     ],
   },
   "operations-cli": {
-    title: "인프라 구성·검증 자동화 CLI",
+    title: "인프라 구성 및 검증 자동화 CLI",
     role: "개발자",
     summary:
       "대규모 인프라를 준비할 때 자원 생성부터 서버 설정, 운영 전 검증까지 한 번에 수행할 수 있는 Python CLI를 개발했습니다.",
@@ -312,11 +313,11 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     description: [
       "기존 VM 기반 실행 방식을 유지하는 안과 Kubernetes 전환안을 비교했습니다. 기존 코드의 재사용 범위, 저장소 운영, 실행 자원 제한, 팀의 도입 부담을 검토했습니다.",
       "백엔드 상태를 확인하고 장애 시 다른 저장소로 전환하는 계층형 스토리지 게이트웨이를 설계했습니다. 직접 소켓 통신하던 실행 요청을 Kafka 이벤트로 바꿔 재처리와 상태 추적이 가능하게 했습니다.",
-      "NestJS로 자원 할당·채점 API를 구현하고 CPU 사용량, 대기 중인 파드, Kafka 컨슈머 지연에 따라 클러스터를 확장하도록 설계했습니다. 경영진에 아키텍처를 제안하고 프로토타입을 만들었습니다.",
+      "NestJS로 자원 할당 및 채점 API를 구현하고 CPU 사용량, 대기 중인 파드, Kafka 컨슈머 지연에 따라 클러스터를 확장하도록 설계했습니다. 경영진에 아키텍처를 제안하고 프로토타입을 만들었습니다.",
     ],
     achievements: [
       {
-        title: "실행·저장소 설계",
+        title: "실행 환경과 저장소 설계",
         text: "코드 실행 자원의 제한, 저장소 장애 복구, 요청량에 따른 확장을 하나의 구조에서 다루도록 설계했습니다.",
       },
       {
@@ -367,7 +368,7 @@ export const projectCopyKo: Record<string, ProjectCopy> = {
     title: "서비스 애플리케이션 컨테이너화",
     role: "인프라 엔지니어",
     summary:
-      "운영 중인 서비스를 컨테이너로 빌드·배포하고, 서버 사양에 맞춰 인스턴스를 늘릴 수 있는 도구를 개발했습니다.",
+      "운영 중인 서비스를 컨테이너로 빌드하고 배포하며, 서버 사양에 맞춰 인스턴스를 늘릴 수 있는 도구를 개발했습니다.",
     motivation: [
       "서비스를 운영하면서 컨테이너 빌드와 배포를 같은 절차로 반복할 수 있어야 했습니다.",
     ],

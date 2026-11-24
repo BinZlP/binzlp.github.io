@@ -13,7 +13,7 @@ const projectText: Record<string, FigureText> = {
   },
   "app-document-sharing": {
     alt: "에이전트가 MCP로 OpenAPI 앱을 찾고 문서를 검색한다. OpenFGA가 접근 권한을 확인하고, 문서 검색은 벡터 검색과 키워드 검색 결과를 결합한다.",
-    caption: "앱·문서 공유 플랫폼의 등록 및 검색 흐름",
+    caption: "앱 및 문서 공유 플랫폼의 등록 및 검색 흐름",
   },
   delivery: {
     alt: "NetsPresso의 애플리케이션 서비스, 작업 대기열, 모델 최적화 워커, 모니터링 구성 요소가 연결된 모습.",

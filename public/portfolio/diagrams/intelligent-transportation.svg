@@ -36,7 +36,7 @@
 <path d="M834 206H858" class="flow" marker-end="url(#arrow)"/>
 <rect x="634" y="318" width="430" height="86" rx="8" class="node"/>
 <text x="849" y="348" class="label" text-anchor="middle">Health reporting</text>
-<text x="849" y="384" class="small" text-anchor="middle">Vector log collection · health checks</text>
+<text x="849" y="384" class="small" text-anchor="middle">Vector log collection / health checks</text>
 <path d="M962 254V318" class="flow" marker-end="url(#arrow)"/>
 <path d="M734 254V284H416V222" class="flow" marker-end="url(#arrow)"/>
 <rect x="298" y="492" width="790" height="162" rx="12" class="group"/>
@@ -46,7 +46,7 @@
 <text x="479" y="610" class="small" text-anchor="middle">Grafana dashboards</text>
 <rect x="714" y="548" width="350" height="82" rx="8" class="node"/>
 <text x="889" y="578" class="label" text-anchor="middle">Telemetry processing</text>
-<text x="889" y="610" class="small" text-anchor="middle">Loki: logs · Prometheus: metrics</text>
+<text x="889" y="610" class="small" text-anchor="middle">Loki: logs / Prometheus: metrics</text>
 <path d="M850 404V466H889V548" class="flow" marker-end="url(#arrow)"/>
 <path d="M714 589H636" class="flow" marker-end="url(#arrow)"/>
 <path d="M322 589H135V222" class="flow" marker-end="url(#arrow)"/>

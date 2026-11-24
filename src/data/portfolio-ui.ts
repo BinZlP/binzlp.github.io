@@ -4,6 +4,7 @@ export const portfolioPaths = { en: "/portfolio/", ko: "/portfolio/ko/" } as con
 
 export const portfolioUi = {
   en: {
+    separator: "/",
     profile: "Profile", experience: "Work experience", projects: "Projects",
     presentations: "Presentations", writings: "Writings", activities: "Other activities",
     skills: "Skills", awards: "Awards & honors", education: "Education",
@@ -20,6 +21,7 @@ export const portfolioUi = {
     openDiagram: (title: string) => `Open ${title} architecture diagram in a new tab`,
   },
   ko: {
+    separator: "/",
     profile: "소개", experience: "경력", projects: "프로젝트",
     presentations: "발표", writings: "논문과 글", activities: "기타 활동",
     skills: "기술", awards: "수상 및 장학", education: "학력",

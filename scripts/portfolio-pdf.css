@@ -65,6 +65,7 @@ li + li { margin-top: 2.5pt; }
 .project figure { text-align: center; margin: 9pt 0; }
 figure img { display: block; width: 100%; object-fit: contain; }
 .project figure img { height: 96mm; }
+html:lang(ko) .project:has(> .links) figure img { height: 88mm; }
 figcaption { color: #546275; margin-top: 2.5pt; font-size: 8pt; }
 .case-row { margin-top: 6pt; padding-top: 5pt; border-top: .55pt solid #d6dce5; }
 .case-row h3 { font-size: 9.3pt; line-height: 1.24; font-weight: 650; margin-bottom: 2pt; }

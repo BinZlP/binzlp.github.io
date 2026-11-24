@@ -18,29 +18,29 @@ const companies: Record<string, string> = { goorm: "구름" };
 export const profile = {
   ...en.profile,
   name: "한형석",
-  role: "AI 인프라·플랫폼 엔지니어",
+  role: "AI 인프라 / 플랫폼 엔지니어",
   intro: "분산 시스템과 운영체제를 연구한 DevOps 엔지니어입니다. 클라우드와 온프레미스 환경에서 LLM 추론 인프라와 개발자 플랫폼을 구축하고, 고객이 서비스를 배포하고 운영할 수 있도록 시스템을 설계합니다.",
 };
 
 const experienceCopy: Record<string, Pick<PortfolioExperience, "role" | "description" | "bullets">> = {
   "Nota AI": {
     role: "DevOps 엔지니어",
-    description: "온프레미스와 클라우드의 GPU 인프라, 사내 AI 플랫폼, 고객용 서비스 배포를 담당합니다.",
+    description: "온프레미스 및 클라우드 GPU 인프라 운영, 사내 AI 플랫폼 개발, 고객 환경 배포",
     bullets: [
-      "GPU 클러스터와 클라우드 인프라를 설계·운영하며, 자원을 할당하고 필요한 용량을 계획합니다.",
-      "LLM 추론 플랫폼을 구축하고 추론 팀과 함께 성능 병목을 분석하고 개선합니다.",
-      "사내 셀프서비스 플랫폼과 MCP 도구를 개발하고, 클라우드·온프레미스·접근이 제한된 고객 환경에 재사용할 수 있는 배포 구조를 설계합니다.",
-      "서비스 상태를 관찰하는 도구와 운영 자동화를 구축하고, 보안 심사와 서비스 기술 검토에 필요한 인프라 통제를 구현합니다.",
+      "GPU 클러스터 및 클라우드 인프라 설계와 운영, 자원 할당 및 용량 계획",
+      "LLM 추론 플랫폼 구축, 추론팀과 성능 병목 공동 분석 및 개선",
+      "사내 셀프서비스 플랫폼과 MCP 도구 개발, 클라우드와 온프레미스에서 재사용 가능한 배포 구조 설계(접근 제한 환경 포함)",
+      "서비스 모니터링 및 운영 자동화 구축, 보안 심사와 기술 검토를 위한 인프라 통제 구현",
     ],
   },
   goorm: {
     role: "인프라 엔지니어",
-    description: "수천 건의 코드 실행을 동시에 처리하는 웹 IDE와 코드 채점 서비스의 운영 인프라를 담당했습니다.",
+    description: "수천 건의 동시 코드 실행을 지원하는 웹 IDE와 코드 채점 서비스의 인프라 운영",
     bullets: [
-      "여러 리전과 클라우드에 걸쳐 서비스 인프라를 설계·운영하고, 안정성과 확장성을 개선했습니다.",
-      "Terraform, Ansible, Python으로 인프라를 구축하고 고객에게 납품하는 과정을 표준화했습니다.",
-      `${projectMetrics.logging.regions}개 리전의 Kubernetes 클러스터 ${projectMetrics.logging.minClusters}개 이상에서 로그를 중앙 수집하고 서비스 상태를 관찰할 수 있도록 구성했습니다.`,
-      "CSAP와 ISMS 요구사항을 인프라 설계에 반영하고 CI/CD 및 운영 도구를 개발했습니다.",
+      "멀티 리전 및 멀티 클라우드 인프라 설계와 운영, 서비스 안정성과 확장성 개선",
+      "Terraform, Ansible, Python을 활용한 인프라 구축 및 고객 납품 절차 표준화",
+      `Kubernetes 로그 통합 수집 및 서비스 모니터링 체계 구축(${projectMetrics.logging.regions}개 리전, 클러스터 ${projectMetrics.logging.minClusters}개 이상)`,
+      "CSAP와 ISMS 요구사항을 반영한 인프라 설계, CI/CD 및 운영 도구 개발",
     ],
   },
 };
@@ -89,7 +89,7 @@ const earlierCopy: Record<string, {title: string; description: string}> = {
   },
   "Real-time home yoga assistant service": {
     title: "실시간 홈 요가 어시스트 서비스",
-    description: "SW마에스트로 팀장으로 서비스 아키텍처를 설계하고 백엔드를 개발했습니다. 학습 데이터를 준비해 자세 안내용 모델을 트리플릿 손실 함수로 학습하고 일정·예산·문서를 관리했습니다.",
+    description: "SW마에스트로 팀장으로 서비스 아키텍처를 설계하고 백엔드를 개발했습니다. 학습 데이터를 준비해 자세 안내용 모델을 트리플릿 손실 함수로 학습하고 일정과 예산, 문서를 관리했습니다.",
   },
   "Bluetooth smart door lock": {
     title: "블루투스 스마트 도어록",
@@ -114,24 +114,24 @@ export const earlierProjects = en.earlierProjects.map((item) => ({
 type PublicationCopy = Pick<PortfolioPublication, "meta" | "description"> & { title?: string };
 const publicationCopy: Record<string, PublicationCopy> = {
   "Build with AI Seoul 2026 with Google DeepMind": {
-    meta: "초청 발표 · 2026년 5월",
+    meta: "초청 발표 / 2026년 5월",
     description: `${projectMetrics.gpu.prototypeDays}일간의 개념 검증에서 사내 정식 서비스로 이어진 GPU 셀프서비스 플랫폼의 개발 과정을 발표했습니다. 설계 문서와 테스트 주도 개발을 바탕으로 Claude Code와 Codex를 활용하고, 에이전트가 작성한 코드를 지속적으로 검증한 경험을 공유했습니다.`,
   },
   "Persistent Context Management & Retrieval for LLM Agents": {
-    meta: "개인 연구 · 미출판 원고 · 2026년",
-    description: "제한된 토큰 예산 안에서 에이전트가 참고할 문서를 유지하도록 ARC에서 착안한 컨텍스트 관리자와 Python MCP 서버를 설계했습니다. 같은 워크로드에서 BM25 및 밀집 벡터 검색과 비교하고, 토큰 사용량·캐시 동작·비용을 재현 가능한 방식으로 집계했습니다.",
+    meta: "개인 연구 / 미출판 원고 / 2026년",
+    description: "제한된 토큰 예산 안에서 에이전트가 참고할 문서를 유지하도록 ARC에서 착안한 컨텍스트 관리자와 Python MCP 서버를 설계했습니다. 같은 워크로드에서 BM25 및 밀집 벡터 검색과 비교하고, 토큰 사용량과 캐시 동작, 비용을 재현 가능한 방식으로 집계했습니다.",
   },
   "ScaleOPT: A Scalable Optimal Page Replacement Policy Simulator": {
-    meta: "제1저자 · ACM SIGMETRICS 2025",
+    meta: "제1저자 / ACM SIGMETRICS 2025",
     description: "AccessMap으로 전처리를 병렬화하고 Pipelined-Tree로 최적 페이지 교체 시뮬레이션을 파이프라인화했습니다. 72스레드 환경에서 기존 기준 시뮬레이터 대비 최대 약 6배, 오픈소스 시뮬레이터 대비 최대 약 20배의 속도를 기록했습니다.",
   },
   "Improving optimal page replacement for multicore systems": {
     title: "멀티코어 환경을 고려한 최적 페이지 교체 알고리즘 향상 기법",
-    meta: "제1저자 · KCC 2022 최우수논문상",
+    meta: "제1저자 / KCC 2022 최우수논문상",
     description: "최적 페이지 교체 시뮬레이션의 전처리 과정에서 확장성을 제한하는 연산을 분석하고, 해당 연산의 시간 복잡도를 낮추는 자료구조를 제안했습니다. 한국정보과학회 KCC 2022 최우수논문상을 받았습니다.",
   },
   "Attentive Multi-Task Prediction of Atmospheric Particulate Matter: Effect of the COVID-19 Pandemic": {
-    meta: "공동저자 · IEEE Access",
+    meta: "공동저자 / IEEE Access",
     description: "국내 주요 도시의 미세먼지 농도를 예측하는 다중 과제 학습 연구에 참여해 아이디어 구상, 데이터 전처리, 결과 시각화를 맡았습니다.",
   },
 };
@@ -153,12 +153,12 @@ export const activities: typeof en.activities = [
     description: "2019년 5월부터 12월까지 10기 연수생으로 참여했습니다. 실시간 홈 요가 어시스트 서비스 프로젝트의 팀장을 맡아 서비스 구조를 설계하고 백엔드와 인프라를 개발했습니다.",
   },
   {
-    title: "교육·멘토링",
-    description: "2024년 구름톤 in Jeju 11·12기에서 클라우드 엔지니어 멘토로 활동했습니다. 경신고등학교에서 컴퓨팅 사고와 C 프로그래밍을 가르쳤으며, 서울대학교 시스템프로그래밍 수업과 광운대학교 SW학교에서 조교를 맡았습니다.",
+    title: "교육 및 멘토링",
+    description: "2024년 구름톤 in Jeju 11기와 12기에서 클라우드 엔지니어 멘토로 활동했습니다. 경신고등학교에서 컴퓨팅 사고와 C 프로그래밍을 가르쳤으며, 서울대학교 시스템프로그래밍 수업과 광운대학교 SW학교에서 조교를 맡았습니다.",
   },
   {
-    title: "행사 기획·기술 공유",
-    description: "KSCON과 대학 연합 SW Championship의 기획·기술 운영 및 알고리즘 문제 출제에 참여했습니다. 구름 사내 세미나 STRIDE에서 인프라 운영 도구 Sunrise의 개발 경험을 발표했습니다.",
+    title: "행사 기획 및 기술 공유",
+    description: "KSCON과 대학 연합 SW Championship의 기획과 기술 운영, 알고리즘 문제 출제에 참여했습니다. 구름 사내 세미나 STRIDE에서 인프라 운영 도구 Sunrise의 개발 경험을 발표했습니다.",
   },
   {
     title: "광운대학교 학생회",
@@ -171,19 +171,19 @@ export const activities: typeof en.activities = [
 ];
 
 const skillNames: Record<string, string> = {
-  "Virtualization & storage": "가상화·스토리지",
-  "Containers & orchestration": "컨테이너·오케스트레이션",
-  "Cloud & provisioning": "클라우드·프로비저닝",
-  "CI/CD & GitOps": "CI/CD·GitOps",
+  "Virtualization & storage": "가상화 / 스토리지",
+  "Containers & orchestration": "컨테이너 / 오케스트레이션",
+  "Cloud & provisioning": "클라우드 / 프로비저닝",
+  "CI/CD & GitOps": "CI/CD 및 GitOps",
   "LLM serving": "LLM 서빙",
   "Agent development": "에이전트 개발",
-  "Databases & caching": "데이터베이스·캐싱",
+  "Databases & caching": "데이터베이스 / 캐싱",
   Messaging: "메시징",
   "Log pipelines": "로그 파이프라인",
   Monitoring: "모니터링",
   "Web frameworks": "웹 프레임워크",
   "Programming languages": "프로그래밍 언어",
-  "Performance & data analysis": "성능·데이터 분석",
+  "Performance & data analysis": "성능 분석 / 데이터 분석",
   "Collaboration tools": "협업 도구",
   "Spoken languages": "구사 언어",
 };
@@ -218,7 +218,7 @@ const awardNames: Record<string, string> = {
   "Dean's List and encouragement award at the project exhibition, Kwangwoon University": "광운대학교 소프트웨어융합대학 Dean’s List(성적 우수), 참빛설계학기 전시회 장려상",
   "Graduation-project exhibition encouragement award, Kwangwoon University": "광운대학교 소프트웨어학부 졸업작품전시회 장려상",
   "Third place, KW Hackathon; KWEF creative software competition encouragement award": "KW 해커톤 3위, 광운엔지니어링페스티벌(KWEF) 창의융합소프트웨어경진대회 장려상",
-  "Dean's List, software excellence, academic merit, and service scholarships, Kwangwoon University": "광운대학교 Dean’s List, SW능력우수·성적우수·봉사 장학금",
+  "Dean's List, software excellence, academic merit, and service scholarships, Kwangwoon University": "광운대학교 Dean’s List, SW능력우수, 성적우수, 봉사 장학금",
   "National Science and Engineering Scholarship, Korea Student Aid Foundation": "한국장학재단 국가우수장학금(이공계)",
 };
 export const awards = en.awards.map((item) => ({ ...item, title: awardNames[item.title] ?? item.title }));

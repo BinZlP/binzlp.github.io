@@ -18,6 +18,7 @@ if (!['en', 'ko'].includes(locale) || process.argv.length > 3) {
 }
 const korean = locale === 'ko';
 const labels = portfolioUi[locale];
+const separator = labels.separator;
 const {
   activities, awards, education, experience, presentations,
   profile, projects, skills, writings,
@@ -54,12 +55,12 @@ function figure(image) {
 function projectEntry(item) {
   const image = projectDiagrams[item.id] ?? item.image;
   return `<article id="${escape(item.id)}" class="project ${image ? 'illustrated' : 'text-case'}">
-    <p class="meta">${escape(item.company)} &nbsp;·&nbsp; ${escape(item.period)}</p>
+    <p class="meta">${escape(item.company)} &nbsp;${separator}&nbsp; ${escape(item.period)}</p>
     <h2>${escape(item.title)}</h2>
     <p class="summary">${escape(item.summary)}</p>
     <dl class="facts">
       <div><dt>${labels.role}</dt><dd>${escape(item.role)}</dd></div>
-      ${item.tags?.length ? `<div><dt>${labels.technologies}</dt><dd>${escape(item.tags.join(' · '))}</dd></div>` : ''}
+      ${item.tags?.length ? `<div><dt>${labels.technologies}</dt><dd>${escape(item.tags.join(` ${separator} `))}</dd></div>` : ''}
     </dl>
     ${image ? figure(image) : ''}
     <div class="case-row"><h3>${labels.motivation}</h3>${list(item.motivation)}</div>
@@ -124,7 +125,7 @@ function portfolio() {
       ${rows(awards, item => item.year, item => escape(item.title))}
     </section>
     <section class="new-page" id="skills"><h2>${labels.skills}</h2>
-      ${rows(skills, item => item.title, item => escape(item.items.join(' · ')))}
+      ${rows(skills, item => item.title, item => escape(item.items.join(` ${separator} `)))}
     </section>
   </body></html>`;
 }

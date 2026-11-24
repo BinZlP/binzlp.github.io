@@ -76,12 +76,12 @@ export const experience: PortfolioExperience[] = [
     role: "DevOps Engineer",
     period: "Oct 2025 - Present",
     description:
-      "Hybrid GPU infrastructure, AI platforms, and customer deployment engineering.",
+      "Hybrid GPU infrastructure, internal AI platforms, and customer deployments",
     bullets: [
-      "Design and operate on-premises GPU clusters and cloud infrastructure, including resource allocation and capacity planning.",
-      "Build inference platforms and jointly investigate and improve system performance.",
-      "Develop internal self-service and MCP platforms, and reusable deployment architectures for cloud, on-premises, and restricted customer environments.",
-      "Implement observability, operational automation, and infrastructure controls supporting security and service reviews.",
+      "GPU cluster and cloud infrastructure design and operations, resource allocation, and capacity planning",
+      "LLM inference platform development and joint performance tuning with the inference team",
+      "Internal self-service and MCP platforms, plus reusable deployment designs for cloud, on-premises, and restricted customer environments",
+      "Service monitoring, operations automation, and infrastructure controls for security and service reviews",
     ],
   },
   {
@@ -89,12 +89,12 @@ export const experience: PortfolioExperience[] = [
     role: "Infrastructure Engineer",
     period: "Feb 2023 - Oct 2025",
     description:
-      "Production infrastructure for web IDE and code-judging services supporting thousands of concurrent code-execution workloads.",
+      "Production infrastructure for web IDE and code-judging services supporting thousands of concurrent code executions",
     bullets: [
-      "Designed and operated multi-region, multi-cloud service infrastructure and improved reliability and scalability.",
-      "Standardized provisioning and customer delivery with Terraform, Ansible, and Python.",
-      `Built centralized logging and observability across ${logging.minClusters}+ Kubernetes clusters in ${inWords(logging.regions)} regions.`,
-      "Implemented infrastructure designs reflecting CSAP and ISMS requirements, alongside CI/CD and operations tooling.",
+      "Multi-region, multi-cloud infrastructure design and operations, with a focus on reliability and scalability",
+      "Standardized infrastructure provisioning and customer delivery with Terraform, Ansible, and Python",
+      `Centralized logging and service monitoring for ${logging.minClusters}+ Kubernetes clusters across ${inWords(logging.regions)} regions`,
+      "Infrastructure design for CSAP and ISMS requirements, CI/CD pipelines, and operations tools",
     ],
   },
 ];
@@ -109,7 +109,8 @@ export const projects: PortfolioProject[] = [
     summary:
       "Built the foundation for serving multiple language models and worked with the inference team to improve throughput and reliability.",
     motivation: [
-      "Different models placed different demands on the serving platform. We needed to understand how those differences affected performance and cost.",
+      "Launching an inference service required infrastructure and a platform for deploying and serving multiple models.",
+      "GPU capacity was expensive. To maximize the service's margins, we needed to serve more tokens per GPU and lower the cost per token across models of different sizes and architectures.",
     ],
     description: [
       "Designed the serving platform and its request-routing layer. Compared how candidate designs performed on the workloads they needed to support.",
@@ -141,7 +142,8 @@ export const projects: PortfolioProject[] = [
       "A shared access layer for coding agents to discover internal applications and retrieve authorized documents.",
     motivation: [
       "Make AI-assisted applications and documents reusable across the organization instead of leaving them in individual environments.",
-      "Apply user permissions consistently to app invocation and document retrieval while keeping extraction and embeddings on internal infrastructure.",
+      "App calls and document searches had to respect each user's permissions so that users could retrieve only the documents they were authorized to read.",
+      "Documents could contain sensitive company information, so text extraction and embedding generation had to run inside the corporate network.",
     ],
     description: [
       "Implemented application publishing and execution, document sharing, and authenticated MCP tools for discovery, OpenAPI inspection, API calls, and retrieval.",
@@ -594,7 +596,7 @@ export const earlierProjects: {
 export const presentations: PortfolioPublication[] = [
   {
     title: "Build with AI Seoul 2026 with Google DeepMind",
-    meta: "Invited speaker · May 2026",
+    meta: "Invited speaker / May 2026",
     description:
       `Presented the on-premises GPU self-service platform from a ${inWords(gpu.prototypeDays)}-day PoC to internal production. Discussed using Claude Code and Codex with design documents, test-driven development, and continuous validation of agent output.`,
     links: [],
@@ -604,14 +606,14 @@ export const presentations: PortfolioPublication[] = [
 export const writings: PortfolioPublication[] = [
   {
     title: "Persistent Context Management & Retrieval for LLM Agents",
-    meta: "Independent research · Unpublished manuscript · 2026",
+    meta: "Independent research / Unpublished manuscript / 2026",
     description:
       "Designed an ARC-inspired context manager and Python MCP server to maintain a document-level evidence set within a token budget. Compared managed context with BM25 and dense-retrieval baselines, focusing on reproducible token, cache, and cost accounting. Conclusions are limited to the observed workloads.",
     links: [],
   },
   {
     title: "ScaleOPT: A Scalable Optimal Page Replacement Policy Simulator",
-    meta: "First author · ACM SIGMETRICS 2025",
+    meta: "First author / ACM SIGMETRICS 2025",
     description:
       "Introduced AccessMap and Pipelined-Tree to parallelize preprocessing and pipeline optimal page-replacement simulation. Evaluations on a 72-thread system showed up to approximately 6× speedup over the existing baseline and 20× over an open-source simulator.",
     links: [
@@ -624,7 +626,7 @@ export const writings: PortfolioPublication[] = [
   },
   {
     title: "Improving optimal page replacement for multicore systems",
-    meta: "First author · KCC 2022 · Best Paper Award",
+    meta: "First author / KCC 2022 / Best Paper Award",
     description:
       "Investigated preprocessing scalability in optimal page-replacement simulation and introduced a data structure that improved the relevant operation's complexity. Received the KCC 2022 Best Paper Award from the Korean Institute of Information Scientists and Engineers.",
     links: [
@@ -637,7 +639,7 @@ export const writings: PortfolioPublication[] = [
   {
     title:
       "Attentive Multi-Task Prediction of Atmospheric Particulate Matter: Effect of the COVID-19 Pandemic",
-    meta: "Co-author · IEEE Access",
+    meta: "Co-author / IEEE Access",
     description:
       "Contributed to ideation, data preprocessing, and visualization for multi-task learning research on particulate-matter prediction across major cities in South Korea.",
     links: [

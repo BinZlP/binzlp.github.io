@@ -8,14 +8,14 @@ export const projectDiagrams: Record<string, Diagram> = {
     width: 1120,
     height: 760,
     alt: "Requests move from intake through work assignment to model execution. Responses return to the caller, while load testing measures serving performance.",
-    caption: "Token Factory · Serving and performance evaluation",
+    caption: "Token Factory / Serving and performance evaluation",
   },
   "app-document-sharing": {
     src: "/portfolio/diagrams/app-document-sharing.svg",
     width: 1120,
     height: 760,
     alt: "Agents discover OpenAPI apps and search documents through an MCP interface. OpenFGA checks access, and hybrid search combines vector and keyword matches.",
-    caption: "App and document sharing · Publishing and discovery",
+    caption: "App and document sharing / Publishing and discovery",
   },
   delivery: {
     src: "/portfolio/diagrams/netspresso-architecture.svg",
@@ -43,7 +43,7 @@ export const projectDiagrams: Record<string, Diagram> = {
     width: 1120,
     height: 720,
     alt: "CI/CD deploys services to Linux edge devices. Vector collects logs, Loki and Prometheus handle telemetry, and Grafana displays service health.",
-    caption: "Intelligent transportation · Field deployment and health monitoring",
+    caption: "Intelligent transportation / Field deployment and health monitoring",
   },
   sunrise: {
     src: "/portfolio/diagrams/sunrise-architecture.svg",

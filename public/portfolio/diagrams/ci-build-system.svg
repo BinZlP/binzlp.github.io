@@ -30,7 +30,7 @@
   <path class="flow" d="M378 362H412"/>
   <rect class="node" x="412" y="286" width="212" height="152" rx="6"/>
   <text class="label" x="518" y="318" text-anchor="middle">Build tools</text>
-  <text class="small" x="518" y="352" text-anchor="middle">Webpack · Babel</text>
+  <text class="small" x="518" y="352" text-anchor="middle">Webpack / Babel</text>
   <text class="small" x="518" y="381" text-anchor="middle">Turborepo</text>
   <text class="small" x="518" y="410" text-anchor="middle">Docker</text>
   <path class="flow" d="M648 353H712"/>

@@ -11,13 +11,14 @@ import { chromium } from "./portfolio-chromium.mjs";
 const locale = process.argv[2] ?? "en";
 if (locale !== "en" && locale !== "ko") throw new Error("Expected en or ko.");
 const ko = locale === "ko";
+const labels = portfolioUi[locale];
 const { profile } = ko ? await import("../src/data/portfolio.ko.ts") : await import("../src/data/portfolio.ts");
 const escape = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 const rows = [
-  { y: 80, size: 20, color: "#4d4d4d", text: portfolioUi[locale].documentTitle },
+  { y: 80, size: 20, color: "#4d4d4d", text: labels.documentTitle },
   { y: 258, size: 72, color: "#0d0d0d", text: profile.name, bold: true },
   { y: 324, size: 30, color: "#4d4d4d", text: profile.role },
-  { y: 424, size: 20, color: "#1d4ed8", text: ko ? "프로젝트 · 경력 · 연구" : "Projects · Experience · Research" },
+  { y: 424, size: 20, color: "#1d4ed8", text: (ko ? ["프로젝트", "경력", "연구"] : ["Projects", "Experience", "Research"]).join(` ${labels.separator} `) },
   { y: 568, size: 18, color: "#4d4d4d", text: "binzlp.github.io" + portfolioPaths[locale].replace(/\/$/, "") },
 ];
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
