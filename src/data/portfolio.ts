@@ -11,6 +11,12 @@ function duration(value: number, unit: string, singular = "one") {
 }
 
 export type PortfolioLink = { label: string; href: string };
+export const companies = {
+  "Nota AI": { label: "Nota AI", href: "https://www.nota.ai/" },
+  goorm: { label: "goorm", href: "https://www.goorm.io/" },
+} satisfies Record<string, PortfolioLink>;
+type Company = keyof typeof companies;
+
 export type PortfolioProfile = {
   name: string;
   role: string;
@@ -23,7 +29,7 @@ export type PortfolioProfile = {
 export type PortfolioProject = {
   id: string;
   title: string;
-  company: string;
+  company: Company;
   period: string;
   role: string;
   summary: string;
@@ -41,7 +47,7 @@ export type PortfolioProject = {
   };
 };
 export type PortfolioExperience = {
-  company: string;
+  company: Company;
   role: string;
   period: string;
   description: string;

@@ -13,7 +13,10 @@ function koreanPeriod(period: string) {
     .replace("Present", "현재");
 }
 
-const companies: Record<string, string> = { goorm: "구름" };
+export const companies: typeof en.companies = {
+  "Nota AI": { ...en.companies["Nota AI"], href: "https://www.kr.nota.ai/" },
+  goorm: { ...en.companies.goorm, label: "goorm, Inc." },
+};
 
 export const profile = {
   ...en.profile,
@@ -48,7 +51,6 @@ const experienceCopy: Record<string, Pick<PortfolioExperience, "role" | "descrip
 export const experience = en.experience.map((item) => ({
   ...item,
   ...experienceCopy[item.company],
-  company: companies[item.company] ?? item.company,
   period: koreanPeriod(item.period),
 }));
 
@@ -67,7 +69,6 @@ export const projects: PortfolioProject[] = en.projects.map((project) => {
   return {
     ...project,
     ...copy,
-    company: companies[project.company] ?? project.company,
     period: koreanPeriod(project.period),
     tags: project.tags?.map((tag) => technologyTerms[tag] ?? tag),
     links: project.links.map((link, index) => ({ ...link, label: linkLabels?.[index] ?? link.label })),
@@ -158,7 +159,7 @@ export const activities: typeof en.activities = [
   },
   {
     title: "행사 기획 및 기술 공유",
-    description: "KSCON과 대학 연합 SW Championship의 기획과 기술 운영, 알고리즘 문제 출제에 참여했습니다. 구름 사내 세미나 STRIDE에서 인프라 운영 도구 Sunrise의 개발 경험을 발표했습니다.",
+    description: `KSCON과 대학 연합 SW Championship의 기획과 기술 운영, 알고리즘 문제 출제에 참여했습니다. ${companies.goorm.label} 사내 세미나 STRIDE에서 인프라 운영 도구 Sunrise의 개발 경험을 발표했습니다.`,
   },
   {
     title: "광운대학교 학생회",

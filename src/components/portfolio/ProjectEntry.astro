@@ -1,12 +1,13 @@
 ---
-import type { PortfolioProject } from "../../data/portfolio";
+import type { PortfolioLink, PortfolioProject } from "../../data/portfolio";
 import { portfolioUi, type PortfolioLocale } from "../../data/portfolio-ui";
 interface Props {
   project: PortfolioProject;
+  company: PortfolioLink;
   locale: PortfolioLocale;
   open?: boolean;
 }
-const { project, locale, open = false } = Astro.props;
+const { project, company, locale, open = false } = Astro.props;
 const t = portfolioUi[locale];
 ---
 
@@ -17,7 +18,7 @@ const t = portfolioUi[locale];
         {project.title}
       </span>
       <span class="caption-2 project-meta">
-        {project.company}
+        <a href={company.href}>{company.label}</a>
         <span aria-hidden="true">{` ${t.separator} `}</span>
         {project.period}
       </span>

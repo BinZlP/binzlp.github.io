@@ -21,7 +21,7 @@ interface Props {
 const { locale } = Astro.props;
 const t = portfolioUi[locale];
 const {
-  profile, projects, experience, earlierProjects, presentations,
+  profile, companies, projects, experience, earlierProjects, presentations,
   writings, activities, skills, education, awards,
 } = locale === "ko" ? korean : english;
 const { projectDiagrams, researchDiagrams } = locale === "ko" ? koreanDiagrams : englishDiagrams;
@@ -103,7 +103,7 @@ const illustratedProjects = projects.map((project) => {
           {experience.map((item) => (
             <article class="experience-entry">
               <div class="experience-heading">
-                <h3 class="heading-6">{item.company}</h3>
+                <h3 class="heading-6"><a href={companies[item.company].href}>{companies[item.company].label}</a></h3>
                 <p class="caption-2">{item.period}</p>
               </div>
               <p class="title-4 experience-role">{item.role}</p>
@@ -145,7 +145,7 @@ const illustratedProjects = projects.map((project) => {
         </p>
         <div class="project-list">
           {illustratedProjects.map((project, index) => (
-            <ProjectEntry locale={locale} project={project} open={index === 0} />
+            <ProjectEntry locale={locale} project={project} company={companies[project.company]} open={index === 0} />
           ))}
         </div>
         <details class="earlier-work">
@@ -296,7 +296,8 @@ const illustratedProjects = projects.map((project) => {
     if (alternate) alternate.hash = id;
   };
   entries.forEach((entry) => {
-    entry.querySelector("summary")?.addEventListener("click", () => {
+    entry.querySelector("summary")?.addEventListener("click", (event) => {
+      if (event.target instanceof Element && event.target.closest("a")) return;
       setAlternateTarget(entry.open ? "projects" : entry.id);
     });
   });

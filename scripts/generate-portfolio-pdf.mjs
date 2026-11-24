@@ -20,7 +20,7 @@ const korean = locale === 'ko';
 const labels = portfolioUi[locale];
 const separator = labels.separator;
 const {
-  activities, awards, education, experience, presentations,
+  activities, awards, companies, education, experience, presentations,
   profile, projects, skills, writings,
 } = korean ? await import('../src/data/portfolio.ko.ts') : await import('../src/data/portfolio.ts');
 const { projectDiagrams, researchDiagrams } = korean
@@ -42,6 +42,7 @@ function escape(value) {
 }
 
 const link = (label, href) => `<a href="${escape(href)}">${escape(label)}</a>`;
+const companyLink = (company) => link(companies[company].label, companies[company].href);
 const list = (items) => `<ul>${items.map(item => `<li>${escape(item)}</li>`).join('')}</ul>`;
 const links = (items) => items.length
   ? `<p class="links">${items.map(item => link(item.label, item.href)).join('')}</p>` : '';
@@ -55,7 +56,7 @@ function figure(image) {
 function projectEntry(item) {
   const image = projectDiagrams[item.id] ?? item.image;
   return `<article id="${escape(item.id)}" class="project ${image ? 'illustrated' : 'text-case'}">
-    <p class="meta">${escape(item.company)} &nbsp;${separator}&nbsp; ${escape(item.period)}</p>
+    <p class="meta">${companyLink(item.company)} &nbsp;${separator}&nbsp; ${escape(item.period)}</p>
     <h2>${escape(item.title)}</h2>
     <p class="summary">${escape(item.summary)}</p>
     <dl class="facts">
@@ -88,7 +89,7 @@ function rows(items, label, content) {
 function portfolio() {
   const css = readFileSync(new URL('portfolio-pdf.css', import.meta.url), 'utf8');
   const index = projects.map(item =>
-    `<li>${link(item.title, '#' + item.id)}<span>${escape(item.company)}</span></li>`).join('');
+    `<li>${link(item.title, '#' + item.id)}<span>${companyLink(item.company)}</span></li>`).join('');
   const koreanFont = korean ? `@font-face { font-family: Pretendard; font-weight: 45 920; src: url("${localAsset('portfolio/fonts/pretendard-variable.woff2')}"); }` : '';
   return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8">
     <title>${escape(profile.name)} — ${labels.documentTitle}</title>
@@ -107,7 +108,7 @@ function portfolio() {
         `<div><h3>${escape(item.school)}</h3><p>${escape(item.degree)}</p><p class="date">${escape(item.period)}</p></div>`).join('')}</div>
       <h2 class="section-name">${labels.experience}</h2>
       ${experience.map(item => `<article class="job">
-        <div class="heading-line"><h3>${escape(item.company)}</h3><span class="date">${escape(item.period)}</span></div>
+        <div class="heading-line"><h3>${companyLink(item.company)}</h3><span class="date">${escape(item.period)}</span></div>
         <p class="job-role">${escape(item.role)}</p><p>${escape(item.description)}</p>
         ${item.bullets ? list(item.bullets) : ''}</article>`).join('')}
     </section>
