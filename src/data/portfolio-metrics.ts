@@ -16,7 +16,7 @@ export const projectMetrics = {
   gpu: {
     minTeams: 10,
     clusters: 3,
-    minInstances: 150,
+    minInstances: 180,
     minAccelerators: 150,
     minModels: 10,
     prototypeDays: 5,
