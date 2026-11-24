@@ -2,29 +2,32 @@
 import PortfolioLayout from "../../layouts/PortfolioLayout.astro";
 import { portfolioAssetUrl } from "../../lib/portfolio-asset-url";
 import ProjectEntry from "../../components/portfolio/ProjectEntry.astro";
-import { projectDiagrams, researchDiagrams } from "../../data/portfolio-diagrams";
-import {
-  profile,
-  projects,
-  experience,
-  earlierProjects,
-  presentations,
-  writings,
-  activities,
-  skills,
-  education,
-  awards,
-} from "../../data/portfolio";
+import * as english from "../../data/portfolio";
+import * as korean from "../../data/portfolio.ko";
+import * as englishDiagrams from "../../data/portfolio-diagrams";
+import * as koreanDiagrams from "../../data/portfolio-diagrams.ko";
+import { portfolioUi, type PortfolioLocale } from "../../data/portfolio-ui";
+
+export function getStaticPaths() {
+  return [
+    { params: { language: undefined }, props: { locale: "en" } },
+    { params: { language: "ko" }, props: { locale: "ko" } },
+  ];
+}
+
+interface Props {
+  locale: PortfolioLocale;
+}
+const { locale } = Astro.props;
+const t = portfolioUi[locale];
+const {
+  profile, projects, experience, earlierProjects, presentations,
+  writings, activities, skills, education, awards,
+} = locale === "ko" ? korean : english;
+const { projectDiagrams, researchDiagrams } = locale === "ko" ? koreanDiagrams : englishDiagrams;
 const sections = [
-  ["profile", "Profile"],
-  ["experience", "Work experience"],
-  ["projects", "Projects"],
-  ["presentations", "Presentations"],
-  ["writings", "Writings"],
-  ["activities", "Other activities"],
-  ["skills", "Skills"],
-  ["awards", "Awards & honors"],
-];
+  "profile", "experience", "projects", "presentations", "writings", "activities", "skills", "awards",
+] as const;
 const illustratedProjects = projects.map((project) => {
   const diagram = projectDiagrams[project.id];
   if (!diagram) return project;
@@ -32,14 +35,14 @@ const illustratedProjects = projects.map((project) => {
 });
 ---
 
-<PortfolioLayout>
+<PortfolioLayout locale={locale} profile={profile}>
   <div class="portfolio-shell">
     <aside class="document-index">
-      <p class="caption-1 index-label">Contents</p>
-      <nav aria-label="Portfolio contents">
-        {sections.map(([id, label]) => (
+      <p class="caption-1 index-label">{t.contents}</p>
+      <nav aria-label={t.index}>
+        {sections.map((id) => (
           <a class="title-4" href={`#${id}`}>
-            {label}
+            {t[id]}
             {id === "projects" && (
               <span class="caption-5">{projects.length}</span>
             )}
@@ -49,16 +52,16 @@ const illustratedProjects = projects.map((project) => {
       <div class="index-contact caption-2">
         <a href={profile.github}>GitHub ↗</a>
         <a href={profile.linkedin}>LinkedIn ↗</a>
-        <a href={`mailto:${profile.email}`}>Email ↗</a>
+        <a href={`mailto:${profile.email}`}>{t.email} ↗</a>
       </div>
     </aside>
     <main id="main" class="document">
       <details class="mobile-index">
-        <summary class="title-4">In this portfolio</summary>
-        <nav aria-label="Mobile portfolio contents">
-          {sections.map(([id, label]) => (
+        <summary class="title-4">{t.mobileIndex}</summary>
+        <nav aria-label={t.index}>
+          {sections.map((id) => (
             <a class="body-6" href={`#${id}`}>
-              {label}
+              {t[id]}
             </a>
           ))}
         </nav>
@@ -94,7 +97,7 @@ const illustratedProjects = projects.map((project) => {
         aria-labelledby="experience-title"
       >
         <h2 class="heading-4 section-title" id="experience-title">
-          Work experience
+          {t.experience}
         </h2>
         <div class="experience-list">
           {experience.map((item) => (
@@ -123,29 +126,31 @@ const illustratedProjects = projects.map((project) => {
       >
         <div class="section-heading-row">
           <h2 class="heading-4 section-title" id="projects-title">
-            Projects
+            {t.projects}
           </h2>
           <button
             type="button"
             class="expand-projects button-xsm"
             data-expand-projects
+            data-expand={t.expand}
+            data-collapse={t.collapse}
             aria-pressed="false"
             hidden
           >
-            Expand all
+            {t.expand}
           </button>
         </div>
         <p class="body-6 section-intro">
-          Architecture, implementation, and operations.
+          {t.projectIntro}
         </p>
         <div class="project-list">
           {illustratedProjects.map((project, index) => (
-            <ProjectEntry project={project} open={index === 0} />
+            <ProjectEntry locale={locale} project={project} open={index === 0} />
           ))}
         </div>
         <details class="earlier-work">
           <summary class="title-3">
-            Earlier projects{" "}
+            {t.earlier}{" "}
             <span class="caption-5">{earlierProjects.length}</span>
           </summary>
           <div class="earlier-list">
@@ -167,7 +172,7 @@ const illustratedProjects = projects.map((project) => {
         aria-labelledby="presentations-title"
       >
         <h2 class="heading-4 section-title" id="presentations-title">
-          Presentations
+          {t.presentations}
         </h2>
         <div class="publication-list">
           {presentations.map((item) => (
@@ -192,7 +197,7 @@ const illustratedProjects = projects.map((project) => {
         aria-labelledby="writings-title"
       >
         <h2 class="heading-4 section-title" id="writings-title">
-          Writings
+          {t.writings}
         </h2>
         <div class="publication-list">
           {writings.map((item) => (
@@ -209,7 +214,7 @@ const illustratedProjects = projects.map((project) => {
               )}
               {item.title.startsWith("ScaleOPT") && (
                 <details class="research-diagrams">
-                  <summary class="caption-1">Research diagrams</summary>
+                  <summary class="caption-1">{t.researchDiagrams}</summary>
                   {researchDiagrams.map(({ src, alt, width, height, caption }) => (
                     <figure class="project-image">
                       <img src={portfolioAssetUrl(src)} alt={alt} width={width} height={height} />
@@ -228,7 +233,7 @@ const illustratedProjects = projects.map((project) => {
         aria-labelledby="activities-title"
       >
         <h2 class="heading-4 section-title" id="activities-title">
-          Other activities
+          {t.activities}
         </h2>
         <dl class="reference-list">
           {activities.map((item) => (
@@ -251,7 +256,7 @@ const illustratedProjects = projects.map((project) => {
         aria-labelledby="skills-title"
       >
         <h2 class="heading-4 section-title" id="skills-title">
-          Skills
+          {t.skills}
         </h2>
         <dl class="reference-list skills-list">
           {skills.map((item) => (
@@ -268,7 +273,7 @@ const illustratedProjects = projects.map((project) => {
         aria-labelledby="awards-title"
       >
         <h2 class="heading-4 section-title" id="awards-title">
-          Awards &amp; honors
+          {t.awards}
         </h2>
         <dl class="award-list">
           {awards.map((item) => (
@@ -286,13 +291,22 @@ const illustratedProjects = projects.map((project) => {
   const entries = Array.from(
     document.querySelectorAll<HTMLDetailsElement>(".project-entry"),
   );
+  const alternate = document.querySelector<HTMLAnchorElement>("[data-language-link]");
+  const setAlternateTarget = (id: string) => {
+    if (alternate) alternate.hash = id;
+  };
+  entries.forEach((entry) => {
+    entry.querySelector("summary")?.addEventListener("click", () => {
+      setAlternateTarget(entry.open ? "projects" : entry.id);
+    });
+  });
   const expandButton = document.querySelector<HTMLButtonElement>(
     "[data-expand-projects]",
   );
   const updateExpandButton = () => {
     if (!expandButton) return;
     const allOpen = entries.every((entry) => entry.open);
-    expandButton.textContent = allOpen ? "Collapse all" : "Expand all";
+    expandButton.textContent = (allOpen ? expandButton.dataset.collapse : expandButton.dataset.expand) ?? "";
     expandButton.setAttribute("aria-pressed", String(allOpen));
   };
   if (expandButton) {
@@ -316,6 +330,7 @@ const illustratedProjects = projects.map((project) => {
       return;
     }
     const target = document.getElementById(id);
+    setAlternateTarget(target ? id : "");
     if (target instanceof HTMLDetailsElement) target.open = true;
     if (target)
       requestAnimationFrame(() =>

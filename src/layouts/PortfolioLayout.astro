@@ -1,16 +1,24 @@
 ---
 import "../styles/portfolio.css";
-import { profile } from "../data/portfolio";
+import type { PortfolioProfile } from "../data/portfolio";
+import { portfolioUi, portfolioPaths, type PortfolioLocale } from "../data/portfolio-ui";
 import { portfolioAssetUrl } from "../lib/portfolio-asset-url";
-const title = `${profile.name} — Engineering portfolio`;
-const description =
-  "Projects, experience, and research in AI infrastructure, distributed systems, and developer platforms.";
-const canonical = new URL("/portfolio/", Astro.site);
-const image = new URL("/portfolio/social.png", Astro.site);
+interface Props {
+  locale: PortfolioLocale;
+  profile: PortfolioProfile;
+}
+const { locale, profile } = Astro.props;
+const t = portfolioUi[locale];
+const isKorean = locale === "ko";
+const title = `${profile.name} — ${t.documentTitle}`;
+const description = t.pageDescription;
+const canonical = new URL(portfolioPaths[locale], Astro.site);
+const image = new URL(isKorean ? "/portfolio/social-ko.png" : "/portfolio/social.png", Astro.site);
+const portfolioFile = isKorean ? "hyungseok-han-portfolio-ko.pdf" : "hyungseok-han-portfolio.pdf";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -19,16 +27,20 @@ const image = new URL("/portfolio/social.png", Astro.site);
     <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={new URL(portfolioPaths.en, Astro.site)} />
+    <link rel="alternate" hreflang="ko" href={new URL(portfolioPaths.ko, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(portfolioPaths.en, Astro.site)} />
     <link rel="icon" href="/portfolio/favicon.svg" type="image/svg+xml" />
     <link
       rel="preload"
-      href="/portfolio/fonts/geist-latin.woff2"
+      href={isKorean ? "/portfolio/fonts/pretendard-variable.woff2" : "/portfolio/fonts/geist-latin.woff2"}
       as="font"
       type="font/woff2"
       crossorigin
     />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={isKorean ? "ko_KR" : "en_US"} />
+    <meta property="og:locale:alternate" content={isKorean ? "en_US" : "ko_KR"} />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -46,36 +58,43 @@ const image = new URL("/portfolio/social.png", Astro.site);
   </head>
   <body>
     <a class="skip-link button-sm" href="#main">
-      Skip to content
+      {t.skip}
     </a>
     <header class="site-header">
       <a class="site-name title-4" href="#profile">
         {profile.name}
-        <span class="caption-2"> / Portfolio</span>
+        <span class="caption-2"> / {t.portfolio}</span>
       </a>
-      <nav class="document-downloads" aria-label="PDF downloads">
+      <nav class="portfolio-languages title-4" aria-label={t.language}>
+        {(["en", "ko"] as const).map((lang) => (
+          lang === locale
+            ? <span lang={lang} aria-current="page">{lang === "en" ? "English" : "한국어"}</span>
+            : <a data-language-link href={portfolioPaths[lang]} hreflang={lang} lang={lang}>{lang === "en" ? "English" : "한국어"}</a>
+        ))}
+      </nav>
+      <nav class="document-downloads" aria-label={t.downloads}>
         <a
           class="download-link button-sm"
-          href={portfolioAssetUrl("hyungseok-han-portfolio.pdf")}
+          href={portfolioAssetUrl(portfolioFile)}
           download
         >
-          Portfolio <span class="caption-5">PDF</span>
+          {t.portfolio} <span class="caption-5">PDF</span>
         </a>
         <a
           class="download-link button-sm"
           href={portfolioAssetUrl("hyungseok-han-resume.pdf")}
           download
         >
-          Résumé <span class="caption-5">PDF</span>
+          {t.resume} <span class="caption-5">PDF</span>
         </a>
       </nav>
     </header>
     <slot />
     <footer class="site-footer caption-5">
       <span>
-        {profile.name} · Content updated {profile.updated}
+        {profile.name} · {t.updated} {profile.updated}
       </span>
-      <a href="#profile">Back to top ↑</a>
+      <a href="#profile">{t.top} ↑</a>
     </footer>
   </body>
 </html>

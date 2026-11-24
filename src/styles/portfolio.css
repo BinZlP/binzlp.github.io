@@ -5,6 +5,13 @@
   font-display: swap;
   src: url("/portfolio/fonts/geist-latin.woff2") format("woff2");
 }
+@font-face {
+  font-family: Pretendard;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/portfolio/fonts/pretendard-variable.woff2") format("woff2");
+}
 /* Original document structure; type and spacing follow the installed design skills. */
 :root {
   --ink: #0d0d0d;
@@ -41,6 +48,14 @@ body {
   font-size: 16px;
   line-height: 24px;
   -webkit-font-smoothing: antialiased;
+}
+html:lang(ko) body {
+  font-family: Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+html:lang(ko) .body-3 {
+  line-height: 1.65;
 }
 h1,
 h2,
@@ -195,6 +210,24 @@ strong {
 .site-name span {
   color: var(--muted);
   margin-left: var(--space-50);
+}
+.portfolio-languages {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  margin-inline-start: auto;
+}
+.portfolio-languages > * {
+  padding-block: var(--space-75);
+}
+.portfolio-languages [aria-current] {
+  font-weight: 600;
+}
+.portfolio-languages a {
+  color: var(--muted);
+}
+.portfolio-languages a:hover {
+  color: var(--accent);
 }
 .document-downloads {
   display: flex;
@@ -696,7 +729,13 @@ li::marker {
     width: calc(100% - 32px);
   }
   .site-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-75) var(--space-100);
     padding-block: var(--space-200);
+  }
+  .document-downloads {
+    grid-column: 1 / -1;
   }
   .site-name span {
     display: none;

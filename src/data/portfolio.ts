@@ -1,3 +1,15 @@
+import { projectMetrics } from "./portfolio-metrics.ts";
+
+const {
+  tokenFactory, appSharing, arm, netsPresso, easyLLM, gpu,
+  transportation, logging, ci, operationsCli, infrastructureAsCode,
+} = projectMetrics;
+const numberWords = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const inWords = (value: number) => numberWords[value] ?? String(value);
+function duration(value: number, unit: string, singular = "one") {
+  return value === 1 ? `${singular} ${unit}` : `${inWords(value)} ${unit}s`;
+}
+
 export type PortfolioLink = { label: string; href: string };
 export type PortfolioProfile = {
   name: string;
@@ -55,7 +67,7 @@ export const profile: PortfolioProfile = {
   email: "dfafqfdaes159@gmail.com",
   github: "https://github.com/BinZlP",
   linkedin: "https://www.linkedin.com/in/hyungseok-han-aba694196/",
-  updated: "2026-11-24",
+  updated: "2026-11-25",
 };
 
 export const experience: PortfolioExperience[] = [
@@ -81,7 +93,7 @@ export const experience: PortfolioExperience[] = [
     bullets: [
       "Designed and operated multi-region, multi-cloud service infrastructure and improved reliability and scalability.",
       "Standardized provisioning and customer delivery with Terraform, Ansible, and Python.",
-      "Built centralized logging and observability across 10+ Kubernetes clusters in four regions.",
+      `Built centralized logging and observability across ${logging.minClusters}+ Kubernetes clusters in ${inWords(logging.regions)} regions.`,
       "Implemented infrastructure designs reflecting CSAP and ISMS requirements, alongside CI/CD and operations tooling.",
     ],
   },
@@ -106,11 +118,11 @@ export const projects: PortfolioProject[] = [
     achievements: [
       {
         title: "Patch benchmark",
-        text: "In before-and-after load tests, throughput rose from 93.3 million to 127.5 million tokens per minute (+36.7%). The peak session count increased from 1,326 to 1,880 (+41.8%).",
+        text: `In before-and-after load tests, throughput rose from ${tokenFactory.tokensPerMinute.before / 1_000_000} million to ${tokenFactory.tokensPerMinute.after / 1_000_000} million tokens per minute (+${tokenFactory.tokensPerMinute.percent}%). The peak session count increased from ${tokenFactory.peakSessions.before.toLocaleString('en-US')} to ${tokenFactory.peakSessions.after.toLocaleString('en-US')} (+${tokenFactory.peakSessions.percent}%).`,
       },
       {
         title: "Team benchmark",
-        text: "In a separate single-node test, the team's combined optimizations reached about 1.89× the throughput of the baseline inference engine, which already included the model provider's patches.",
+        text: `In a separate single-node test, the team's combined optimizations reached about ${tokenFactory.teamThroughputMultiple}× the throughput of the baseline inference engine, which already included the model provider's patches.`,
       },
       {
         title: "Reliability",
@@ -139,7 +151,7 @@ export const projects: PortfolioProject[] = [
     achievements: [
       {
         title: "Independent delivery",
-        text: "Designed, implemented, and deployed the platform independently in two days in October 2026.",
+        text: `Designed, implemented, and deployed the platform independently in ${duration(appSharing.deliveryDays, 'day')} in October 2026.`,
       },
       {
         title: "Internal launch",
@@ -163,13 +175,13 @@ export const projects: PortfolioProject[] = [
     ],
     description: [
       "Standardized shared and customer-specific configurations with Terraform, Helm, and Kustomize. Built operational dashboards and proposed trace-ID logging that developers adopted for debugging.",
-      "Supported pre-sales PoCs for two prospects. Proposed a cross-account workflow for an AWS customer and implemented it with their approval. It granted access to ECR images and S3 model assets within the customer's IAM permissions boundary. Supplied a validation PoC and SCA reports.",
+      `Supported pre-sales PoCs for ${inWords(arm.prospectiveCustomers)} prospects. Proposed a cross-account workflow for an AWS customer and implemented it with their approval. It granted access to ECR images and S3 model assets within the customer's IAM permissions boundary. Supplied a validation PoC and SCA reports.`,
       "Compiled a permitted-license list from customer and counsel-reviewed internal policies. Automated SBOM and SCA reporting in CI/CD so reviewers could flag dependencies to replace before each release.",
     ],
     achievements: [
       {
         title: "Customer delivery",
-        text: "Agreed on acceptance criteria and delivered the parallel AWS and on-premises projects on schedule. After code freeze, final validation and packaging could be completed within two days.",
+        text: `Agreed on acceptance criteria and delivered the parallel AWS and on-premises projects on schedule. After code freeze, final validation and packaging could be completed within ${duration(arm.packagingDays, 'day')}.`,
       },
       {
         title: "Independent scaling",
@@ -212,7 +224,7 @@ export const projects: PortfolioProject[] = [
       },
       {
         title: "Production migration",
-        text: "Completed the production migration in an approximately two-hour change window.",
+        text: `Completed the production migration in an approximately ${inWords(netsPresso.migrationHours)}-hour change window.`,
       },
     ],
     tags: ["AWS", "Terraform", "Ansible", "DMS", "Auto Scaling"],
@@ -238,7 +250,7 @@ export const projects: PortfolioProject[] = [
     achievements: [
       {
         title: "Adoption",
-        text: "Used by 70+ internal users, with 20+ open-weight models served and eight in active operation at the reported snapshot.",
+        text: `Used by ${easyLLM.minUsers}+ internal users, with ${easyLLM.minModelsServed}+ open-weight models served and ${inWords(easyLLM.activeModels)} in active operation at the reported snapshot.`,
       },
       {
         title: "Developer workflows",
@@ -255,7 +267,7 @@ export const projects: PortfolioProject[] = [
     period: "Feb 2026 - Present",
     role: "Service Architect / Infrastructure Architect / Developer",
     summary:
-      "As of November 2026, 10+ teams use the GPU self-service platform. The on-premises fleet spans three clusters with 150+ instances and 150+ accelerators across 10+ GPU and NPU models.",
+      `As of November 2026, ${gpu.minTeams}+ teams use the GPU self-service platform. The on-premises fleet spans ${inWords(gpu.clusters)} clusters with ${gpu.minInstances}+ instances and ${gpu.minAccelerators}+ accelerators across ${gpu.minModels}+ GPU and NPU models.`,
     motivation: [
       "Let developers provision GPU instances themselves and give teams a consistent way to allocate scarce capacity.",
     ],
@@ -267,11 +279,11 @@ export const projects: PortfolioProject[] = [
     achievements: [
       {
         title: "Adoption",
-        text: "Took a five-day prototype to internal production in about a month. The platform handled about 50 self-service provisioning operations in the most recent month measured.",
+        text: `Took a ${inWords(gpu.prototypeDays)}-day prototype to internal production in about ${duration(gpu.monthsToProduction, 'month', 'a')}. The platform handled about ${gpu.monthlyProvisioningOperations} self-service provisioning operations in the most recent month measured.`,
       },
       {
         title: "Host support",
-        text: "Handling host support requests from Jira and Slack took 40 engineer-hours in the week before rollout and 8 in the latest week measured. The team also recorded three consecutive weeks with no system-level support requests, excluding hardware failures.",
+        text: `Handling host support requests from Jira and Slack took ${gpu.weeklySupportHoursBefore} engineer-hours in the week before rollout and ${gpu.weeklySupportHoursAfter} in the latest week measured. The team also recorded ${inWords(gpu.supportRequestFreeWeeks)} consecutive weeks with no system-level support requests, excluding hardware failures.`,
       },
       {
         title: "Cluster reliability",
@@ -300,7 +312,7 @@ export const projects: PortfolioProject[] = [
     achievements: [
       {
         title: "Delivery automation",
-        text: "Reduced initial setup and deployment time by 70% in the recorded delivery workflow.",
+        text: `Reduced initial setup and deployment time by ${transportation.deploymentTimeReduction}% in the recorded delivery workflow.`,
       },
       {
         title: "Remote operations",
@@ -346,7 +358,7 @@ export const projects: PortfolioProject[] = [
     period: "Jan 2025 - Apr 2025",
     role: "DevOps",
     summary:
-      "Centralized log collection and analysis across 10+ EKS clusters in four AWS regions.",
+      `Centralized log collection and analysis across ${logging.minClusters}+ EKS clusters in ${inWords(logging.regions)} AWS regions.`,
     motivation: [
       "Adapt log collection to Kubernetes scheduling and preserve incoming data when downstream processing or storage is unavailable.",
     ],
@@ -387,11 +399,11 @@ export const projects: PortfolioProject[] = [
     achievements: [
       {
         title: "Build performance",
-        text: "Reduced image size from over 23 GB to 5 GB. Application build time decreased by about 60% on average and up to 90%; total pipeline time decreased by up to 80% in measured workloads.",
+        text: `Reduced image size from over ${ci.imageGbBefore} GB to ${ci.imageGbAfter} GB. Application build time decreased by about ${ci.averageBuildTimeReduction}% on average and up to ${ci.maxBuildTimeReduction}%; total pipeline time decreased by up to ${ci.maxPipelineTimeReduction}% in measured workloads.`,
       },
       {
         title: "Release operations",
-        text: "Shared Libraries standardized builds. The separate deployment improvement shortened rollback response from about 30 minutes to five minutes.",
+        text: `Shared Libraries standardized builds. The separate deployment improvement shortened rollback response from about ${ci.rollbackMinutesBefore} minutes to ${duration(ci.rollbackMinutesAfter, 'minute')}.`,
       },
     ],
     tags: ["Jenkins", "Docker", "EFS", "Node.js", "Build caching"],
@@ -416,7 +428,7 @@ export const projects: PortfolioProject[] = [
     achievements: [
       {
         title: "Preparation time",
-        text: "Shortened the operational preparation period by one week through automated scale-out and repeated configuration.",
+        text: `Shortened the operational preparation period by ${duration(operationsCli.weeksSaved, 'week')} through automated scale-out and repeated configuration.`,
       },
       {
         title: "Readiness validation",
@@ -497,7 +509,7 @@ export const projects: PortfolioProject[] = [
     achievements: [
       {
         title: "Provisioning effort",
-        text: "Reduced the required setup period from approximately one month to one week for the documented installation and rebuilding workflows.",
+        text: `Reduced the required setup period from approximately ${duration(infrastructureAsCode.monthsBefore, 'month')} to ${duration(infrastructureAsCode.weeksAfter, 'week')} for the documented installation and rebuilding workflows.`,
       },
     ],
     tags: ["Terraform", "Terragrunt", "AWS", "Naver Cloud"],
@@ -584,7 +596,7 @@ export const presentations: PortfolioPublication[] = [
     title: "Build with AI Seoul 2026 with Google DeepMind",
     meta: "Invited speaker · May 2026",
     description:
-      "Presented the on-premises GPU self-service platform from a five-day PoC to internal production. Discussed using Claude Code and Codex with design documents, test-driven development, and continuous validation of agent output.",
+      `Presented the on-premises GPU self-service platform from a ${inWords(gpu.prototypeDays)}-day PoC to internal production. Discussed using Claude Code and Codex with design documents, test-driven development, and continuous validation of agent output.`,
     links: [],
   },
 ];

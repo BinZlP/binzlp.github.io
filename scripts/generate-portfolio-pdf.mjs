@@ -1,7 +1,7 @@
 /**
  * Generate the downloadable portfolio from the same public data as the website.
  * Run with Node 22.12+ and a recent Chromium browser:
- *   node --experimental-strip-types scripts/generate-portfolio-pdf.mjs
+ *   node --experimental-strip-types scripts/generate-portfolio-pdf.mjs [en|ko]
  * Set CHROME_PATH to select a browser outside the standard install locations.
  */
 import { execFileSync } from 'node:child_process';
@@ -9,15 +9,25 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync, renameSyn
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import {
+import { portfolioPaths, portfolioUi } from '../src/data/portfolio-ui.ts';
+import { chromium } from './portfolio-chromium.mjs';
+
+const locale = process.argv[2] ?? 'en';
+if (!['en', 'ko'].includes(locale) || process.argv.length > 3) {
+  throw new Error('Usage: node --experimental-strip-types scripts/generate-portfolio-pdf.mjs [en|ko]');
+}
+const korean = locale === 'ko';
+const labels = portfolioUi[locale];
+const {
   activities, awards, education, experience, presentations,
   profile, projects, skills, writings,
-} from '../src/data/portfolio.ts';
-import { projectDiagrams, researchDiagrams } from '../src/data/portfolio-diagrams.ts';
+} = korean ? await import('../src/data/portfolio.ko.ts') : await import('../src/data/portfolio.ts');
+const { projectDiagrams, researchDiagrams } = korean
+  ? await import('../src/data/portfolio-diagrams.ko.ts') : await import('../src/data/portfolio-diagrams.ts');
 
 const publicDir = new URL('../public/', import.meta.url);
-const portfolioUrl = 'https://binzlp.github.io/portfolio/';
-const output = fileURLToPath(new URL('portfolio/hyungseok-han-portfolio.pdf', publicDir));
+const portfolioUrl = new URL(portfolioPaths[locale], 'https://binzlp.github.io').href;
+const output = fileURLToPath(new URL(`portfolio/hyungseok-han-portfolio${korean ? '-ko' : ''}.pdf`, publicDir));
 
 function localAsset(path) {
   const url = new URL(path.replace(/^\//, ''), publicDir);
@@ -48,15 +58,15 @@ function projectEntry(item) {
     <h2>${escape(item.title)}</h2>
     <p class="summary">${escape(item.summary)}</p>
     <dl class="facts">
-      <div><dt>Role</dt><dd>${escape(item.role)}</dd></div>
-      ${item.tags?.length ? `<div><dt>Technologies</dt><dd>${escape(item.tags.join(' · '))}</dd></div>` : ''}
+      <div><dt>${labels.role}</dt><dd>${escape(item.role)}</dd></div>
+      ${item.tags?.length ? `<div><dt>${labels.technologies}</dt><dd>${escape(item.tags.join(' · '))}</dd></div>` : ''}
     </dl>
     ${image ? figure(image) : ''}
-    <div class="case-row"><h3>Motivation</h3>${list(item.motivation)}</div>
-    <div class="case-row"><h3>Description</h3>${list(item.description)}</div>
-    <div class="case-row"><h3>Challenges &amp; achievements</h3>
+    <div class="case-row"><h3>${labels.motivation}</h3>${list(item.motivation)}</div>
+    <div class="case-row"><h3>${labels.description}</h3>${list(item.description)}</div>
+    <div class="case-row"><h3>${escape(labels.achievements)}</h3>
       <div>${item.achievements.map(point =>
-        `<p><strong>${escape(point.title)}.</strong> ${escape(point.text)}</p>`).join('')}</div></div>
+        `<p><strong>${escape(point.title)}${korean ? '' : '.'}</strong> ${escape(point.text)}</p>`).join('')}</div></div>
     ${links(item.links)}
   </article>`;
 }
@@ -78,57 +88,45 @@ function portfolio() {
   const css = readFileSync(new URL('portfolio-pdf.css', import.meta.url), 'utf8');
   const index = projects.map(item =>
     `<li>${link(item.title, '#' + item.id)}<span>${escape(item.company)}</span></li>`).join('');
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8">
-    <title>${escape(profile.name)} — Engineering portfolio</title>
+  const koreanFont = korean ? `@font-face { font-family: Pretendard; font-weight: 45 920; src: url("${localAsset('portfolio/fonts/pretendard-variable.woff2')}"); }` : '';
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8">
+    <title>${escape(profile.name)} — ${labels.documentTitle}</title>
     <meta name="author" content="${escape(profile.name)}">
     <style>@font-face { font-family: Geist; font-weight: 100 900; src: url("${localAsset('portfolio/fonts/geist-latin.woff2')}"); }
-    ${css}</style></head><body>
+    ${koreanFont}
+    ${css}
+    @page { @top-left { content: "${labels.documentTitle}"; } }</style></head><body>
     <section id="profile">
       <h1>${escape(profile.name)}</h1><p class="role">${escape(profile.role)}</p>
       <p class="intro">${escape(profile.intro)}</p>
       ${links([{label: profile.email, href: 'mailto:' + profile.email}, {label: 'GitHub', href: profile.github},
-        {label: 'LinkedIn', href: profile.linkedin}, {label: 'Online portfolio', href: portfolioUrl}])}
-      <h2 class="section-name">Education</h2>
+        {label: 'LinkedIn', href: profile.linkedin}, {label: korean ? '웹 포트폴리오' : 'Online portfolio', href: portfolioUrl}])}
+      <h2 class="section-name">${labels.education}</h2>
       <div class="education">${education.map(item =>
         `<div><h3>${escape(item.school)}</h3><p>${escape(item.degree)}</p><p class="date">${escape(item.period)}</p></div>`).join('')}</div>
-      <h2 class="section-name">Work experience</h2>
+      <h2 class="section-name">${labels.experience}</h2>
       ${experience.map(item => `<article class="job">
         <div class="heading-line"><h3>${escape(item.company)}</h3><span class="date">${escape(item.period)}</span></div>
         <p class="job-role">${escape(item.role)}</p><p>${escape(item.description)}</p>
         ${item.bullets ? list(item.bullets) : ''}</article>`).join('')}
     </section>
-    <nav aria-label="Contents" class="new-page contents"><h2>Projects</h2>
+    <nav aria-label="${labels.contents}" class="new-page contents"><h2>${labels.projects}</h2>
       <ol>${index}</ol>
-      <p class="more-links">${[
-        ['Presentations', 'presentations'], ['Writings', 'writings'],
-        ['Other activities', 'activities'], ['Skills', 'skills'], ['Awards & honors', 'awards'],
-      ].map(([title, id]) => link(title, '#' + id)).join('')}</p>
+      <p class="more-links">${['presentations', 'writings', 'activities', 'skills', 'awards']
+        .map(id => link(labels[id], '#' + id)).join('')}</p>
     </nav>
     <section class="new-page cases">${projects.map(projectEntry).join('')}</section>
-    <section class="new-page" id="presentations"><h2>Presentations</h2>${presentations.map(publication).join('')}</section>
-    <section id="writings"><h2>Writings</h2>${writings.map(publication).join('')}</section>
-    <section class="new-page" id="activities"><h2>Other activities</h2>
+    <section class="new-page" id="presentations"><h2>${labels.presentations}</h2>${presentations.map(publication).join('')}</section>
+    <section id="writings"><h2>${labels.writings}</h2>${writings.map(publication).join('')}</section>
+    <section class="new-page" id="activities"><h2>${labels.activities}</h2>
       ${rows(activities, item => item.title, item => Array.isArray(item.description) ? list(item.description) : escape(item.description))}
-      <h2 id="awards" class="section-name">Awards &amp; honors</h2>
+      <h2 id="awards" class="section-name">${escape(labels.awards)}</h2>
       ${rows(awards, item => item.year, item => escape(item.title))}
     </section>
-    <section class="new-page" id="skills"><h2>Skills</h2>
+    <section class="new-page" id="skills"><h2>${labels.skills}</h2>
       ${rows(skills, item => item.title, item => escape(item.items.join(' · ')))}
     </section>
   </body></html>`;
-}
-
-function chromium() {
-  if (process.env.CHROME_PATH) return process.env.CHROME_PATH;
-  const candidates = [
-    ...[process.env.ProgramFiles, process.env['ProgramFiles(x86)'], process.env.LOCALAPPDATA].filter(Boolean)
-      .flatMap(dir => [join(dir, 'Google/Chrome/Application/chrome.exe'), join(dir, 'Microsoft/Edge/Application/msedge.exe')]),
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/Applications/Chromium.app/Contents/MacOS/Chromium',
-    '/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser',
-  ];
-  const browser = candidates.find(file => existsSync(file));
-  if (!browser) throw new Error('Set CHROME_PATH to an installed Chromium or Chrome executable.');
-  return browser;
 }
 
 const browser = chromium();
