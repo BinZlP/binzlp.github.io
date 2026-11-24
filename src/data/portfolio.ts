@@ -677,7 +677,7 @@ export const activities: { title: string; description: string | string[] }[] = [
     title: "Student leadership at Kwangwoon University",
     description: [
       "Chair of the Emergency Steering Committee of the 47th General Student Council (first half of 2020)",
-      "President of the 3rd Student Council of the College of Software and Convergence (2019)",
+      "President of the 3rd Software Convergence Student Council (2019)",
       "Vice President of the 2nd Student Council of the School of Software (2018)",
     ],
   },
