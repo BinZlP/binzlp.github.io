@@ -70,7 +70,7 @@ export const profile: PortfolioProfile = {
   role: "AI Infrastructure & Platform Engineer",
   intro:
     "I am a DevOps engineer with a background in distributed systems and operating systems research. I design and implement LLM inference infrastructure, developer platforms, and customer deployment architectures across cloud and on-premises environments.",
-  email: "dfafqfdaes159@gmail.com",
+  email: "binzip.studio@gmail.com",
   github: "https://github.com/BinZlP",
   linkedin: "https://www.linkedin.com/in/hyungseok-han-aba694196/",
   updated: "2026-11-25",

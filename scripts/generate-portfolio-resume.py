@@ -39,7 +39,7 @@ NAME = "Hyungseok Han"
 ROLE = "AI Infrastructure & Platform Engineer"
 UPDATED = "November 2026"
 PORTFOLIO = "https://binzlp.github.io/portfolio/"
-EMAIL = "dfafqfdaes159@gmail.com"
+EMAIL = "binzip.studio@gmail.com"
 GITHUB = "https://github.com/BinZlP"
 LINKEDIN = "https://www.linkedin.com/in/hyungseok-han-aba694196/"
 
