@@ -154,4 +154,4 @@ Computer systems have long cached results to avoid doing the same calculation tw
 
 I once analyzed usage logs for a production service that generated content with an LLM, looking for ways to cut the cost of each inference request. Even then, whenever I saw the same material going into several calls, I thought it was worth looking at prompt caching. These experiments gave me numbers to explain why. On the OpenAI model, keeping documents in place used 37% more input and cost about 20% less because the extra cache reads cost less than the writes they saved.
 
-If you’re looking to lower your LLM costs, check your token counts and take a look at how well you’re using the prompt cache.
+Cutting token use is part of an agent’s token economics, and tracing where costs add up across model calls helps you decide what to optimize. If you’re looking to lower your LLM costs, check your token counts and take a look at how well you’re using the prompt cache.
