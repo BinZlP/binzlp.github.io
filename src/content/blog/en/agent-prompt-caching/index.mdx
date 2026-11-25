@@ -24,7 +24,7 @@ export const changePlot = {
 
 It’s become common to hand an agent a code change and let it run the tests. Even one task can take several model calls, so developers looking to cut inference costs are paying attention to how many tokens they send on each call. One example is Code Mode, an experimental feature Anthropic added to Claude Code. Claude Code runs JavaScript written by the model to call several tools. If two tests out of 100 fail, that code can return just the two errors to the model.
 
-At the same price per input token, sending fewer tokens does lower the input cost. There’s no reason to pay for 98 passing test logs I won’t need again. But I may still need the project instructions or the same operations document for the next question. **Over the whole task, is it cheaper to trim those documents on every call, or to leave them in place and read them from the cache again?**
+At the same price per input token, sending fewer tokens does lower the input cost. There’s no reason to pay for 98 passing test logs I won’t need again. An operations document is different. I may need it for this question and again three turns later. **Over the whole task, is it cheaper to retrieve documents for each question and append them to the conversation, or to keep the documents I expect to reuse at the front of the prompt?**
 
 <figure class="kc-excerpt">
   <picture class="kc-overview">
@@ -86,7 +86,7 @@ Would it make a difference even if the input length barely changed? In Claude Co
 
 For a standalone question, I could give the agent all the documents up front, or start it with none and let it find what it needs. For a series of questions, I could put all the documents at the front once and leave them there. If the model can read the same prefix from the cache cheaply, why bother choosing which documents to keep?
 
-In Codex CLI, I measured how much input the model received as I varied the amount of material kept in the conversation and whether it retained earlier search results.
+In Codex CLI, I ran each of four setups for 12 sessions of 16 turns each. I varied which documents the model saw and whether earlier search results stayed in the conversation. That version of Codex CLI reported ordinary input and cache writes together, so I could compare token counts but couldn’t calculate a separate cost for cache writes.
 
 <figure class="kc-table">
 
@@ -100,17 +100,17 @@ In Codex CLI, I measured how much input the model received as I varied the amoun
   <figcaption>Codex CLI call logs. Totals for 12 sessions of 16 turns per setup, rounded to the nearest 10,000 tokens.</figcaption>
 </figure>
 
-The cache-read shares for the full collection and the working set were less than two percentage points apart. Yet **keeping all the documents meant reading 2.4 times as many tokens from the cache.** That version of Codex CLI combined ordinary input and cache writes in one field, so the table lets me compare input volume and the share of reads. It doesn’t give me a cost breakdown.
+With all 408 documents up front, the cache-read share was 93.1%, close to the working set’s 91.2%. But the model read 14.89 million tokens from the cache with the full collection and 6.17 million with the working set. Keeping all the documents meant reading **2.4 times as many tokens from the cache**, an extra 8.72 million tokens over the 12 sessions.
 
-Did those extra reads buy better answers? I excluded the first question in each session because it asked for the current setting but the answer key listed an older value. Of the remaining 180 questions, the agent got 179 right with all 408 documents up front. With a smaller working set and the option to fetch other documents, it got all 180 right. For this task, which asked for one setting at a time, keeping every document didn’t yield more correct answers.
+Did those extra reads buy better answers? In both setups the agent could access the document containing the answer, using a tool if it was missing from the working set. I excluded the first question in each session because it asked for the current setting but the answer key listed an older value. The agent answered 179 of the remaining 180 questions correctly with all 408 documents up front and all 180 with the working set. For this task, which asked for one setting at a time, keeping every document didn’t yield more correct answers.
 
-I also saw a case where the extra reads actually cost more than the writes they saved. In `pi` with the OpenAI model, I compared the two setups **while the working set was still filling up**. At a matched document budget of 5%, the working set cost 29.6% less than per-turn retrieval. When I lowered both budgets to 2.5%, the working set cost **17.8% more**.
+I went back to the eight-turn sessions in `pi` to see how the document budget affected cost on the OpenAI model. The earlier comparison used 12 sessions in which the working set had nearly filled its 5% budget. This time I included **all of the first 12 sessions, starting with an empty working set**. The working set could grow between sessions, and its documents stayed fixed within each one. At a 5% budget for both setups, the working set cost 29.6% less than per-turn retrieval. At 2.5% for both, the working set cost **17.8% more** than per-turn retrieval.
 
 <IntervalPlot
   {...changePlot}
   lang="en"
   caption="Change in estimated cost by document budget"
-  context="pi call logs · OpenAI · working set still growing"
+  context="pi call logs · OpenAI · first 12 sessions, starting with an empty working set"
   rows={budgetRows('en')}
 />
 
@@ -118,9 +118,9 @@ Even at the smaller budget, the working set still wrote fewer tokens to the cach
 
 ## What cutting input saves, and what the experiments can tell us
 
-Cache reads still carry a charge. Across the 12 Codex CLI sessions, keeping only the working set meant reading about **8.72 million fewer tokens** from the cache than keeping the full collection. The same principle applies to skill instructions that stay in context across calls. A study of 40,285 public skills found that the median instruction file (`SKILL.md`) was 1,414 tokens long. File length alone tells us little about how much it will cost to finish a task with that skill available.
+Providers charge for cached input, so removing text the model would otherwise read on every call lowers the cache-read bill. Skill instructions are one example of text that can stay in context across calls. A study of 40,285 public skills found a median length of 1,414 tokens per instruction file (`SKILL.md`). Loading a skill adds instructions to the prompt and can change which tools the agent uses and how many model calls it takes to finish. File length tells us only part of the cost.
 
-[SkillsBench](https://github.com/benchflow-ai/skillsbench) ran the same tasks with and without skills, using Claude Opus 4.7 in both Claude Code and OpenHands. OpenHands is an open-source coding agent harness that lets the model edit files and run shell commands. Giving the agent task-specific skills raised the mean estimated cost per task by $1.53 in Claude Code and lowered it by $4.62 in OpenHands.
+[SkillsBench](https://github.com/benchflow-ai/skillsbench) measured the cost of completing the same tasks with and without skills in two harnesses running Claude Opus 4.7. Task-specific skills raised the mean estimated cost per task by $1.53 in Claude Code and lowered it by $4.62 in OpenHands, an open-source coding agent harness that lets the model edit files and run shell commands.
 
 <figure class="kc-table">
 
@@ -132,9 +132,9 @@ Cache reads still carry a charge. Across the 12 Codex CLI sessions, keeping only
   <figcaption>Mean total tokens and estimated cost per task on Opus 4.7. <a href="https://arxiv.org/html/2602.12670v4#A12.T15">Table 15 of the paper</a> · <a href="https://arxiv.org/html/2602.08004#S2.F2">Distribution of skill file lengths</a></figcaption>
 </figure>
 
-The token counts include all input and output through the end of each task. For Claude Code, the SkillsBench researchers estimated tokens from session logs that included cache writes and reads. They calculated costs with LiteLLM. The difference between the two columns reflects the length of the skill instructions as well as which tools the agent chose and how many times it called the model.
+The totals cover all input and output through the end of each task. For Claude Code, the researchers estimated token counts from session logs that included cache writes and reads. They used LiteLLM to estimate costs.
 
-In my OpenAI experiment, keeping about 5% of the document collection at the front of the prompt cost an estimated 19.8% less per session than appending search results on each turn for the same questions. Both setups used the cache, and changing where I put the documents also changed which ones the agent read and when it called tools. To measure the savings from caching alone, I’d compare the cost of processing the same input from scratch with the cost of reading it from cache. To see what shortening the input saves, I’d hold the cache conditions steady and vary the input length.
+In my OpenAI experiment, once the working set had nearly filled its 5% budget, the estimated cost per session was 19.8% lower with the working set than with per-turn retrieval. Both setups used the prompt cache, and changing document placement changed which documents the agent read and when it called tools. To isolate caching, I’d compare the cost of processing the same input from scratch with the cost of reading it from cache. To isolate input length, I’d hold the cache conditions steady and vary the length.
 
 In production, **the cost of getting one usable answer** matters. Giving the agent all 408 documents didn’t increase the number of correct answers in this experiment, but every question asked for a single setting. Tasks that require combining information from several documents need a separate evaluation to determine whether giving the agent more material improves accuracy and, if so, whether the gain justifies the extra cost.
 
@@ -142,7 +142,7 @@ In production, **the cost of getting one usable answer** matters. Giving the age
 
 Computer systems have long cached results to avoid paying for the same computation twice. For the same reason, an LLM reuses the keys and values (KV) from earlier tokens as it generates a response. If the next request starts with the same instructions or documents, the server can reuse the cached KV for that prefix and skip recomputing it.
 
-That difference shows up in API pricing. OpenAI and Anthropic charge less per input token for a cache read than for fresh input. For an agent that uses the same document across several turns, keeping it at the front of the prompt and reusing the cached prefix can cost less overall than sending a shorter selection each time.
+That difference shows up in API pricing. OpenAI and Anthropic charge less per input token for a cache read than for fresh input. For an agent that needs the same documents across several turns, keeping them at the front of the prompt and reusing the cached prefix can cost less overall than retrieving documents and appending the results on every turn.
 
 <BlogDiagram
   id="kc-reuse"
@@ -155,6 +155,6 @@ That difference shows up in API pricing. OpenAI and Anthropic charge less per in
   <KvReuse lang="en" />
 </BlogDiagram>
 
-Prompt caching first caught my attention when I was trying to lower the cost per request for a production service that generated content with an LLM. Looking through the usage logs, I kept seeing the same text in several requests and wondered how much we could save by reading it from the cache. I came back to that question in this post because the agent’s call logs gave me a way to show you where the savings came from as it read the same documents again and again. On the OpenAI model, keeping documents in place used 37% more input and cost about 20% less because the extra cache reads cost less than the writes they saved.
+In a production service where I used an LLM to generate content, I reviewed token usage request by request and applied prompt caching, cutting the API cost per item generated by about 70%. In the agent experiments, the call logs showed when the savings on cache writes outweighed the cost of reading the same documents again.
 
 Cutting token use is part of an agent’s token economics, and tracing where costs add up across model calls helps you decide what to optimize. If you’re looking to lower your LLM costs, check your token counts and take a look at how well you’re using the prompt cache.
