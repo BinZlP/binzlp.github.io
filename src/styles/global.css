@@ -265,6 +265,30 @@ hr {
 .prose li + li { margin-top: 0.35rem; }
 .prose a { color: var(--accent); }
 
+.blog-figure {
+	margin: 2rem 0;
+	padding: 1rem 0;
+	border-block: 1px solid #d4d4d4;
+}
+.blog-figure > figcaption {
+	margin: 0 0 1rem;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.5;
+	word-break: keep-all;
+}
+.blog-figure__context, .blog-figure__note {
+	display: block;
+	color: rgb(var(--gray));
+	font-size: 0.875rem;
+	font-weight: 400;
+	line-height: 1.55;
+	word-break: keep-all;
+	overflow-wrap: anywhere;
+}
+.blog-figure__context { margin-top: 0.25rem; }
+.blog-figure .blog-figure__note { margin: 0.5rem 0 0; }
+
 .sr-only {
 	border: 0;
 	padding: 0;

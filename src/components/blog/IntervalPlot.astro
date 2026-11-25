@@ -1,0 +1,195 @@
+---
+interface IntervalRow {
+	label: string;
+	group?: string;
+	value: number;
+	low: number;
+	high: number;
+	marker?: 'circle' | 'diamond';
+}
+
+interface Axis {
+	min: number;
+	max: number;
+	step: number;
+}
+
+interface Props {
+	caption: string;
+	context?: string;
+	note?: string;
+	unit?: string;
+	rows: IntervalRow[];
+	axis?: Axis;
+	baseline?: number;
+	precision?: number;
+	signed?: boolean;
+}
+
+const { caption, context, note, unit = '', rows, axis, baseline = 0, precision, signed = false } = Astro.props;
+
+function automaticAxis(rows: IntervalRow[], baseline: number): Axis {
+	let min = baseline;
+	let max = baseline;
+	for (const row of rows) {
+		min = Math.min(min, row.low, row.value);
+		max = Math.max(max, row.high, row.value);
+	}
+	if (min === max) {
+		const padding = Math.abs(min) * 0.1 || 1;
+		min -= padding;
+		max += padding;
+	}
+	const target = (max - min) / 5;
+	const magnitude = 10 ** Math.floor(Math.log10(target));
+	const multiple = [1, 2, 2.5, 5, 10].find(n => n * magnitude >= target) ?? 10;
+	const step = multiple * magnitude;
+	return { min: Math.floor(min / step) * step, max: Math.ceil(max / step) * step, step };
+}
+
+if (!Number.isFinite(baseline) || rows.some(({ low, value, high }) =>
+	![low, value, high].every(Number.isFinite) || low > high
+)) {
+	throw new Error('IntervalPlot requires finite measurements and an ordered interval for each row.');
+}
+const { min, max, step } = axis ?? automaticAxis(rows, baseline);
+if (![min, max, step].every(Number.isFinite) || min >= max || step <= 0 ||
+	rows.some(row => Math.min(row.value, row.low) < min || Math.max(row.value, row.high) > max)) {
+	throw new Error('IntervalPlot requires an increasing axis with a positive step that includes every measurement.');
+}
+
+const position = (n: number) => `${100 * (n - min) / (max - min)}%`;
+const formatting = { signDisplay: signed ? 'exceptZero' : 'auto' } as const;
+const values = new Intl.NumberFormat('ko-KR', {
+	...formatting,
+	...(precision === undefined
+		? { maximumSignificantDigits: 6 }
+		: { minimumFractionDigits: precision, maximumFractionDigits: precision }),
+});
+const tickFormat = new Intl.NumberFormat('ko-KR', { ...formatting, maximumSignificantDigits: 8 });
+const tickIntervals = (max - min) / step;
+const tickStride = Math.max(1, Math.ceil(tickIntervals / 7));
+const ticks = Array.from({ length: Math.floor(tickIntervals / tickStride + 1e-10) + 1 },
+	(_, index) => Number((min + index * tickStride * step).toPrecision(12)));
+if (ticks.at(-1)! < max - step * 1e-8) ticks.push(max);
+const showBaseline = min <= baseline && baseline <= max;
+
+const groups: { name?: string; rows: IntervalRow[] }[] = [];
+for (const row of rows) {
+	let group = groups.at(-1);
+	if (!group || group.name !== row.group) {
+		group = { name: row.group, rows: [] };
+		groups.push(group);
+	}
+	group.rows.push(row);
+}
+---
+
+<figure class="blog-figure interval-plot" aria-label={caption}>
+	<figcaption>
+		<span class="blog-figure__title">{caption}</span>
+		{context && <span class="blog-figure__context">{context}</span>}
+	</figcaption>
+	{groups.map(group => (
+		<div class="plot-group" role={group.name ? 'group' : undefined} aria-label={group.name}>
+			{group.name && <strong class="group-name">{group.name}</strong>}
+			<dl class="measurements">
+				{group.rows.map(row => (
+					<div class="measurement">
+						<dt>{row.label}</dt>
+						<dd class="numbers">
+							<b>{values.format(row.value)}{unit}</b>
+							<span>({values.format(row.low)}{unit} ~ {values.format(row.high)}{unit})</span>
+						</dd>
+						<dd class="track" aria-hidden="true">
+							{ticks.map(tick => <i class="grid-line" style={{ left: position(tick) }} />)}
+							{showBaseline && <i class="baseline" style={{ left: position(baseline) }} />}
+							<i class="interval" style={{ left: position(row.low), width: `${100 * (row.high - row.low) / (max - min)}%` }} />
+							<i class:list={['marker', row.marker === 'diamond' && 'diamond']} style={{ left: position(row.value) }} />
+						</dd>
+					</div>
+				))}
+			</dl>
+		</div>
+	))}
+	{rows.length > 0 && (
+		<div class="axis" aria-hidden="true">
+			<div class="tick-labels">
+				{ticks.map(tick => <span style={{ left: position(tick) }}>{tickFormat.format(tick)}{unit}</span>)}
+			</div>
+		</div>
+	)}
+	{note && <p class="blog-figure__note">{note}</p>}
+</figure>
+
+<style>
+	.interval-plot {
+		container-type: inline-size;
+		--plot-columns: minmax(4.5rem, 0.6fr) minmax(0, 2.2fr) minmax(8rem, 1fr);
+		--plot-gap: 0.75rem;
+		--axis-gutter: 1.15rem;
+	}
+	.plot-group + .plot-group { margin-top: 0.85rem; }
+	.group-name { display: block; margin-bottom: 0.25rem; font-size: 0.94rem; }
+	.measurements, .measurement dd { margin: 0; }
+	.measurement, .axis {
+		display: grid;
+		grid-template-columns: var(--plot-columns);
+		column-gap: var(--plot-gap);
+	}
+	.measurement { grid-template-areas: 'label track numbers'; padding: 0.32rem 0; align-items: center; }
+	.measurement dt { grid-area: label; font-size: 0.87rem; font-weight: 550; }
+	.numbers { grid-area: numbers; display: grid; text-align: right; line-height: 1.45; }
+	.numbers, .tick-labels { font-variant-numeric: tabular-nums; }
+	.numbers b { font-size: 0.87rem; }
+	.numbers span { color: rgb(var(--gray)); font-size: 0.78rem; }
+	.measurement .track {
+		grid-area: track;
+		position: relative;
+		align-self: stretch;
+		min-height: 1.4rem;
+		margin-inline: var(--axis-gutter);
+		color: var(--accent);
+	}
+	.track i { position: absolute; }
+	.grid-line, .baseline { top: 0; bottom: 0; border-left: 1px solid #dedede; }
+	.baseline { border-color: #808080; }
+	.interval { top: 50%; border-top: 2px solid; }
+	.interval::before, .interval::after {
+		content: '';
+		position: absolute;
+		top: -0.28rem;
+		height: 0.46rem;
+		border-left: 1.5px solid;
+	}
+	.interval::before { left: 0; }
+	.interval::after { right: 0; }
+	.marker {
+		top: 50%;
+		width: 0.56rem;
+		height: 0.56rem;
+		background: currentColor;
+		border: 1px solid white;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.marker.diamond { border-radius: 0; transform: translate(-50%, -50%) rotate(45deg); }
+	.axis { margin-top: 0.25rem; font-size: 0.72rem; color: rgb(var(--gray)); }
+	.tick-labels { grid-column: 2; position: relative; margin-inline: var(--axis-gutter); height: 1.45rem; border-top: 1px solid #bcbcbc; }
+	.tick-labels span { position: absolute; top: 0.18rem; white-space: nowrap; transform: translateX(-50%); }
+	@container (max-width: 34rem) {
+		.measurement {
+			grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+			grid-template-areas: 'label numbers' 'track track';
+			padding: 0.42rem 0;
+		}
+		.measurement .track { margin-top: 0.25rem; }
+		.axis { display: block; }
+	}
+	@media (forced-colors: active) {
+		.measurement .track { color: CanvasText; }
+		.grid-line { border-color: GrayText; }
+		.baseline { border-color: CanvasText; }
+		.marker { forced-color-adjust: none; background: CanvasText; border-color: Canvas; }
+	}
+</style>

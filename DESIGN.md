@@ -142,6 +142,28 @@ Hover may increase border contrast and lift slightly. Heavy shadows are not allo
 - **Article:** narrow reading column, large title, muted description, metadata row, generous paragraph spacing, styled code blocks and blockquotes.
 - **Footer:** quiet centered text with subtle top border.
 
+### Figures in blog posts
+
+Use `IntervalPlot` in MDX for measurements with a lower and upper bound. Give the figure a descriptive caption and explain what the interval means in the note.
+
+```mdx
+import IntervalPlot from '/src/components/blog/IntervalPlot.astro';
+
+<IntervalPlot
+  caption="배치 크기별 응답 시간"
+  note="점은 중앙값이고 가로선은 25~75백분위 범위입니다."
+  unit=" ms"
+  rows={[
+    { label: '배치 1', value: 24, low: 20, high: 31 },
+    { label: '배치 8', value: 36, low: 29, high: 45 }
+  ]}
+/>
+```
+
+The axis scales to the data. To compare several plots on the same scale, pass the same `axis={{ min, max, step }}` to each. For a diagram specific to one post, use `<figure class="blog-figure">` with a `<figcaption>` to share the chart's spacing and typography.
+
+Keep the caption to a brief description, followed by the source links. For an original measurement, name the data it comes from. Give screenshots enough context to recognize the source page and use a separate mobile capture when scaling the desktop image would make its text hard to read.
+
 ## Do's and Don'ts
 
 Do keep the interface mostly white, spacious, and text-first. Do use blue accent sparingly for orientation. Do use shadow-as-border for cards. Do preserve strong code readability. Do optimize for Korean technical prose with relaxed line-height.

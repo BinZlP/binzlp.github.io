@@ -1,0 +1,183 @@
+---
+title: '토큰을 덜 쓰는 에이전트가 더 저렴할까? - 캐시 읽기와 쓰기로 살펴본 LLM 호출 비용'
+description: '문서를 매번 검색할 때와 프롬프트 앞에 남겨 둘 때, 캐시 읽기와 쓰기 비용이 어떻게 달라지는지 에이전트 호출 로그로 비교했습니다.'
+pubDate: 2026-11-25
+category: ai
+tags: ['llm', 'prompt-caching', 'agents']
+---
+
+import IntervalPlot from '/src/components/blog/IntervalPlot.astro';
+import { Image } from 'astro:assets';
+import codeMode from './assets/claude-code-mode-overview.png';
+import codeModeMobile from './assets/claude-code-mode-overview-mobile.png';
+import './figures.css';
+
+export const changePlot = {
+  axis: { min: -75, max: 50, step: 25 },
+  unit: '%',
+  signed: true,
+  precision: 2,
+  note: '매 턴 검색을 0%로 둔 변화율. 가로선과 괄호는 세션 12쌍을 재표집해 얻은 95% 구간입니다.'
+};
+
+Anthropic이 Claude Code에 실험 기능인 Code Mode를 추가했습니다. 모델이 여러 도구를 호출하는 자바스크립트 코드를 짜면 Claude Code가 그 코드를 실행해 필요한 결과만 돌려줍니다. 가령 테스트 100개 중 두 개가 실패했다면 성공 로그 98개를 건너뛰고 실패한 두 건의 오류만 모델에 보여줄 수 있습니다.
+
+성공 로그는 한 번 걸러 내면 그만이지만, 프로젝트 지침이나 운영 문서는 다음 질문에도 필요합니다. **이런 문서는 매번 짧게 추려 보내는 편이 쌀까요, 같은 자리에 두고 캐시에서 다시 읽는 편이 쌀까요?**
+
+<figure class="kc-excerpt">
+  <picture class="kc-overview">
+    <source media="(max-width: 600px)" srcset={codeModeMobile.src} width={codeModeMobile.width} height={codeModeMobile.height} />
+    <Image src={codeMode} format="png" alt="여러 도구 호출을 자바스크립트로 묶는 Code Mode를 소개하는 Claude Code 한국어 가이드" />
+  </picture>
+  <figcaption>Claude Code의 Code Mode. <a href="https://code.claude.com/docs/ko/code-mode">공식 가이드</a> · <a href="https://x.com/ClaudeDevs/status/2122801681939234950">개발자 팀의 소개 글</a></figcaption>
+</figure>
+
+## 한 턴이 여러 번의 모델 호출로 이어지는 과정
+
+Claude Code에 “테스트가 왜 실패했는지 찾아줘”라고 부탁하면, 모델의 첫 응답은 `pytest`를 실행해 달라는 요청일 수 있습니다. Claude Code가 명령을 실행하고 그 결과를 대화에 더해 모델을 다시 부릅니다. 서버에서 모델이 입력을 처리하고 응답 토큰을 생성하는 일이 **LLM 서빙**입니다. Claude Code, Codex CLI, `pi`처럼 모델에 줄 입력을 구성하고 도구 실행과 다음 호출을 이어 주는 프로그램은 **에이전트 하네스**라고 부릅니다.
+
+두 번째 호출의 입력에는 새로 나온 테스트 로그와 첫 호출에도 있었던 프로젝트 지침이 함께 들어갑니다. 두 호출의 입력이 앞에서부터 일치하고 서버에 그 구간의 계산 결과가 남아 있으면, 서버는 그 결과를 재사용할 수 있습니다. 이것이 **프롬프트 캐싱**입니다. 지침은 두 호출의 입력 토큰 수에 모두 잡히지만, 두 번째에는 더 낮은 캐시 읽기 단가가 적용될 수 있습니다.
+
+<figure class="blog-figure kc-diagram" aria-labelledby="kc-incoming">
+  <div class="kc-request">
+    <strong>첫 호출</strong>
+    <div class="kc-sequence"><span class="kc-segment">프로젝트 지침 · 도구 설명 · 사용자 질문</span></div>
+  </div>
+  <div class="kc-tool-step"><span aria-hidden="true">↓</span> 하네스가 <code>pytest</code> 실행</div>
+  <div class="kc-request">
+    <strong>다음 호출</strong>
+    <div class="kc-sequence">
+      <span class="kc-segment kc-reused"><small>캐시 읽기 가능</small>프로젝트 지침 · 도구 설명 · 사용자 질문</span>
+      <span class="kc-segment"><small>새로 추가</small>도구 호출 · 테스트 결과</span>
+    </div>
+  </div>
+  <figcaption>
+    <span id="kc-incoming">도구 실행 전후의 모델 입력.</span> <a href="https://code.claude.com/docs/en/how-claude-code-works">Claude Code의 동작 방식</a> · <a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Codex의 에이전트 루프</a>
+  </figcaption>
+</figure>
+
+## 운영 문서 408개로 비교한 두 가지 배치 방식
+
+운영 문서에서 설정값 하나를 찾을 때는 관련 문서 몇 개면 충분합니다. 그런데 세 턴 뒤에 같은 문서가 또 필요하다면 어떨까요? 저는 가상의 운영 문서 408개를 준비하고 세션마다 질문을 여덟 개씩 던졌습니다. 그중에는 몇 턴 전에 본 문서가 다시 필요한 질문도 있었습니다. 두 방식에 같은 질문을 같은 순서로 주고 문서를 건네는 방법만 바꿨습니다.
+
+- **매 턴 검색하기.** 질문마다 BM25로 찾은 문서 묶음을 대화 끝에 붙였습니다. 이전 검색 결과도 대화에 남아 다음 호출에서 캐시로 읽힐 수 있습니다.
+- **작업 집합(working set) 관리하기.** 다시 쓸 만한 문서 묶음을 세션 시작 때 프롬프트 앞에 두고 여덟 턴 동안 고정했습니다. 묶음에 없는 문서는 도구로 가져왔습니다. 남길 문서를 고르는 정책은 페이지 캐시 교체 알고리즘 ARC에서 아이디어를 얻어 직접 설계했고, 검색·조회 도구는 MCP 서버로 구현했습니다.
+
+<figure class="blog-figure kc-diagram" aria-labelledby="kc-placement">
+  <div class="kc-request">
+    <strong>매 턴 검색</strong>
+    <div class="kc-sequence">
+      <span class="kc-segment">질문 1 · 문서 A</span><span class="kc-segment">질문 2 · 문서 A</span>
+    </div>
+  </div>
+  <div class="kc-request">
+    <strong>작업 집합</strong>
+    <div class="kc-sequence">
+      <span class="kc-segment kc-reused">문서 A · 앞에 고정</span><span class="kc-segment">질문 1</span><span class="kc-segment">질문 2</span>
+    </div>
+  </div>
+  <figcaption>
+    <span id="kc-placement">두 질문이 문서 A를 공유할 때의 배치.</span> <a href="https://www.usenix.org/conference/fast-03/arc-self-tuning-low-overhead-replacement-cache">ARC 원 논문</a>
+  </figcaption>
+</figure>
+
+작업 집합 방식에서는 세션 앞에 둘 문서를, 매 턴 검색 방식에서는 한 턴에 새로 붙일 문서를 각각 1,756토큰으로 제한했습니다. 전체 문서 분량의 약 5%입니다. 두 방식 모두 모델 제공사의 프롬프트 캐시를 씁니다. 제가 확인하고 싶었던 건 **문서 배치를 바꾸면 캐시에 새로 쓰는 양과 다시 읽는 양이 어떻게 달라지고, 그 차이가 호출 비용에 얼마나 영향을 주는지**였습니다. 비용은 호출마다 일반 입력·캐시 쓰기·캐시 읽기·출력 토큰에 실험 당시 모델과 사용 경로의 단가를 각각 곱해 합산했습니다.
+
+## 입력을 더 쓴 쪽이 왜 더 저렴했을까?
+
+하네스 `pi`에서 작업 집합이 5% 예산을 거의 다 채운 상태를 비교했습니다. 모델별로 같은 질문을 받은 세션 12쌍을 집계했더니, OpenAI 모델에서는 **작업 집합을 둔 쪽이 매 턴 검색한 쪽보다 입력을 37.3% 더 쓰고도 비용은 19.8% 낮았습니다.** Anthropic 모델에서도 입력은 6.0% 늘고 비용은 48.2% 줄었습니다.
+
+<IntervalPlot
+  {...changePlot}
+  caption="제공사별 총 입력 토큰과 추정 비용 변화율"
+  context="pi 실험 로그 · 문서 예산 5% · 작업 집합이 채워진 구간"
+  rows={[
+    { group: 'OpenAI', label: '총 입력 토큰', value: 37.32, low: 30.48, high: 43.61 },
+    { group: 'OpenAI', label: '추정 비용', value: -19.83, low: -23.08, high: -16.81, marker: 'diamond' },
+    { group: 'Anthropic', label: '총 입력 토큰', value: 6.00, low: 1.59, high: 10.21 },
+    { group: 'Anthropic', label: '추정 비용', value: -48.23, low: -49.80, high: -46.76, marker: 'diamond' }
+  ]}
+/>
+
+OpenAI 실험에서 작업 집합을 썼을 때는 **캐시에 124,627토큰을 덜 쓰고 552,616토큰을 더 읽었습니다.** 당시 이 경로에서는 캐시에 1토큰을 쓰는 값으로 12.5토큰을 읽을 수 있었습니다. 새 문서를 덜 써서 아낀 금액이 같은 문서를 더 읽느라 든 비용보다 컸습니다. 일반 입력과 출력까지 합친 비용 차이가 위 그림의 19.8%입니다.
+
+입력 길이가 거의 같아도 차이가 날까요? Claude Code에서 작업 집합을 두고 같은 여덟 턴을 곧바로 반복했을 때, 두 실행의 첫 호출은 입력 길이가 겨우 8토큰 차이였습니다. 그런데 첫 호출에서 캐시에 새로 쓴 양은 28,753토큰에서 6,720토큰으로 줄었습니다. 그 호출을 포함한 **여덟 턴 전체의 추정 비용**도 0.3332달러에서 0.2078달러로 약 38% 내려갔습니다. 같은 시점에 반복한 매 턴 검색 세션은 두 번 모두 0.2649달러였습니다.
+
+## 문서를 너무 많이 남겨도 비싸져요
+
+독립된 질문에서는 전체 문서를 미리 줄 수도 있고, 문서 없이 시작해 에이전트가 필요한 것만 직접 찾게 할 수도 있습니다. 여러 질문이 이어지는 대화라면 문서를 전부 맨 앞에 한 번 두고 계속 쓰는 방법도 있습니다. 매번 같은 앞부분을 캐시에서 싸게 읽을 수 있다면, 굳이 남길 문서를 골라야 할까요?
+
+Codex CLI에서는 대화에 남길 문서의 양과 이전 검색 결과를 유지하는 방식을 바꿔 가며 입력량을 비교했습니다.
+
+<figure class="kc-table">
+
+| 모델에 남겨 둔 문서 | 총입력 토큰 | 캐시에서 읽은 토큰 | 읽기 비중 |
+| --- | ---: | ---: | ---: |
+| 문서 408개 전체를 세션 앞에 고정 | 1,600만 | 1,489만 | 93.1% |
+| 작업 집합을 세션 앞에 고정 | 677만 | 617만 | 91.2% |
+| 같은 대화에 매 턴 검색 결과를 추가 | 612만 | 545만 | 89.0% |
+| 매 턴 새 대화에 현재 질문의 검색 결과만 제공 | 233만 | 119만 | 50.9% |
+
+  <figcaption>Codex CLI 실험 로그. 방식별 12세션 × 16턴 합계, 만 토큰 단위 반올림.</figcaption>
+</figure>
+
+전체 문서를 둔 쪽과 작업 집합을 둔 쪽은 캐시 읽기 비중이 2%포인트도 차이 나지 않았습니다. 그런데 **전체 문서를 둔 쪽이 캐시에서 읽은 양은 2.4배**였습니다. 당시 Codex CLI는 일반 입력과 캐시 쓰기를 한 항목으로 기록했으므로, 이 표에서 확인할 수 있는 건 입력량과 읽기 비중까지입니다.
+
+읽기 비용이 실제로 쓰기 절감액을 넘어선 사례도 있습니다. `pi`와 OpenAI 모델에서 **작업 집합을 채워 가는 구간**끼리 비교하면, 양쪽의 문서 예산이 5%일 때는 작업 집합 관리가 29.6% 저렴했습니다. 같은 조건에서 예산을 2.5%로 좁히면 작업 집합 관리가 오히려 **17.8% 더 비쌌습니다.**
+
+<IntervalPlot
+  {...changePlot}
+  caption="문서 예산별 추정 비용 변화율"
+  context="pi 실험 로그 · OpenAI · 작업 집합이 커지는 구간"
+  rows={[
+    { group: '두 방식에 적용한 문서 예산', label: '2.5%', value: 17.82, low: 4.26, high: 29.21, marker: 'diamond' },
+    { group: '두 방식에 적용한 문서 예산', label: '5%', value: -29.59, low: -40.33, high: -20.03, marker: 'diamond' },
+    { group: '두 방식에 적용한 문서 예산', label: '10%', value: -57.38, low: -65.58, high: -49.22, marker: 'diamond' }
+  ]}
+/>
+
+문서 예산이 작을 때도 작업 집합을 둔 쪽이 캐시에 덜 썼습니다. 다만 매 턴 검색으로 새로 붙이는 문서도 짧아졌습니다. 쓰기에서 아낀 금액보다 추가로 읽는 데 든 비용이 더 컸습니다.
+
+## 입력 절감의 효과와 실험의 한계
+
+캐시에서 읽을 때도 요금이 붙습니다. 앞의 Codex CLI 실험에서 작업 집합만 남긴 쪽은 전체 문서를 둔 쪽보다 12세션 동안 약 **872만 토큰**을 캐시에서 덜 읽었습니다. 여러 호출에 남는 스킬 지침에도 같은 원리가 적용됩니다. 공개 스킬 40,285개를 조사한 연구에서 지침 파일(`SKILL.md`) 길이의 중앙값은 1,414토큰이었습니다. 다만 파일 길이만 보고는 스킬을 제공했을 때 작업 한 건의 비용이 얼마나 달라질지 알기 어렵습니다.
+
+SkillsBench는 같은 작업을 스킬 없이 풀 때와 작업에 맞는 스킬을 제공했을 때를 비교했습니다. 같은 Opus 4.7에서 스킬을 제공하자 작업당 평균 추정 비용이 Claude Code에서는 1.53달러 올랐고, OpenHands에서는 4.62달러 내렸습니다.
+
+<figure class="kc-table">
+
+| 하네스 | 스킬 없음 | 스킬 제공 |
+| --- | ---: | ---: |
+| Claude Code | 433.2만 토큰 ($5.21) | 642.5만 토큰 ($6.74) |
+| OpenHands | 177.1만 토큰 ($10.99) | 109.4만 토큰 ($6.37) |
+
+  <figcaption>Opus 4.7 작업당 평균 총 토큰과 추정 비용. <a href="https://github.com/benchflow-ai/skillsbench">SkillsBench GitHub</a> · <a href="https://arxiv.org/html/2602.12670v4#A12.T15">논문 표 15</a> · <a href="https://arxiv.org/html/2602.08004#S2.F2">스킬 파일 길이 분포</a></figcaption>
+</figure>
+
+표의 토큰 수는 작업이 끝날 때까지의 입력과 출력을 합한 값입니다. Claude Code의 경우 캐시 쓰기와 읽기를 포함한 세션 로그로 토큰 수를 추정했습니다. 비용은 SkillsBench 연구진이 LiteLLM으로 계산했습니다. 두 열의 차이에는 스킬 지침의 길이뿐 아니라 에이전트가 어떤 도구를 골랐고 모델을 몇 번 불렀는지도 반영됩니다.
+
+제 실험에서도 작업 집합을 둔 쪽은 여덟 조건 모두 캐시에 덜 썼지만, 세션별 편차를 고려해도 비용이 뚜렷이 낮았던 조건은 다섯이었습니다. 앞서 본 19.8%는 두 방식 모두 캐시를 쓰면서 문서 선택과 배치, 도구 호출이 함께 달라진 결과입니다. 캐싱과 입력 압축이 각각 얼마를 아끼는지 알려면 나머지 조건을 고정하고 하나씩 바꿔야 합니다.
+
+서비스에서 궁금한 건 **쓸 수 있는 답변 한 건을 얻는 데 든 비용**입니다. 이번 조회 작업에서는 두 방식 모두 정답 문서에 접근할 수 있었지만, 각 세션의 첫 질문에 대해서는 정답표가 문서의 이전 버전을 가리켰습니다. 이 실험으로 답변 한 건당 비용까지 비교하려면 먼저 정답표를 바로잡고, 각 방식의 총비용을 같은 품질 기준을 통과한 답변 수로 나눠야 합니다.
+
+## 컴퓨팅은 돌고 돌아 캐싱
+
+전통적인 컴퓨팅 시스템에서도 같은 계산을 되풀이하는 시간을 아끼려고 결과를 캐시에 남겼습니다. 그 시간에 같은 장비로 더 많은 요청을 처리할 수 있다면 건당 비용도 내려갑니다. LLM도 다음 토큰을 생성할 때 앞선 토큰의 키와 값(KV)을 캐시에서 꺼내 씁니다. 이 KV 캐시를 GPU 메모리에 얼마나 효율적으로 담느냐에 따라 한꺼번에 처리할 수 있는 요청 수가 달라집니다. 프롬프트 캐싱을 쓰면 다음 요청에서도 앞선 계산을 재사용할 수 있습니다. 두 요청의 입력이 앞에서부터 일치하면 서버는 캐시에 남은 구간을 다시 읽고, 그 구간에는 더 낮은 캐시 읽기 단가가 적용될 수 있습니다.
+
+<figure class="blog-figure kc-diagram kc-reuse" aria-labelledby="kc-reuse">
+  <div class="kc-request">
+    <strong>한 요청 안에서</strong>
+    <div class="kc-sequence"><span class="kc-segment kc-reused">앞선 토큰의 KV</span><span class="kc-arrow" aria-hidden="true">→</span><span class="kc-segment">다음 응답 토큰 생성</span></div>
+  </div>
+  <div class="kc-request">
+    <strong>두 요청 사이에서</strong>
+    <div class="kc-sequence"><span class="kc-segment kc-reused">일치하는 접두부의 KV</span><span class="kc-arrow" aria-hidden="true">→</span><span class="kc-segment">다음 요청의 입력 처리</span></div>
+  </div>
+  <figcaption>
+    <span id="kc-reuse">KV를 재사용하는 두 시점.</span> <a href="https://arxiv.org/abs/2309.06180">PagedAttention 논문</a> · <a href="https://developers.openai.com/api/docs/guides/prompt-caching">OpenAI 프롬프트 캐싱</a>
+  </figcaption>
+</figure>
+
+LLM으로 콘텐츠를 생성하던 프로덕션 서비스에서 추론 요청 한 건의 비용을 줄이려고 사용 내역을 분석한 적이 있습니다. 그때도 같은 내용이 여러 호출에 반복되면 프롬프트 캐싱을 살펴봐야겠다고 생각했습니다. 이번 실험을 하고 나니 그 이유를 숫자로 설명할 수 있습니다. OpenAI 모델에서 문서를 남겨 둔 쪽이 입력을 37% 더 쓰고도 약 20% 저렴했던 건, 같은 문서를 더 읽는 데 든 비용보다 캐시에 덜 써서 아낀 금액이 컸기 때문입니다.
+
+LLM 비용을 줄이고 싶다면 토큰 수와 함께 프롬프트 캐시도 잘 쓰고 있는지 한번 살펴보세요.
