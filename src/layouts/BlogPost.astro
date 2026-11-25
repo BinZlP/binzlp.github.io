@@ -10,10 +10,10 @@ interface Props {
 	alternatePath: string | null;
 }
 const { post, lang, alternatePath } = Astro.props;
-const { title, description, pubDate, updatedDate, category, tags } = post.data;
+const { title, description, pubDate, updatedDate, category, tags, heroImage, heroImageAlt } = post.data;
 const { Content } = await render(post);
 ---
-<BlogLayout {title} {description} {lang} {alternatePath}>
+<BlogLayout {title} {description} image={heroImage} imageAlt={heroImageAlt} {lang} {alternatePath}>
 	<article class="prose">
 		<header class="post-header">
 			<div class="meta"><a href={localePath(lang, `/categories/${category}/`)}>{blogUi[lang].category[category]}</a> · <FormattedDate date={pubDate} {lang} /></div>

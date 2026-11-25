@@ -11,6 +11,7 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	imageAlt?: string;
 	lang?: BlogLang;
 	alternatePath?: string | null;
 }
@@ -19,6 +20,7 @@ const {
 	title,
 	description,
 	image = FallbackImage,
+	imageAlt,
 	lang = 'ko',
 	alternatePath = localePath(otherLang(lang), Astro.url.pathname),
 } = Astro.props;
@@ -67,6 +69,9 @@ const socialLocales = { ko: 'ko_KR', en: 'en_US' } as const;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageURL} />
+<meta property="og:image:width" content={String(image.width)} />
+<meta property="og:image:height" content={String(image.height)} />
+{imageAlt && <meta property="og:image:alt" content={imageAlt} />}
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
@@ -74,3 +79,4 @@ const socialLocales = { ko: 'ko_KR', en: 'en_US' } as const;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={imageURL} />
+{imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}

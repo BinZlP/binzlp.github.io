@@ -14,6 +14,7 @@ const blog = defineCollection({
 			category: z.enum(['systems', 'ai', 'it-news', 'etc']),
 			tags: z.array(z.string()).default([]),
 			heroImage: z.optional(image()),
+			heroImageAlt: z.string().optional(),
 		}),
 });
 
