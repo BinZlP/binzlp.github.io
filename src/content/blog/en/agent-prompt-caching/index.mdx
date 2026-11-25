@@ -78,7 +78,7 @@ I ran the comparison in `pi` once the working set had nearly filled its 5% budge
   rows={providerRows('en')}
 />
 
-In the OpenAI experiment, the working set **wrote 124,627 fewer tokens to the cache and read 552,616 more.** On that route, writing one token to the cache cost as much as reading 12.5 tokens from it. The money saved by writing fewer new documents outweighed the cost of reading the same documents again. After including ordinary input and output, the estimated cost was 19.8% lower. Both setups had an accuracy of 87.5%.
+In the OpenAI experiment, the working set **wrote 124,627 fewer tokens to the cache and read 552,616 more.** On that route, writing one token to the cache cost as much as reading 12.5 tokens from it. The money saved by writing fewer new documents outweighed the cost of reading the same documents again. After including ordinary input and output, the estimated cost was 19.8% lower. Both setups scored 87.5% on the lookup questions, so the lower cost came with no drop in measured accuracy on this task.
 
 Would it make a difference even if the input length barely changed? In Claude Code, I ran the same eight turns with the working set twice in quick succession. The first calls of the two runs differed in length by just 8 input tokens. Yet the number of tokens written to the cache on that first call fell from 28,753 to 6,720. The **estimated cost of the full eight-turn session** fell from $0.3332 to $0.2078, a drop of about 38%. I also repeated the per-turn retrieval session at the same time. Its estimated cost was $0.2649 on both runs.
 
