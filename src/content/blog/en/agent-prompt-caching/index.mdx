@@ -136,7 +136,7 @@ The token counts include all input and output through the end of each task. For 
 
 In my OpenAI experiment, keeping about 5% of the document collection at the front of the prompt cost an estimated 19.8% less per session than appending search results on each turn for the same questions. Both setups used the cache, and changing where I put the documents also changed which ones the agent read and when it called tools. To measure the savings from caching alone, I’d compare the cost of processing the same input from scratch with the cost of reading it from cache. To see what shortening the input saves, I’d hold the cache conditions steady and vary the input length.
 
-In production, what I want to know is **how much it costs to get one usable answer**. In my lookup task, both setups could access the document containing the answer. But for the first question of each session, the answer key pointed to an earlier revision. To compare cost per usable answer, I’d first fix the answer key, then divide the total cost of each setup by the number of answers that met the same quality bar.
+In production, what I want to know is **how much it costs to get one usable answer**. Each question in this experiment asked for a single setting, and giving the agent all 408 documents didn’t help it get more answers right. I’d like to try questions that require putting information from several documents together and see how accuracy and cost change as I vary how much the agent reads. For which tasks, if any, do the answers improve enough to justify the extra cost?
 
 ## Computing keeps coming back to caching
 
