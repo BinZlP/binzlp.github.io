@@ -22,9 +22,9 @@ export const changePlot = {
   note: 'Retrieval on every turn is the baseline (0%). The horizontal lines and the ranges in parentheses show 95% intervals calculated by resampling the 12 pairs of sessions.'
 };
 
-Anthropic added an experimental feature called Code Mode to Claude Code. The model writes JavaScript that calls several tools, and Claude Code runs it and returns just the results the model needs. If two tests out of 100 fail, for example, the code can skip the 98 passing logs and send the model just the two errors.
+It’s become common to hand an agent a code change and let it run the tests. Even one task can take several model calls, so developers looking to cut inference costs are paying attention to how many tokens they send on each call. One example is Code Mode, an experimental feature Anthropic added to Claude Code. Claude Code runs JavaScript written by the model to call several tools. If two tests out of 100 fail, that code can return just the two errors to the model.
 
-Once I’ve filtered out the passing logs, I’m done with them. Project instructions and operations documents are different. I may need them again on the next question. **Is it cheaper to send a shorter selection each time, or to leave those documents in place and read them from the cache again?**
+At the same price per input token, sending fewer tokens does lower the input cost. There’s no reason to pay for 98 passing test logs I won’t need again. But I may still need the project instructions or the same operations document for the next question. **Over the whole task, is it cheaper to trim those documents on every call, or to leave them in place and read them from the cache again?**
 
 <figure class="kc-excerpt">
   <picture class="kc-overview">
