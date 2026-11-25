@@ -1,0 +1,23 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { blogUi, type BlogLang } from '../lib/blog';
+
+interface Props {
+	lang: BlogLang;
+	title: string;
+	description?: string;
+	alternatePath?: string | null;
+}
+const { lang, title, description = blogUi[lang].description, alternatePath } = Astro.props;
+---
+<!doctype html>
+<html lang={lang}>
+	<head><BaseHead {title} {description} {lang} {alternatePath} /></head>
+	<body>
+		<Header {lang} {alternatePath} />
+		<main><slot /></main>
+		<Footer {lang} />
+	</body>
+</html>

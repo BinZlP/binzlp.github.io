@@ -25,7 +25,14 @@ npm run preview
 
 ## Content
 
-블로그 글은 `src/content/blog/` 아래에 Markdown 또는 MDX로 작성합니다.
+한국어판은 기존 주소 `/blog/<slug>/`에서, 영어판은 `/en/blog/<slug>/`에서 읽을 수 있습니다. 한국어 원고를 완성한 뒤 같은 슬러그로 영문 파일을 추가합니다.
+
+| 언어 | 원고 경로 |
+| --- | --- |
+| 한국어 | `src/content/blog/<slug>/index.mdx` |
+| 영어 | `src/content/blog/en/<slug>/index.mdx` |
+
+단일 Markdown 파일도 지원합니다. 예를 들어 `<slug>.md`와 `en/<slug>.md`는 한 쌍입니다. 각 판에는 해당 언어의 제목과 설명을 쓰고 발행일, 카테고리, 태그는 맞춥니다. 공개된 번역이 있으면 언어 전환 링크가 자동으로 연결됩니다. 홈, 글 목록, 태그, 카테고리, RSS에는 선택한 언어의 글만 표시됩니다.
 
 필수 frontmatter:
 
@@ -36,6 +43,8 @@ pubDate: 2026-05-18
 category: 'systems' # systems | ai | it-news | etc
 tags: ['tag']
 ```
+
+초안이나 테스트 글은 해당 파일의 frontmatter에 `draft: true`를 넣어 보관할 수 있습니다. 빌드할 때 글 페이지, 목록, RSS, 사이트맵에서 제외됩니다.
 
 ## Portfolio
 

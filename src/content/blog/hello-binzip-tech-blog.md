@@ -2,6 +2,7 @@
 title: 'BinZIP tech blog 시작'
 description: '시스템, AI, 개발 관련 기록을 남기기 위한 블로그 초기 글입니다.'
 pubDate: 2026-05-18
+draft: true
 category: 'systems'
 tags: ['blog', 'astro', 'github-pages']
 ---

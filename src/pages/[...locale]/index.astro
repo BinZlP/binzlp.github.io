@@ -1,0 +1,29 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import PostList from '../../components/blog/PostList.astro';
+import { SITE_TITLE } from '../../consts';
+import { blogUi, localePath, localePaths, publishedPosts } from '../../lib/blog';
+
+export const getStaticPaths = localePaths;
+const { lang } = Astro.props;
+const t = blogUi[lang];
+const posts = (await publishedPosts(lang)).slice(0, 5);
+---
+<BlogLayout {lang} title={SITE_TITLE}>
+	<section class="hero">
+		<p class="eyebrow">{t.topics}</p>
+		<h1>{SITE_TITLE}</h1>
+		<p class="subtitle">{t.description}</p>
+		<div class="actions"><a href={localePath(lang, '/blog/')}>{t.read}</a><a href={localePath(lang, '/about/')}>{t.about}</a></div>
+	</section>
+	<section>
+		<h2>{t.latest}</h2>
+		<PostList {lang} {posts} heading="h3" />
+	</section>
+	<section>
+		<h2>{t.categories}</h2>
+		<div class="chips">
+			{Object.entries(t.category).map(([slug, label]) => <a href={localePath(lang, `/categories/${slug}/`)}>{label}</a>)}
+		</div>
+	</section>
+</BlogLayout>

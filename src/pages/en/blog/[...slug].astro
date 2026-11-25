@@ -1,0 +1,9 @@
+---
+import BlogPost from '../../../layouts/BlogPost.astro';
+import { articlePaths } from '../../../lib/blog';
+
+export function getStaticPaths() {
+	return articlePaths('en');
+}
+---
+<BlogPost {...Astro.props} />

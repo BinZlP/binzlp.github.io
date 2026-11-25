@@ -1,0 +1,24 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import PostList from '../../../components/blog/PostList.astro';
+import { SITE_TITLE } from '../../../consts';
+import { blogLanguages, localeParams, localePath, otherLang, publishedPosts } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+	const [ko, en] = await Promise.all([publishedPosts('ko'), publishedPosts('en')]);
+	const posts = { ko, en };
+	const tags = { ko: new Set(ko.flatMap(p => p.data.tags)), en: new Set(en.flatMap(p => p.data.tags)) };
+	return blogLanguages.flatMap(lang => Array.from(tags[lang], tag => ({
+		params: { ...localeParams(lang), tag },
+		props: {
+			lang, tag, posts: posts[lang].filter(post => post.data.tags.includes(tag)),
+			alternatePath: tags[otherLang(lang)].has(tag) ? localePath(otherLang(lang), `/tags/${tag}/`) : null,
+		},
+	})));
+}
+const { lang, tag, posts, alternatePath } = Astro.props;
+---
+<BlogLayout {lang} {alternatePath} title={`#${tag} | ${SITE_TITLE}`} description={lang === 'ko' ? `#${tag} 태그의 글` : `Posts tagged #${tag}`}>
+	<h1>#{tag}</h1>
+	<PostList {lang} {posts} />
+</BlogLayout>

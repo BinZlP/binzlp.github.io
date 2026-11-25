@@ -1,9 +1,16 @@
 ---
+import type { BlogLang } from '../lib/blog';
+
+interface Props {
+	lang?: BlogLang;
+}
+
+const { lang = 'ko' } = Astro.props;
 const today = new Date();
 ---
 
 <footer>
-	<p>&copy; {today.getFullYear()} BinZIP. Built with Astro and GitHub Pages.</p>
+	<p>&copy; {today.getFullYear()} BinZIP. {lang === 'ko' ? 'Astro와 GitHub Pages로 만들었습니다.' : 'Built with Astro and GitHub Pages.'}</p>
 </footer>
 <style>
 	footer {

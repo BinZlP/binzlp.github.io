@@ -1,4 +1,6 @@
 ---
+import type { BlogLang } from '../../lib/blog';
+
 interface IntervalRow {
 	label: string;
 	group?: string;
@@ -15,6 +17,7 @@ interface Axis {
 }
 
 interface Props {
+	lang?: BlogLang;
 	caption: string;
 	context?: string;
 	note?: string;
@@ -26,7 +29,7 @@ interface Props {
 	signed?: boolean;
 }
 
-const { caption, context, note, unit = '', rows, axis, baseline = 0, precision, signed = false } = Astro.props;
+const { lang = 'ko', caption, context, note, unit = '', rows, axis, baseline = 0, precision, signed = false } = Astro.props;
 
 function automaticAxis(rows: IntervalRow[], baseline: number): Axis {
 	let min = baseline;
@@ -60,13 +63,15 @@ if (![min, max, step].every(Number.isFinite) || min >= max || step <= 0 ||
 
 const position = (n: number) => `${100 * (n - min) / (max - min)}%`;
 const formatting = { signDisplay: signed ? 'exceptZero' : 'auto' } as const;
-const values = new Intl.NumberFormat('ko-KR', {
+const locale = lang === 'en' ? 'en-US' : 'ko-KR';
+const rangeSeparator = lang === 'en' ? ' to ' : ' ~ ';
+const values = new Intl.NumberFormat(locale, {
 	...formatting,
 	...(precision === undefined
 		? { maximumSignificantDigits: 6 }
 		: { minimumFractionDigits: precision, maximumFractionDigits: precision }),
 });
-const tickFormat = new Intl.NumberFormat('ko-KR', { ...formatting, maximumSignificantDigits: 8 });
+const tickFormat = new Intl.NumberFormat(locale, { ...formatting, maximumSignificantDigits: 8 });
 const tickIntervals = (max - min) / step;
 const tickStride = Math.max(1, Math.ceil(tickIntervals / 7));
 const ticks = Array.from({ length: Math.floor(tickIntervals / tickStride + 1e-10) + 1 },
@@ -85,7 +90,7 @@ for (const row of rows) {
 }
 ---
 
-<figure class="blog-figure interval-plot" aria-label={caption}>
+<figure class="blog-figure interval-plot" aria-label={caption} lang={lang}>
 	<figcaption>
 		<span class="blog-figure__title">{caption}</span>
 		{context && <span class="blog-figure__context">{context}</span>}
@@ -99,7 +104,7 @@ for (const row of rows) {
 						<dt>{row.label}</dt>
 						<dd class="numbers">
 							<b>{values.format(row.value)}{unit}</b>
-							<span>({values.format(row.low)}{unit} ~ {values.format(row.high)}{unit})</span>
+							<span>({values.format(row.low)}{unit}{rangeSeparator}{values.format(row.high)}{unit})</span>
 						</dd>
 						<dd class="track" aria-hidden="true">
 							{ticks.map(tick => <i class="grid-line" style={{ left: position(tick) }} />)}

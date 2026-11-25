@@ -1,0 +1,16 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import PostList from '../../../components/blog/PostList.astro';
+import { SITE_TITLE } from '../../../consts';
+import { blogUi, localePaths, publishedPosts } from '../../../lib/blog';
+
+export const getStaticPaths = localePaths;
+const { lang } = Astro.props;
+const t = blogUi[lang];
+const posts = await publishedPosts(lang);
+---
+<BlogLayout {lang} title={`${t.blog} | ${SITE_TITLE}`}>
+	<h1>{t.blog}</h1>
+	<p class="lead">{t.intro}</p>
+	<PostList {lang} {posts} />
+</BlogLayout>

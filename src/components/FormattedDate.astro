@@ -1,17 +1,18 @@
 ---
+import type { BlogLang } from '../lib/blog';
+
 interface Props {
 	date: Date;
+	lang?: BlogLang;
 }
 
-const { date } = Astro.props;
+const { date, lang = 'ko' } = Astro.props;
+const formatter = new Intl.DateTimeFormat(lang === 'ko' ? 'ko-KR' : 'en-US', {
+	year: 'numeric',
+	month: lang === 'ko' ? 'long' : 'short',
+	day: 'numeric',
+	timeZone: 'UTC',
+});
 ---
 
-<time datetime={date.toISOString()}>
-	{
-		date.toLocaleDateString('en-us', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		})
-	}
-</time>
+<time datetime={date.toISOString()}>{formatter.format(date)}</time>

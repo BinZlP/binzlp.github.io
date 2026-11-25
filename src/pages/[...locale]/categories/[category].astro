@@ -1,0 +1,22 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import PostList from '../../../components/blog/PostList.astro';
+import { CATEGORY_LABELS, SITE_TITLE, type Category } from '../../../consts';
+import { blogUi, localePaths, publishedPosts } from '../../../lib/blog';
+
+export function getStaticPaths() {
+	return localePaths().flatMap(({ params, props }) =>
+		(Object.keys(CATEGORY_LABELS) as Category[]).map(category => ({
+			params: { ...params, category }, props: { ...props, category },
+		}))
+	);
+}
+const { lang, category } = Astro.props;
+const t = blogUi[lang];
+const label = t.category[category];
+const posts = (await publishedPosts(lang)).filter(post => post.data.category === category);
+---
+<BlogLayout {lang} title={`${label} | ${SITE_TITLE}`} description={lang === 'ko' ? `${label} 카테고리의 글` : `Posts about ${label}`}>
+	<h1>{label}</h1>
+	{posts.length ? <PostList {lang} {posts} showCategory={false} /> : <p>{t.empty}</p>}
+</BlogLayout>

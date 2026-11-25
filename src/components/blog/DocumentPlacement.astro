@@ -1,4 +1,21 @@
 ---
+import type { BlogLang } from '../../lib/blog';
+
+interface Props { lang?: BlogLang }
+const { lang = 'ko' } = Astro.props;
+const labels = {
+	ko: {
+		description: '두 방식에서 질문과 문서 A가 놓이는 순서', method: '배치 방식',
+		start: '세션 앞', turn1: '첫 번째 턴', turn2: '두 번째 턴', question1: '질문 1', question2: '질문 2',
+		search: '매 턴 검색', workingSet: '작업 집합', document: '문서 A', fixed: '앞에 고정', empty: '미리 배치한 문서 없음',
+	},
+	en: {
+		description: 'Where the questions and document A appear in each strategy', method: 'Placement strategy',
+		start: 'Session start', turn1: 'Turn 1', turn2: 'Turn 2', question1: 'Question 1', question2: 'Question 2',
+		search: 'Per-turn retrieval', workingSet: 'Working set', document: 'Doc A', fixed: 'Pinned', empty: 'No document at the start',
+	},
+}[lang];
+
 interface Stage {
 	question?: string;
 	document?: 'retrieved' | 'fixed';
@@ -6,24 +23,24 @@ interface Stage {
 
 const strategies: { name: string; stages: Stage[] }[] = [
 	{
-		name: '매 턴 검색',
-		stages: [{}, { question: '질문 1', document: 'retrieved' }, { question: '질문 2', document: 'retrieved' }],
+		name: labels.search,
+		stages: [{}, { question: labels.question1, document: 'retrieved' }, { question: labels.question2, document: 'retrieved' }],
 	},
 	{
-		name: '작업 집합',
-		stages: [{ document: 'fixed' }, { question: '질문 1' }, { question: '질문 2' }],
+		name: labels.workingSet,
+		stages: [{ document: 'fixed' }, { question: labels.question1 }, { question: labels.question2 }],
 	},
 ];
 ---
 
-<div class="placement">
-	<table aria-label="두 방식에서 질문과 문서 A가 놓이는 순서">
+<div class="placement" lang={lang}>
+	<table aria-label={labels.description}>
 		<thead>
 			<tr>
-				<th scope="col" class="method-heading"><span class="sr-only">배치 방식</span></th>
-				<th scope="col">세션 앞</th>
-				<th scope="col">첫 번째 턴</th>
-				<th scope="col">두 번째 턴</th>
+				<th scope="col" class="method-heading"><span class="sr-only">{labels.method}</span></th>
+				<th scope="col">{labels.start}</th>
+				<th scope="col">{labels.turn1}</th>
+				<th scope="col">{labels.turn2}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -42,13 +59,13 @@ const strategies: { name: string; stages: Stage[] }[] = [
 												<path class="sheet" d="M2 1.5h9.5L17 7v14.5H2z" />
 												<path d="M11.5 1.5V7H17M5.5 12h8M5.5 15.5h5" />
 											</svg>
-											문서 A
+											{labels.document}
 										</span>
-										{document === 'fixed' && <small>앞에 고정</small>}
+										{document === 'fixed' && <small>{labels.fixed}</small>}
 									</span>
 								)}
 								{!question && !document && (
-									<span class="empty"><span aria-hidden="true">—</span><span class="sr-only">미리 배치한 문서 없음</span></span>
+								<span class="empty"><span aria-hidden="true">—</span><span class="sr-only">{labels.empty}</span></span>
 								)}
 							</div>
 						</td>
@@ -87,6 +104,7 @@ const strategies: { name: string; stages: Stage[] }[] = [
 		white-space: nowrap;
 	}
 	tbody tr + tr > * { border-top: 1px solid var(--kc-rule); }
+	.placement[lang="en"] th { white-space: normal; }
 	td { padding-block: 1rem; }
 	.sequence, .document-name {
 		display: flex;

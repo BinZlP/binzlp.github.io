@@ -1,0 +1,18 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import { SITE_TITLE } from '../../../consts';
+import { blogUi, localePath, localePaths, publishedPosts } from '../../../lib/blog';
+
+export const getStaticPaths = localePaths;
+const { lang } = Astro.props;
+const t = blogUi[lang];
+const posts = await publishedPosts(lang);
+---
+<BlogLayout {lang} title={`${t.categories} | ${SITE_TITLE}`}>
+	<h1>{t.categories}</h1>
+	<div class="chips">
+		{Object.entries(t.category).map(([slug, label]) => (
+			<a href={localePath(lang, `/categories/${slug}/`)}>{label} ({posts.filter(post => post.data.category === slug).length})</a>
+		))}
+	</div>
+</BlogLayout>

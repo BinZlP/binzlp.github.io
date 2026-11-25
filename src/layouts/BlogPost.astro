@@ -1,31 +1,27 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
+import { render } from 'astro:content';
+import BlogLayout from './BlogLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
-import { CATEGORY_LABELS } from '../consts';
+import { blogUi, localePath, type BlogLang, type Post } from '../lib/blog';
 
-type Props = CollectionEntry<'blog'>['data'];
-const { title, description, pubDate, updatedDate, category, tags = [] } = Astro.props;
+interface Props {
+	post: Post;
+	lang: BlogLang;
+	alternatePath: string | null;
+}
+const { post, lang, alternatePath } = Astro.props;
+const { title, description, pubDate, updatedDate, category, tags } = post.data;
+const { Content } = await render(post);
 ---
-
-<html lang="ko">
-	<head><BaseHead title={title} description={description} /></head>
-	<body>
-		<Header />
-		<main>
-			<article class="prose">
-				<header class="post-header">
-					<div class="meta"><a href={`/categories/${category}/`}>{CATEGORY_LABELS[category]}</a> · <FormattedDate date={pubDate} /></div>
-					<h1>{title}</h1>
-					<p>{description}</p>
-					{updatedDate && <p class="updated">Updated: <FormattedDate date={updatedDate} /></p>}
-					{tags.length > 0 && <div class="chips">{tags.map((tag) => <a href={`/tags/${tag}/`}>#{tag}</a>)}</div>}
-				</header>
-				<slot />
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+<BlogLayout {title} {description} {lang} {alternatePath}>
+	<article class="prose">
+		<header class="post-header">
+			<div class="meta"><a href={localePath(lang, `/categories/${category}/`)}>{blogUi[lang].category[category]}</a> · <FormattedDate date={pubDate} {lang} /></div>
+			<h1>{title}</h1>
+			<p>{description}</p>
+			{updatedDate && <p class="updated">{lang === 'ko' ? '마지막 수정' : 'Updated'} <FormattedDate date={updatedDate} {lang} /></p>}
+			{tags.length > 0 && <div class="chips">{tags.map(tag => <a href={localePath(lang, `/tags/${tag}/`)}>#{tag}</a>)}</div>}
+		</header>
+		<Content />
+	</article>
+</BlogLayout>

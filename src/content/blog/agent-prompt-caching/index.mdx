@@ -15,12 +15,10 @@ import { Image } from 'astro:assets';
 import codeMode from './assets/claude-code-mode-overview.png';
 import codeModeMobile from './assets/claude-code-mode-overview-mobile.png';
 import './figures.css';
+import { plotOptions, providerRows, budgetRows } from './measurements';
 
 export const changePlot = {
-  axis: { min: -75, max: 50, step: 25 },
-  unit: '%',
-  signed: true,
-  precision: 2,
+  ...plotOptions,
   note: '매 턴 검색을 0%로 둔 변화율. 가로선과 괄호는 세션 12쌍을 재표집해 얻은 95% 구간입니다.'
 };
 
@@ -76,12 +74,7 @@ Claude Code에 “테스트가 왜 실패했는지 찾아줘”라고 부탁하�
   {...changePlot}
   caption="제공사별 총 입력 토큰과 추정 비용 변화율"
   context="pi 실험 로그 · 문서 예산 5% · 작업 집합이 채워진 구간"
-  rows={[
-    { group: 'OpenAI', label: '총 입력 토큰', value: 37.32, low: 30.48, high: 43.61 },
-    { group: 'OpenAI', label: '추정 비용', value: -19.83, low: -23.08, high: -16.81, marker: 'diamond' },
-    { group: 'Anthropic', label: '총 입력 토큰', value: 6.00, low: 1.59, high: 10.21 },
-    { group: 'Anthropic', label: '추정 비용', value: -48.23, low: -49.80, high: -46.76, marker: 'diamond' }
-  ]}
+  rows={providerRows('ko')}
 />
 
 OpenAI 실험에서 작업 집합을 썼을 때는 **캐시에 124,627토큰을 덜 쓰고 552,616토큰을 더 읽었습니다.** 당시 이 경로에서는 캐시에 1토큰을 쓰는 값으로 12.5토큰을 읽을 수 있었습니다. 새 문서를 덜 써서 아낀 금액이 같은 문서를 더 읽느라 든 비용보다 컸습니다. 일반 입력과 출력까지 합친 비용 차이가 위 그림의 19.8%입니다.
@@ -114,11 +107,7 @@ Codex CLI에서는 대화에 남길 문서의 양과 이전 검색 결과를 유
   {...changePlot}
   caption="문서 예산별 추정 비용 변화율"
   context="pi 실험 로그 · OpenAI · 작업 집합이 커지는 구간"
-  rows={[
-    { group: '두 방식에 적용한 문서 예산', label: '2.5%', value: 17.82, low: 4.26, high: 29.21, marker: 'diamond' },
-    { group: '두 방식에 적용한 문서 예산', label: '5%', value: -29.59, low: -40.33, high: -20.03, marker: 'diamond' },
-    { group: '두 방식에 적용한 문서 예산', label: '10%', value: -57.38, low: -65.58, high: -49.22, marker: 'diamond' }
-  ]}
+  rows={budgetRows('ko')}
 />
 
 문서 예산이 작을 때도 작업 집합을 둔 쪽이 캐시에 덜 썼습니다. 다만 매 턴 검색으로 새로 붙이는 문서도 짧아졌습니다. 쓰기에서 아낀 금액보다 추가로 읽는 데 든 비용이 더 컸습니다.

@@ -19,3 +19,6 @@
 @media (max-width: 600px) {
   .kc-overview { max-width: 27rem; margin-inline: auto; }
 }
+@media (max-width: 420px) {
+  .kc-table:lang(en) :is(th, td) { padding-inline: .375rem; }
+}

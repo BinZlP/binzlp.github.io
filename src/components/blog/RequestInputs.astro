@@ -1,26 +1,43 @@
 ---
-const prefix = ['프로젝트 지침', '도구 설명', '사용자 질문'];
+import type { BlogLang } from '../../lib/blog';
+
+interface Props { lang?: BlogLang }
+const { lang = 'ko' } = Astro.props;
+const labels = {
+  ko: {
+    first: '첫 호출', next: '다음 호출',
+    prefix: ['프로젝트 지침', '도구 설명', '사용자 질문'],
+    beforeTool: '하네스가', afterTool: '실행',
+    call: '도구 호출', result: '테스트 결과', cached: '캐시 읽기 가능', added: '새로 추가',
+  },
+  en: {
+    first: 'First call', next: 'Next call',
+    prefix: ['Project instructions', 'Tool descriptions', 'User question'],
+    beforeTool: 'The harness runs', afterTool: '',
+    call: 'Tool call', result: 'Test results', cached: 'Eligible for a cache read', added: 'New input',
+  },
+}[lang];
 ---
 
-<div class="requests">
+<div class="requests" lang={lang}>
   <div class="call">
-    <strong class="call-name">첫 호출</strong>
+    <strong class="call-name">{labels.first}</strong>
     <div class="tape">
       <div class="segment prefix">
-        {prefix.map(part => <span>{part}</span>)}
+        {labels.prefix.map(part => <span>{part}</span>)}
       </div>
     </div>
   </div>
-  <div class="tool"><span class="branch" aria-hidden="true"></span>하네스가 <code>pytest</code> 실행</div>
+  <div class="tool"><span class="branch" aria-hidden="true"></span>{labels.beforeTool} <code>pytest</code> {labels.afterTool}</div>
   <div class="call">
-    <strong class="call-name">다음 호출</strong>
+    <strong class="call-name">{labels.next}</strong>
     <div class="tape">
       <div class="segment prefix cached">
-        {prefix.map(part => <span>{part}</span>)}
+        {labels.prefix.map(part => <span>{part}</span>)}
       </div>
-      <div class="segment suffix"><span>도구 호출</span><span>테스트 결과</span></div>
-      <span class="underbrace cache-note">캐시 읽기 가능</span>
-      <span class="underbrace">새로 추가</span>
+      <div class="segment suffix"><span>{labels.call}</span><span>{labels.result}</span></div>
+      <span class="underbrace cache-note">{labels.cached}</span>
+      <span class="underbrace">{labels.added}</span>
     </div>
   </div>
 </div>
@@ -64,6 +81,7 @@ const prefix = ['프로젝트 지침', '도구 설명', '사용자 질문'];
     word-break: keep-all;
   }
   .segment span { white-space: nowrap; }
+  .requests[lang="en"] .segment span { white-space: normal; text-align: center; }
   .segment span + span::before { content: '·'; margin-inline: .32em; color: var(--kc-muted); }
   .cached {
     border-color: var(--kc-blue-rule);

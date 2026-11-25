@@ -1,0 +1,14 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import { SITE_TITLE } from '../../../consts';
+import { blogUi, localePath, localePaths, publishedPosts } from '../../../lib/blog';
+
+export const getStaticPaths = localePaths;
+const { lang } = Astro.props;
+const t = blogUi[lang];
+const tags = [...new Set((await publishedPosts(lang)).flatMap(post => post.data.tags))].sort();
+---
+<BlogLayout {lang} title={`${t.tags} | ${SITE_TITLE}`}>
+	<h1>{t.tags}</h1>
+	<div class="chips">{tags.map(tag => <a href={localePath(lang, `/tags/${tag}/`)}>#{tag}</a>)}</div>
+</BlogLayout>

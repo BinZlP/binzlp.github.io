@@ -1,0 +1,23 @@
+---
+import FormattedDate from '../FormattedDate.astro';
+import { blogUi, postUrl, type BlogLang, type Post } from '../../lib/blog';
+
+interface Props {
+	posts: Post[];
+	lang: BlogLang;
+	heading?: 'h2' | 'h3';
+	showCategory?: boolean;
+}
+const { posts, lang, heading: Heading = 'h2', showCategory = true } = Astro.props;
+---
+<div class="post-list">
+	{posts.map(post => (
+		<article class="post-card">
+			<a href={postUrl(lang, post)}>
+				<span class="meta">{showCategory && `${blogUi[lang].category[post.data.category]} · `}<FormattedDate date={post.data.pubDate} {lang} /></span>
+				<Heading>{post.data.title}</Heading>
+				<p>{post.data.description}</p>
+			</a>
+		</article>
+	))}
+</div>

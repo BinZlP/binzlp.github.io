@@ -1,0 +1,27 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import { SITE_TITLE } from '../../consts';
+import { blogUi, localePath, localePaths } from '../../lib/blog';
+
+export const getStaticPaths = localePaths;
+const { lang } = Astro.props;
+const title = blogUi[lang].about;
+---
+<BlogLayout {lang} title={`${title} | ${SITE_TITLE}`}>
+	<h1>{title}</h1>
+	{lang === 'ko' ? (
+		<>
+			<p class="lead">BinZIP의 기술 블로그입니다.</p>
+			<p>시스템, AI, 개발 도구, 소프트웨어 엔지니어링 과정에서 얻은 생각과 기록을 정리합니다. 자세한 프로필과 프로젝트 소개는 추후 확장할 예정입니다.</p>
+		</>
+	) : (
+		<>
+			<p class="lead">Welcome to BinZIP’s tech blog.</p>
+			<p>I write about systems, AI, developer tools, and what I learn while building software. I plan to share more about my background and projects here.</p>
+		</>
+	)}
+	<ul>
+		<li><a href="https://github.com/BinZlP" target="_blank" rel="noreferrer">GitHub</a></li>
+		<li><a href={localePath(lang, '/rss.xml')}>RSS</a></li>
+	</ul>
+</BlogLayout>
