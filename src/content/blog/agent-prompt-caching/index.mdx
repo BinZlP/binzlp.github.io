@@ -138,14 +138,17 @@ OpenAI 모델에 같은 질문을 줬을 때, 전체 문서 분량의 약 5%를 
 
 ## 컴퓨팅은 돌고 돌아 캐싱
 
-전통적인 컴퓨팅 시스템에서도 같은 계산을 되풀이하는 시간을 아끼려고 결과를 캐시에 남겼습니다. 그 시간에 같은 장비로 더 많은 요청을 처리할 수 있다면 건당 비용도 내려갑니다. LLM도 다음 토큰을 생성할 때 앞선 토큰의 키와 값(KV)을 캐시에서 꺼내 씁니다. 이 KV 캐시를 GPU 메모리에 얼마나 효율적으로 담느냐에 따라 한꺼번에 처리할 수 있는 요청 수가 달라집니다. 프롬프트 캐싱을 쓰면 다음 요청에서도 앞선 계산을 재사용할 수 있습니다. 두 요청의 입력이 앞에서부터 일치하면 서버는 캐시에 남은 구간을 다시 읽고, 그 구간에는 더 낮은 캐시 읽기 단가가 적용될 수 있습니다.
+컴퓨팅 시스템은 오래전부터 계산 결과를 캐시에 남겨 같은 연산을 되풀이하는 비용을 아껴 왔습니다. LLM이 다음 토큰을 생성할 때 앞선 토큰의 키와 값(KV)을 재사용하는 것도 같은 이유입니다. 다음 요청이 이전과 같은 지침이나 문서로 시작하면, 서버는 캐시에 남은 KV를 읽어 그 구간의 계산을 건너뛸 수 있습니다.
+
+이 차이는 API 요금에도 드러납니다. OpenAI와 Anthropic은 캐시에서 읽은 입력 토큰에 새로 처리한 입력 토큰보다 낮은 단가를 적용합니다. 같은 문서를 여러 턴에 걸쳐 쓰는 에이전트라면, 매번 내용을 짧게 추려 보내는 것보다 문서를 프롬프트 앞에 그대로 두고 캐시에서 다시 읽는 편이 전체 비용을 더 아낄 수 있습니다.
 
 <BlogDiagram
   id="kc-reuse"
   caption="KV를 재사용하는 두 시점."
   sources={[
     { href: 'https://arxiv.org/abs/2309.06180', label: 'PagedAttention 논문' },
-    { href: 'https://developers.openai.com/api/docs/guides/prompt-caching', label: 'OpenAI 프롬프트 캐싱' }
+    { href: 'https://developers.openai.com/api/docs/guides/prompt-caching', label: 'OpenAI 프롬프트 캐싱' },
+    { href: 'https://platform.claude.com/docs/en/build-with-claude/prompt-caching', label: 'Anthropic 프롬프트 캐싱' }
   ]}>
   <KvReuse />
 </BlogDiagram>

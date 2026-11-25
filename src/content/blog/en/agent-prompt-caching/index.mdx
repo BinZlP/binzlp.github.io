@@ -140,14 +140,17 @@ In production, **the cost of getting one usable answer** matters. Giving the age
 
 ## Computing keeps coming back to caching
 
-Computer systems have long cached results to avoid doing the same calculation twice. If the time saved lets the same hardware serve more requests, the cost per request can fall. An LLM reuses the keys and values (KV) for earlier tokens when generating the next one. How efficiently its KV cache fits in GPU memory affects how many requests the server can handle at once. Prompt caching extends reuse to the next request. When two inputs share a prefix, the server can reuse the part it still has in cache, and that part may be billed at a lower read rate.
+Computer systems have long cached results to avoid paying for the same computation twice. For the same reason, an LLM reuses the keys and values (KV) from earlier tokens as it generates a response. If the next request starts with the same instructions or documents, the server can reuse the cached KV for that prefix and skip recomputing it.
+
+That difference shows up in API pricing. OpenAI and Anthropic charge less per input token for a cache read than for fresh input. For an agent that uses the same document across several turns, keeping it at the front of the prompt and reusing the cached prefix can cost less overall than sending a shorter selection each time.
 
 <BlogDiagram
   id="kc-reuse"
   caption="Two places where a model can reuse keys and values."
   sources={[
     { href: 'https://arxiv.org/abs/2309.06180', label: 'PagedAttention paper' },
-    { href: 'https://developers.openai.com/api/docs/guides/prompt-caching', label: 'OpenAI prompt caching' }
+    { href: 'https://developers.openai.com/api/docs/guides/prompt-caching', label: 'OpenAI prompt caching' },
+    { href: 'https://platform.claude.com/docs/en/build-with-claude/prompt-caching', label: 'Anthropic prompt caching' }
   ]}>
   <KvReuse lang="en" />
 </BlogDiagram>
