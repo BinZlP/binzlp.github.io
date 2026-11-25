@@ -102,6 +102,8 @@ In Codex CLI, I measured how much input the model received as I varied the amoun
 
 The cache-read shares for the full collection and the working set were less than two percentage points apart. Yet **keeping all the documents meant reading 2.4 times as many tokens from the cache.** That version of Codex CLI combined ordinary input and cache writes in one field, so the table lets me compare input volume and the share of reads. It doesn’t give me a cost breakdown.
 
+Did those extra reads buy better answers? I excluded the first question in each session because it asked for the current setting but the answer key listed an older value. Of the remaining 180 questions, the agent got 179 right with all 408 documents up front. With a smaller working set and the option to fetch other documents, it got all 180 right. For this task, which asked for one setting at a time, keeping every document didn’t yield more correct answers.
+
 I also saw a case where the extra reads actually cost more than the writes they saved. In `pi` with the OpenAI model, I compared the two setups **while the working set was still filling up**. At a matched document budget of 5%, the working set cost 29.6% less than per-turn retrieval. When I lowered both budgets to 2.5%, the working set cost **17.8% more**.
 
 <IntervalPlot
@@ -118,7 +120,7 @@ Even at the smaller budget, the working set still wrote fewer tokens to the cach
 
 Cache reads still carry a charge. Across the 12 Codex CLI sessions, keeping only the working set meant reading about **8.72 million fewer tokens** from the cache than keeping the full collection. The same principle applies to skill instructions that stay in context across calls. A study of 40,285 public skills found that the median instruction file (`SKILL.md`) was 1,414 tokens long. File length alone tells us little about how much it will cost to finish a task with that skill available.
 
-SkillsBench compared agents doing the same tasks with and without task-specific skills. With Opus 4.7 in both harnesses, offering skills raised the mean estimated cost per task by $1.53 in Claude Code and lowered it by $4.62 in OpenHands.
+SkillsBench ran the same tasks with and without skills, using Claude Opus 4.7 in both Claude Code and OpenHands. OpenHands is an open-source coding agent harness that lets the model edit files and run shell commands. Giving the agent task-specific skills raised the mean estimated cost per task by $1.53 in Claude Code and lowered it by $4.62 in OpenHands.
 
 <figure class="kc-table">
 
@@ -132,7 +134,7 @@ SkillsBench compared agents doing the same tasks with and without task-specific 
 
 The token counts include all input and output through the end of each task. For Claude Code, the SkillsBench researchers estimated tokens from session logs that included cache writes and reads. They calculated costs with LiteLLM. The difference between the two columns reflects the length of the skill instructions as well as which tools the agent chose and how many times it called the model.
 
-In my own experiments, the working set wrote fewer tokens to the cache in all eight configurations. Once I accounted for variation across sessions, the cost advantage was clear in five. The 19.8% saving came from a comparison where both setups used the cache and document selection, placement, and tool calls all changed together. To measure how much caching and input compression each save, I’d have to change one at a time and hold everything else fixed.
+In my OpenAI experiment, keeping about 5% of the document collection at the front of the prompt cost an estimated 19.8% less per session than appending search results on each turn for the same questions. Both setups used the cache, and changing where I put the documents also changed which ones the agent read and when it called tools. To measure the savings from caching alone, I’d compare the cost of processing the same input from scratch with the cost of reading it from cache. To see what shortening the input saves, I’d hold the cache conditions steady and vary the input length.
 
 In production, what I want to know is **how much it costs to get one usable answer**. In my lookup task, both setups could access the document containing the answer. But for the first question of each session, the answer key pointed to an earlier revision. To compare cost per usable answer, I’d first fix the answer key, then divide the total cost of each setup by the number of answers that met the same quality bar.
 
