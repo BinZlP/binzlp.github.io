@@ -1,0 +1,137 @@
+---
+const prefix = ['프로젝트 지침', '도구 설명', '사용자 질문'];
+---
+
+<div class="requests">
+  <div class="call">
+    <strong class="call-name">첫 호출</strong>
+    <div class="tape">
+      <div class="segment prefix">
+        {prefix.map(part => <span>{part}</span>)}
+      </div>
+    </div>
+  </div>
+  <div class="tool"><span class="branch" aria-hidden="true"></span>하네스가 <code>pytest</code> 실행</div>
+  <div class="call">
+    <strong class="call-name">다음 호출</strong>
+    <div class="tape">
+      <div class="segment prefix cached">
+        {prefix.map(part => <span>{part}</span>)}
+      </div>
+      <div class="segment suffix"><span>도구 호출</span><span>테스트 결과</span></div>
+      <span class="underbrace cache-note">캐시 읽기 가능</span>
+      <span class="underbrace">새로 추가</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .requests {
+    --label-width: 5.1rem;
+    --slot-gap: 4px;
+    container-type: inline-size;
+  }
+  .call {
+    display: grid;
+    grid-template-columns: var(--label-width) minmax(0, 1fr);
+    align-items: start;
+  }
+  .call-name {
+    align-self: start;
+    margin-top: .85rem;
+    font-size: .92rem;
+    font-weight: 650;
+    line-height: 1.55;
+  }
+  .tape {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 0 var(--slot-gap);
+  }
+  .segment {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: baseline;
+    justify-content: center;
+    padding: .78rem .3rem;
+    border: 1px solid var(--kc-rule);
+    border-radius: 6px;
+    color: var(--kc-ink);
+    background: var(--kc-paper);
+    font-size: .91rem;
+    line-height: 1.6;
+    word-break: keep-all;
+  }
+  .segment span { white-space: nowrap; }
+  .segment span + span::before { content: '·'; margin-inline: .32em; color: var(--kc-muted); }
+  .cached {
+    border-color: var(--kc-blue-rule);
+    background: var(--kc-tint);
+    color: var(--kc-blue);
+  }
+  .cached span + span::before { color: currentColor; }
+  .tool {
+    display: flex;
+    align-items: center;
+    gap: .32rem;
+    margin-left: var(--label-width);
+    color: var(--kc-muted);
+    font-size: .83rem;
+    line-height: 1.6;
+  }
+  .tool code {
+    padding: 0;
+    color: var(--kc-ink);
+    background: transparent;
+    font: 500 .95em/1.4 var(--font-mono);
+  }
+  .branch {
+    position: relative;
+    align-self: stretch;
+    width: 15px;
+    min-height: 2.8rem;
+    margin: 0 .15rem 0 .9rem;
+    border-left: 1px solid var(--kc-rule);
+  }
+  .branch::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid var(--kc-rule);
+  }
+  .underbrace {
+    position: relative;
+    margin: .45rem 2px 0;
+    padding-top: .35rem;
+    border-top: 1px solid var(--kc-rule);
+    color: var(--kc-muted);
+    font-size: .8rem;
+    line-height: 1.5;
+    text-align: center;
+    word-break: keep-all;
+  }
+  .underbrace::before, .underbrace::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    height: 4px;
+    border-left: 1px solid var(--kc-rule);
+  }
+  .underbrace::before { left: 0; }
+  .underbrace::after { right: 0; }
+  .cache-note { --kc-rule: var(--kc-blue-rule); color: var(--kc-blue); }
+  @container (max-width: 35rem) {
+    .call { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
+    .call-name { margin-top: 0; }
+    .tool { margin-left: 0; }
+    .branch { min-height: 2.2rem; }
+  }
+  @container (max-width: 27rem) {
+    .tape { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+    .segment { flex-direction: column; align-items: center; padding: .5rem .2rem; }
+    .segment span + span::before { content: none; }
+  }
+</style>

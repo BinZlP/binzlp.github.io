@@ -1,0 +1,78 @@
+---
+interface Props {
+  id: string;
+  caption: string;
+  sources?: { href: string; label: string }[];
+}
+const { id, caption, sources = [] } = Astro.props;
+const captionId = id + '-caption';
+---
+
+<figure class="blog-figure kc-diagram" id={id} aria-labelledby={captionId}>
+  <div class="kc-board"><slot /></div>
+  <figcaption>
+    <span id={captionId}>{caption}</span>
+    {sources.length > 0 && (
+      <span class="sources">
+        {sources.map(({ href, label }, index) => (
+          <span class="source">
+            {index > 0 && <span class="separator" aria-hidden="true">· </span>}
+            <a href={href}>{label}</a>
+          </span>
+        ))}
+      </span>
+    )}
+  </figcaption>
+</figure>
+
+<style>
+  .blog-figure.kc-diagram {
+    --kc-blue: var(--accent);
+    --kc-tint: var(--accent-soft);
+    --kc-paper: #fff;
+    --kc-ink: rgb(var(--black));
+    --kc-muted: rgb(var(--gray));
+    --kc-rule: #cdd2d9;
+    --kc-blue-rule: #a4bdef;
+    margin-block: 2rem;
+    padding: 0;
+    border: 0;
+    scroll-margin-top: 5rem;
+    container-type: inline-size;
+    font-family: var(--font-sans, 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif);
+  }
+  .kc-board {
+    padding: clamp(1rem, 4%, 2rem);
+    color: var(--kc-ink);
+    background: var(--surface);
+    border: 1px solid rgb(var(--border));
+    border-radius: 16px;
+    font-size: .94rem;
+    line-height: 1.55;
+    word-break: keep-all;
+  }
+  .kc-diagram > figcaption, .sources {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+  .kc-diagram > figcaption {
+    gap: .1rem .65rem;
+    margin: .625rem 0 0;
+    color: var(--kc-muted);
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  .sources { gap: 0 .3rem; }
+  .source { display: inline-block; }
+  .source a {
+    text-decoration-color: color-mix(in srgb, var(--kc-blue) 34%, transparent);
+    text-underline-offset: .2em;
+  }
+  .source a:hover, .source a:focus-visible { text-decoration-color: currentColor; }
+  @container (max-width: 22rem) {
+    .sources { column-gap: .75rem; }
+    .separator { display: none; }
+  }
+</style>

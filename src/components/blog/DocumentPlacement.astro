@@ -1,0 +1,156 @@
+---
+interface Stage {
+	question?: string;
+	document?: 'retrieved' | 'fixed';
+}
+
+const strategies: { name: string; stages: Stage[] }[] = [
+	{
+		name: '매 턴 검색',
+		stages: [{}, { question: '질문 1', document: 'retrieved' }, { question: '질문 2', document: 'retrieved' }],
+	},
+	{
+		name: '작업 집합',
+		stages: [{ document: 'fixed' }, { question: '질문 1' }, { question: '질문 2' }],
+	},
+];
+---
+
+<div class="placement">
+	<table aria-label="두 방식에서 질문과 문서 A가 놓이는 순서">
+		<thead>
+			<tr>
+				<th scope="col" class="method-heading"><span class="sr-only">배치 방식</span></th>
+				<th scope="col">세션 앞</th>
+				<th scope="col">첫 번째 턴</th>
+				<th scope="col">두 번째 턴</th>
+			</tr>
+		</thead>
+		<tbody>
+			{strategies.map(({ name, stages }) => (
+				<tr>
+					<th scope="row">{name}</th>
+					{stages.map(({ question, document }) => (
+						<td>
+							<div class="sequence">
+								{question && <span class="question">{question}</span>}
+								{question && document && <span class="connector" aria-hidden="true"></span>}
+								{document && (
+									<span class="document">
+										<span class="document-name">
+											<svg aria-hidden="true" width="19" height="23" viewBox="0 0 19 23" fill="none">
+												<path class="sheet" d="M2 1.5h9.5L17 7v14.5H2z" />
+												<path d="M11.5 1.5V7H17M5.5 12h8M5.5 15.5h5" />
+											</svg>
+											문서 A
+										</span>
+										{document === 'fixed' && <small>앞에 고정</small>}
+									</span>
+								)}
+								{!question && !document && (
+									<span class="empty"><span aria-hidden="true">—</span><span class="sr-only">미리 배치한 문서 없음</span></span>
+								)}
+							</div>
+						</td>
+					))}
+				</tr>
+			))}
+		</tbody>
+	</table>
+</div>
+
+<style>
+	.placement { container-type: inline-size; }
+	table {
+		width: 100%;
+		table-layout: fixed;
+		border-collapse: collapse;
+		color: var(--kc-ink);
+		font-size: .875rem;
+		line-height: 1.45;
+	}
+	th, td { padding: 0; border: 0; text-align: center; vertical-align: middle; }
+	thead th {
+		padding-block: 0 .65rem;
+		border-bottom: 1px solid var(--kc-rule);
+		color: var(--kc-muted);
+		font-size: .75rem;
+		font-weight: 500;
+		white-space: nowrap;
+	}
+	thead th:first-child { width: 18%; }
+	thead th:nth-child(2) { width: 20%; }
+	tbody th {
+		color: var(--kc-ink);
+		font-weight: 600;
+		text-align: left;
+		white-space: nowrap;
+	}
+	tbody tr + tr > * { border-top: 1px solid var(--kc-rule); }
+	td { padding-block: 1rem; }
+	.sequence, .document-name {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.sequence { gap: .5rem; min-height: 2.75rem; }
+	.document { display: grid; justify-items: center; gap: .2rem; }
+	.document-name {
+		gap: .3rem;
+		color: var(--kc-blue);
+		font-weight: 600;
+		white-space: nowrap;
+	}
+	.document svg {
+		flex: none;
+		stroke: currentColor;
+		stroke-width: 1.35;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.sheet { fill: var(--kc-tint); }
+	.document small, .empty { color: var(--kc-muted); }
+	.document small { font-size: .75rem; }
+	.question { white-space: nowrap; }
+	.connector {
+		position: relative;
+		width: .8rem;
+		height: 1px;
+		background: var(--kc-muted);
+	}
+	.connector::after {
+		content: '';
+		position: absolute;
+		right: 0;
+		top: 50%;
+		width: .24rem;
+		height: .24rem;
+		border-block-start: 1px solid var(--kc-muted);
+		border-inline-end: 1px solid var(--kc-muted);
+		transform: translateY(-50%) rotate(45deg);
+	}
+	@container (max-width: 32rem) {
+		table, thead, tbody { display: block; }
+		tr {
+			display: grid;
+			width: 100%;
+			grid-template-columns: minmax(0, .85fr) repeat(2, minmax(0, 1fr));
+		}
+		thead th.method-heading { position: absolute; width: 1px; padding: 0; border: 0; }
+		thead th:nth-child(2) { width: auto; }
+		tbody th { grid-column: 1 / -1; padding-top: .75rem; }
+		tbody tr + tr td { border-top: 0; }
+		td { display: grid; padding-block: .5rem .875rem; }
+		.sequence { min-height: 2.5rem; }
+	}
+	@container (max-width: 26rem) {
+		.sequence { flex-direction: column; gap: .35rem; }
+		.connector { width: .55rem; transform: rotate(90deg); }
+		.document svg { width: 16px; height: 20px; }
+	}
+	@media (forced-colors: active) {
+		.connector { background: CanvasText; }
+		.connector::after { border-color: CanvasText; }
+		.sheet { fill: Canvas; }
+	}
+</style>
