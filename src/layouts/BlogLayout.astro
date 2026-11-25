@@ -18,6 +18,6 @@ const { lang, title, description = blogUi[lang].description, alternatePath } = A
 	<body>
 		<Header {lang} {alternatePath} />
 		<main><slot /></main>
-		<Footer {lang} />
+		<Footer />
 	</body>
 </html>
