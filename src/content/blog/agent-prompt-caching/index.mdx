@@ -118,7 +118,7 @@ Codex CLI에서는 대화에 남길 문서의 양과 이전 검색 결과를 유
 
 캐시에서 읽을 때도 요금이 붙습니다. 앞의 Codex CLI 실험에서 작업 집합만 남긴 쪽은 전체 문서를 둔 쪽보다 12세션 동안 약 **872만 토큰**을 캐시에서 덜 읽었습니다. 여러 호출에 남는 스킬 지침에도 같은 원리가 적용됩니다. 공개 스킬 40,285개를 조사한 연구에서 지침 파일(`SKILL.md`) 길이의 중앙값은 1,414토큰이었습니다. 다만 파일 길이만 보고는 스킬을 제공했을 때 작업 한 건의 비용이 얼마나 달라질지 알기 어렵습니다.
 
-SkillsBench는 Claude Code와 OpenHands에 같은 Claude Opus 4.7을 연결해 스킬을 쓸 때와 쓰지 않을 때의 비용을 비교했습니다. OpenHands는 모델이 파일을 편집하고 터미널 명령을 실행할 수 있게 해 주는 오픈소스 코딩 하네스입니다. 작업에 맞는 스킬을 주자 작업당 평균 추정 비용이 Claude Code에서는 1.53달러 올랐고, OpenHands에서는 4.62달러 내렸습니다.
+[SkillsBench](https://github.com/benchflow-ai/skillsbench)는 Claude Code와 OpenHands에 같은 Claude Opus 4.7을 연결해 스킬을 쓸 때와 쓰지 않을 때의 비용을 비교했습니다. OpenHands는 모델이 파일을 편집하고 터미널 명령을 실행할 수 있게 해 주는 오픈소스 코딩 하네스입니다. 작업에 맞는 스킬을 주자 작업당 평균 추정 비용이 Claude Code에서는 1.53달러 올랐고, OpenHands에서는 4.62달러 내렸습니다.
 
 <figure class="kc-table">
 
@@ -127,7 +127,7 @@ SkillsBench는 Claude Code와 OpenHands에 같은 Claude Opus 4.7을 연결해 �
 | Claude Code | 433.2만 토큰 ($5.21) | 642.5만 토큰 ($6.74) |
 | OpenHands | 177.1만 토큰 ($10.99) | 109.4만 토큰 ($6.37) |
 
-  <figcaption>Opus 4.7 작업당 평균 총 토큰과 추정 비용. <a href="https://github.com/benchflow-ai/skillsbench">SkillsBench GitHub</a> · <a href="https://arxiv.org/html/2602.12670v4#A12.T15">논문 표 15</a> · <a href="https://arxiv.org/html/2602.08004#S2.F2">스킬 파일 길이 분포</a></figcaption>
+  <figcaption>Opus 4.7 작업당 평균 총 토큰과 추정 비용. <a href="https://arxiv.org/html/2602.12670v4#A12.T15">논문 표 15</a> · <a href="https://arxiv.org/html/2602.08004#S2.F2">스킬 파일 길이 분포</a></figcaption>
 </figure>
 
 표의 토큰 수는 작업이 끝날 때까지의 입력과 출력을 합한 값입니다. Claude Code의 경우 캐시 쓰기와 읽기를 포함한 세션 로그로 토큰 수를 추정했습니다. 비용은 SkillsBench 연구진이 LiteLLM으로 계산했습니다. 두 열의 차이에는 스킬 지침의 길이뿐 아니라 에이전트가 어떤 도구를 골랐고 모델을 몇 번 불렀는지도 반영됩니다.

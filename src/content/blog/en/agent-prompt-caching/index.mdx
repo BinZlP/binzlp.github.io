@@ -120,7 +120,7 @@ Even at the smaller budget, the working set still wrote fewer tokens to the cach
 
 Cache reads still carry a charge. Across the 12 Codex CLI sessions, keeping only the working set meant reading about **8.72 million fewer tokens** from the cache than keeping the full collection. The same principle applies to skill instructions that stay in context across calls. A study of 40,285 public skills found that the median instruction file (`SKILL.md`) was 1,414 tokens long. File length alone tells us little about how much it will cost to finish a task with that skill available.
 
-SkillsBench ran the same tasks with and without skills, using Claude Opus 4.7 in both Claude Code and OpenHands. OpenHands is an open-source coding agent harness that lets the model edit files and run shell commands. Giving the agent task-specific skills raised the mean estimated cost per task by $1.53 in Claude Code and lowered it by $4.62 in OpenHands.
+[SkillsBench](https://github.com/benchflow-ai/skillsbench) ran the same tasks with and without skills, using Claude Opus 4.7 in both Claude Code and OpenHands. OpenHands is an open-source coding agent harness that lets the model edit files and run shell commands. Giving the agent task-specific skills raised the mean estimated cost per task by $1.53 in Claude Code and lowered it by $4.62 in OpenHands.
 
 <figure class="kc-table">
 
@@ -129,7 +129,7 @@ SkillsBench ran the same tasks with and without skills, using Claude Opus 4.7 in
 | Claude Code | 4.332M tokens ($5.21) | 6.425M tokens ($6.74) |
 | OpenHands | 1.771M tokens ($10.99) | 1.094M tokens ($6.37) |
 
-  <figcaption>Mean total tokens and estimated cost per task on Opus 4.7. <a href="https://github.com/benchflow-ai/skillsbench">SkillsBench on GitHub</a> · <a href="https://arxiv.org/html/2602.12670v4#A12.T15">Table 15 of the paper</a> · <a href="https://arxiv.org/html/2602.08004#S2.F2">Distribution of skill file lengths</a></figcaption>
+  <figcaption>Mean total tokens and estimated cost per task on Opus 4.7. <a href="https://arxiv.org/html/2602.12670v4#A12.T15">Table 15 of the paper</a> · <a href="https://arxiv.org/html/2602.08004#S2.F2">Distribution of skill file lengths</a></figcaption>
 </figure>
 
 The token counts include all input and output through the end of each task. For Claude Code, the SkillsBench researchers estimated tokens from session logs that included cache writes and reads. They calculated costs with LiteLLM. The difference between the two columns reflects the length of the skill instructions as well as which tools the agent chose and how many times it called the model.
