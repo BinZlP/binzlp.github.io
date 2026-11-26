@@ -8,20 +8,19 @@ const { lang } = Astro.props;
 const title = blogUi[lang].about;
 ---
 <BlogLayout {lang} title={`${title} | ${SITE_TITLE}`}>
-	<h1>{title}</h1>
-	{lang === 'ko' ? (
-		<>
-			<p class="lead">BinZIP의 기술 블로그입니다.</p>
-			<p>시스템, AI, 개발 도구, 소프트웨어 엔지니어링 과정에서 얻은 생각과 기록을 정리합니다. 자세한 프로필과 프로젝트 소개는 추후 확장할 예정입니다.</p>
-		</>
-	) : (
-		<>
-			<p class="lead">Welcome to BinZIP’s tech blog.</p>
-			<p>I write about systems, AI, developer tools, and what I learn while building software. I plan to share more about my background and projects here.</p>
-		</>
-	)}
-	<ul>
-		<li><a href="https://github.com/BinZlP" target="_blank" rel="noreferrer">GitHub</a></li>
-		<li><a href={localePath(lang, '/rss.xml')}>RSS</a></li>
-	</ul>
+	<div class="prose">
+		<section aria-labelledby="about-blog">
+			<h1 id="about-blog">{lang === 'ko' ? '블로그 소개' : 'About the blog'}</h1>
+			<p>{lang === 'ko'
+				? '시스템과 AI 인프라, 개발 도구에 대해 쓰는 BinZIP의 기술 블로그입니다. 서비스를 만들고 운영하다 생긴 질문과 직접 실험하며 배운 점을 이곳에 기록합니다.'
+				: 'This is BinZIP’s blog about systems, AI infrastructure, and developer tools. I write about questions that come up while building and running services, and what I learn by testing ideas in practice.'}</p>
+		</section>
+		<section aria-labelledby="about-me">
+			<h2 id="about-me" lang="en">About me</h2>
+			<p>{lang === 'ko'
+				? '분산 시스템과 운영체제를 연구한 DevOps 엔지니어 한형석(BinZIP)입니다. 백엔드를 개발하고 서비스를 운영하면서 CI 빌드 시간을 줄이고, 동시 접속이 몰리는 코드 채점 서비스의 인프라를 개선했습니다. 지금은 클라우드와 온프레미스에서 LLM 추론 인프라와 개발자 플랫폼을 구축하고 고객 환경에 서비스를 배포합니다.'
+				: 'I’m Hyungseok Han (BinZIP), a DevOps engineer with a research background in distributed systems and operating systems. While developing and running backend services, I cut CI build times and improved the infrastructure behind a code grading service that handles spikes in traffic. I now build LLM inference infrastructure and developer platforms in the cloud and on premises, and deploy services in customer environments.'}</p>
+		</section>
+		<a href="https://github.com/BinZlP" target="_blank" rel="noreferrer">GitHub</a> · <a href={localePath(lang, '/rss.xml')}>RSS</a>
+	</div>
 </BlogLayout>
