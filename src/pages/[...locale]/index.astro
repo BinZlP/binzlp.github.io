@@ -16,9 +16,9 @@ const posts = (await publishedPosts(lang)).slice(0, 5);
 		<p class="subtitle">{t.description}</p>
 		<div class="actions"><a href={localePath(lang, '/blog/')}>{t.read}</a><a href={localePath(lang, '/about/')}>{t.about}</a></div>
 	</section>
-	<section>
+	<section class="latest-posts">
 		<h2>{t.latest}</h2>
-		<PostList {lang} {posts} heading="h3" />
+		<PostList {lang} {posts} heading="h3" eagerFirstThumbnail />
 	</section>
 	<section>
 		<h2>{t.categories}</h2>
@@ -27,3 +27,11 @@ const posts = (await publishedPosts(lang)).slice(0, 5);
 		</div>
 	</section>
 </BlogLayout>
+
+<style>
+	@media (max-width: 40rem), (max-height: 48rem) {
+		.hero { padding-block: 2rem; }
+		.hero + .latest-posts { margin-block-start: 2rem; }
+		.latest-posts :global(.post-thumbnail) { align-self: start; }
+	}
+</style>
