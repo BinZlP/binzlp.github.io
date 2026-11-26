@@ -18,8 +18,8 @@ const title = blogUi[lang].about;
 		<section aria-labelledby="about-me">
 			<h2 id="about-me" lang="en">About me</h2>
 			<p>{lang === 'ko'
-				? '분산 시스템과 운영체제를 연구한 DevOps 엔지니어 한형석(BinZIP)입니다. 백엔드를 개발하고 서비스를 운영하면서 CI 빌드 시간을 줄이고, 동시 접속이 몰리는 코드 채점 서비스의 인프라를 개선했습니다. 지금은 클라우드와 온프레미스에서 LLM 추론 인프라와 개발자 플랫폼을 구축하고 고객 환경에 서비스를 배포합니다.'
-				: 'I’m Hyungseok Han (BinZIP), a DevOps engineer with a research background in distributed systems and operating systems. While developing and running backend services, I cut CI build times and improved the infrastructure behind a code grading service that handles spikes in traffic. I now build LLM inference infrastructure and developer platforms in the cloud and on premises, and deploy services in customer environments.'}</p>
+				? 'LLM 서빙을 전문으로 하는 분산 시스템 엔지니어 한형석(BinZIP)입니다. KV 캐시를 재사용할 수 있는 워커로 추론 요청을 보내고, 캐시 전송 병목을 줄여 같은 GPU 자원으로 더 많은 요청을 처리하는 일을 합니다. 요즘은 에이전틱 AI 시스템에서 여러 턴에 걸쳐 컨텍스트를 재사용하면 응답 지연과 추론 비용이 어떻게 달라지는지 살펴보고 있습니다. 데이터를 조직 밖으로 보내지 않고 모델과 에이전트를 운영하는 프라이빗 AI에도 관심이 있습니다.'
+				: 'I’m Hyungseok Han (BinZIP), a distributed systems engineer specializing in LLM serving. I work on routing inference requests to workers that can reuse cached keys and values, and on removing bottlenecks in KV cache transfers so the same GPUs can handle more requests. In agentic AI systems, I’m interested in how reusing context across turns affects latency and inference cost. I’m also interested in private AI, particularly how to run models and agents when an organization’s data must stay within its own network.'}</p>
 		</section>
 		<a href="https://github.com/BinZlP" target="_blank" rel="noreferrer">GitHub</a> · <a href={localePath(lang, '/rss.xml')}>RSS</a>
 	</div>
